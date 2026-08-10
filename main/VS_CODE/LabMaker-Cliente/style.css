@@ -1,0 +1,14 @@
+.card{
+    border: 3px;
+    border-style: solid;
+    border-color: rgb(231, 13, 177);
+    
+}
+
+.card-link {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    margin-left: 100px;
+    margin-right: 100px;
+}

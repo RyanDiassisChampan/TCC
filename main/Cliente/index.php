@@ -15,9 +15,15 @@
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-    <div class="container">
+    <div class="container-fluid">
 
-      <a class="navbar-brand fw-bold" href="LabMaker-Main-Admin.php">
+      <ul class="navbar-nav me-3 align-items-center">
+        <li class="nav-item ms-3 fs-3">
+            <a class="nav-link" href="../Admin/Main-Admin.php"><i class="bi bi-person-fill-lock"></i></a>
+          </li>
+      </ul>
+
+      <a class="navbar-brand fw-bold" href="Main.php">
         LabMaker
       </a>
 

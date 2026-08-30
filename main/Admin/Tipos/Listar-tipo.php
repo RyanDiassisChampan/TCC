@@ -123,7 +123,7 @@ $mensagem = "Registro exclído com sucesso.";
 
         <div class="card mt-3 mb-3">
             <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-card-list"></i> Listagem de Categoria </h5>
+                <h5 class="card-title"><i class="bi bi-card-list"></i> Listagem de Tipos </h5>
             </div>
         </div>
         <table class="table">

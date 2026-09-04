@@ -205,7 +205,7 @@
 
             </div>
 
-            <a href="Main-Cliente.php" class="btn btn-outline-primary">
+            <a href="index.php" class="btn btn-outline-primary">
 
                 <i class="bi bi-arrow-left"></i>
                 Continuar comprando

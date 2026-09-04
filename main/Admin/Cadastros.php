@@ -39,7 +39,6 @@
 
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="Vendas.php">Vendas</a></li>
                             <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
                         </ul>
                     </li>
@@ -179,73 +178,6 @@
 
             </div>
 
-
-            <!-- Forma de Recebimento -->
-            <div class="col-md-6 col-lg-4">
-
-                <a href="Tipos/Cadastrar-tipo.php" class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-body text-center p-4">
-
-                            <i class="bi bi-list text-primary fs-1"></i>
-
-                            <h4 class="card-title mt-3">
-                                Tipos de Produtos
-                            </h4>
-
-                            <p class="card-text text-muted">
-                                Cadastre e gerencie os tipos de produtos.
-                            </p>
-
-                            <span class="btn btn-primary">
-                                Acessar
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
-
-            </div>
-
-
-            <!-- Categorias -->
-            <div class="col-md-6 col-lg-4">
-
-                <a href="Marcas/Cadastrar-marca.php" class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-body text-center p-4">
-
-                            <i class="bi bi-badge-tm text-primary fs-1"></i>
-
-                            <h4 class="card-title mt-3">
-                                Marcas
-                            </h4>
-
-                            <p class="card-text text-muted">
-                                Cadastre e organize as marcas dos produtos.
-                            </p>
-
-                            <span class="btn btn-primary">
-                                Acessar
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
-
-            </div>
-
-
             <!-- Funcionários -->
             <div class="col-md-6 col-lg-4">
 
@@ -263,39 +195,6 @@
 
                             <p class="card-text text-muted">
                                 Cadastre e gerencie os funcionários do sistema.
-                            </p>
-
-                            <span class="btn btn-primary">
-                                Acessar
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
-
-            </div>
-
-
-            <!-- Usuários -->
-            <div class="col-md-6 col-lg-4">
-
-                <a href="Formas_recebimento/Cadastrar-forma_recebimento.php" class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-body text-center p-4">
-
-                            <i class="bi bi-receipt text-primary fs-1"></i>
-
-                            <h4 class="card-title mt-3">
-                                Formas de Recebimento
-                            </h4>
-
-                            <p class="card-text text-muted">
-                                Cadastre e gerencie as Formas de Recebimento.
                             </p>
 
                             <span class="btn btn-primary">

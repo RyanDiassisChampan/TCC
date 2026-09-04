@@ -102,26 +102,6 @@
 
                         </div>
 
-                        <div class="col-md-6 mb-3">
-
-                            <label for="status" class="form-label">
-                                Status
-                            </label>
-
-                            <select class="form-select" id="status" name="status">
-
-                                <option value="Ativo">
-                                    Ativo
-                                </option>
-
-                                <option value="Inativo">
-                                    Inativo
-                                </option>
-
-                            </select>
-
-                        </div>
-
                     </div>
 
                     <hr>

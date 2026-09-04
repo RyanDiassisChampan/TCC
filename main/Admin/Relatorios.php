@@ -39,7 +39,6 @@
 
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="Vendas.php">Vendas</a></li>
                             <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
                         </ul>
                     </li>
@@ -116,16 +115,16 @@
             <!-- Clientes -->
             <div class="col-md-6 col-lg-4">
 
-                <a href="Clientes/Listar-cliente.php" class="text-decoration-none text-dark">
+                <a href="Vendas.php" class="text-decoration-none text-dark">
 
                     <div class="card h-100 shadow-sm">
 
                         <div class="card-body text-center p-4">
 
-                            <i class="bi bi-person-plus-fill text-primary fs-1"></i>
+                            <i class="bi bi-currency-dollar fs-1"></i>
 
                             <h4 class="card-title mt-3">
-                                Clientes
+                                Vendas
                             </h4>
 
                             <span class="btn btn-primary">
@@ -145,13 +144,13 @@
             <!-- Produtos -->
             <div class="col-md-6 col-lg-4">
 
-                <a href="Produtos/Listar-produto.php" class="text-decoration-none text-dark">
+                <a href="Produtos/Relatorio-produto.php" class="text-decoration-none text-dark">
 
                     <div class="card h-100 shadow-sm">
 
                         <div class="card-body text-center p-4">
 
-                            <i class="bi bi-box-seam-fill text-primary fs-1"></i>
+                            <i class="bi bi-box-seam-fill fs-1"></i>
 
                             <h4 class="card-title mt-3">
                                 Produtos
@@ -167,112 +166,6 @@
 
                 </a>
 
-            </div>
-
-
-            <!-- Forma de Recebimento -->
-            <div class="col-md-6 col-lg-4">
-
-                <a href="Tipos/Listar-tipo.php" class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-body text-center p-4">
-
-                            <i class="bi bi-list text-primary fs-1"></i>
-
-                            <h4 class="card-title mt-3">
-                                Tipos de Produtos
-                            </h4>
-
-                            <span class="btn btn-primary">
-                                Acessar
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-
-                <a href="Formas_recebimento/Listar-forma_recebimento.php" class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-body text-center p-4">
-
-                            <i class="bi bi-list text-primary fs-1"></i>
-
-                            <h4 class="card-title mt-3">
-                                Formas de Recebimento
-                            </h4>
-
-                            <span class="btn btn-primary">
-                                Acessar
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-
-                <a href="Marcas/Listar-marca.php" class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-body text-center p-4">
-
-                            <i class="bi bi-list text-primary fs-1"></i>
-
-                            <h4 class="card-title mt-3">
-                                Marcas
-                            </h4>
-
-                            <span class="btn btn-primary">
-                                Acessar
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-
-                <a href="Funcionarios/Listar-funcionario.php" class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-body text-center p-4">
-
-                            <i class="bi bi-list text-primary fs-1"></i>
-
-                            <h4 class="card-title mt-3">
-                                Funcionários
-                            </h4>
-
-                            <span class="btn btn-primary">
-                                Acessar
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
             </div>
 
     </main>

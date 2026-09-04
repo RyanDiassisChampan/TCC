@@ -168,25 +168,6 @@
 
                     </div>
 
-                    <div class="mb-4">
-
-                        <label for="status" class="form-label">
-                            Status
-                        </label>
-
-                        <select class="form-select" id="status" name="status">
-
-                            <option value="Ativo">
-                                Ativo
-                            </option>
-
-                            <option value="Inativo">
-                                Inativo
-                            </option>
-
-                        </select>
-
-                    </div>
 
                     <div class="d-flex justify-content-between">
 

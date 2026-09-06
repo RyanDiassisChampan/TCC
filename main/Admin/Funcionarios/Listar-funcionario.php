@@ -55,9 +55,8 @@ $mensagem = "Registro exclído com sucesso.";
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="../Vendas.php">Vendas</a></li>
-                            <li><a class="dropdown-item" href="../Relatorios.php">Relatórios</a></li>
+                            <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
+                            <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
                         </ul>
                     </li>
                 </ul>

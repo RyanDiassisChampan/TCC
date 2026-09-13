@@ -1,3 +1,35 @@
+<?php
+//verificar se foi clicado no botão salvar
+if (isset($_POST['salvar'])) {
+    //1. Conectar no banco de dados (ip, usuário, senha, nome do banco)
+    $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
+
+    //2. Preparar os dados para inserir
+    $nome = $_POST['nome'];
+    $cpf = $_POST['cpf'];
+    $telefone = $_POST['telefone'];
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
+    $logradouro = $_POST['logradouro'];
+    $numero = $_POST['numero'];
+    $bairro = $_POST['bairro'];
+    $cidade = $_POST['cidade'];
+    $complemento = $_POST['complemento'];
+    $cep = $_POST['cep'];
+    $estado = $_POST['estado'];
+    
+    //3. Preparar a SQL para inserir
+    $sql = "insert into funcionario (nome, cpf, telefone, email, senha, logradouro, numero, bairro, cidade, complemento, cep, estado)
+        values ('$nome', '$cpf', '$telefone', '$email', '$senha', '$logradouro', '$numero', '$bairro', '$cidade', '$complemento', '$cep', '$estado')";
+
+    //4. Executar a SQL
+    mysqli_query($conexao, $sql);
+
+    //5. Mostrar mensagem ao usuário
+    $mensagem = "Registro salvo com sucesso.";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -35,7 +67,7 @@
 
             <div class="card-body py-3">
 
-                <form>
+                <form method="post">
 
                     <!-- DADOS PESSOAIS -->
                     <h5 class="mb-2">
@@ -205,10 +237,10 @@
 
                         </a>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" name="salvar" class="btn btn-primary">
 
                             <i class="bi bi-person-plus"></i>
-                            Cadastrar Funcionário
+                            Salvar
 
                         </button>
 

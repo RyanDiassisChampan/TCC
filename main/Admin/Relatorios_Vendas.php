@@ -7,14 +7,11 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
-    <title>Vendas - LabMaker</title>
+    <title>LabMaker</title>
 </head>
 
 <body class="bg-light">
@@ -61,33 +58,9 @@
                 <!-- Menu direito -->
                 <ul class="navbar-nav align-items-center">
 
-                    <!-- Departamentos -->
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Departamentos
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Processadores</a></li>
-                            <li><a class="dropdown-item" href="#">Placas-Mãe</a></li>
-                            <li><a class="dropdown-item" href="#">Placas de Vídeo</a></li>
-                            <li><a class="dropdown-item" href="#">Memórias RAM</a></li>
-                            <li><a class="dropdown-item" href="#">Armazenamento</a></li>
-                            <li><a class="dropdown-item" href="#">Fonte</a></li>
-                            <li><a class="dropdown-item" href="#">Refrigeração</a></li>
-                            <li><a class="dropdown-item" href="#">Gabinete</a></li>
-                        </ul>
-                    </li>
-
                     <li class="nav-item ms-3 fs-3">
                         <a class="nav-link" href="MinhaConta.php">
                             <i class="bi bi-person"></i>
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Carrinho.php">
-                            <i class="bi bi-cart"></i>
                         </a>
                     </li>
 
@@ -98,13 +71,13 @@
 
 
     <!-- Conteúdo -->
-    <main class="container-fluid px-4 py-5">
+    <main class="container-fluid px-4 py-4">
 
         <!-- Cabeçalho -->
         <div class="mb-4">
 
             <h2>
-                Vendas
+                Relatório de Vendas
             </h2>
 
             <p class="text-muted">
@@ -221,162 +194,87 @@
         <!-- Resumo -->
         <div class="row g-4 mb-4">
 
+            <!-- Tabela -->
+            <div class="card shadow-sm">
 
-            <!-- Total de vendas -->
-            <div class="col-md-4">
+                <div class="card-header bg-white">
 
-                <div class="card shadow-sm h-100">
+                    <h5 class="mb-0">
+                        Histórico de vendas
+                    </h5>
 
-                    <div class="card-body">
+                </div>
 
-                        <div class="d-flex justify-content-between">
 
-                            <div>
+                <div class="card-body p-0">
 
-                                <p class="text-muted mb-1">
-                                    Total de vendas
-                                </p>
+                    <div class="table-responsive">
 
-                                <h3 class="mb-0">
-                                    128
-                                </h3>
+                        <table class="table table-hover align-middle mb-0">
 
-                            </div>
+                            <thead class="table-light">
 
-                            <i class="bi bi-cart-check text-primary fs-1"></i>
+                                <tr>
 
-                        </div>
+                                    <th class="ps-4" style="width: 11%;">
+                                        Código
+                                    </th>
+
+                                    <th style="width: 11%;">
+                                        Data
+                                    </th>
+
+                                    <th style="width: 11%;">
+                                        Cliente
+                                    </th>
+
+                                    <th style="width: 11%;">
+                                        Produtos
+                                    </th>
+
+                                    <th style="width: 13%;">
+                                        Forma de Recebimento
+                                    </th>
+
+                                    <th style="width: 11%;">
+                                        Valor Recebido
+                                    </th>
+
+                                    <th style="width: 11%;">
+                                        Total
+                                    </th>
+
+                                    <th style="width: 10%;">
+                                        Status
+                                    </th>
+
+                                    <th class="text-center pe-4" style="width: 11%;">
+                                        Ações
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+
+                        </table>
 
                     </div>
 
                 </div>
 
-            </div>
 
-        <!-- Tabela -->
-        <div class="card shadow-sm">
+                <div class="mt-4">
+                    <a href="javascript:history.back()" class="btn btn-primary">
 
-            <div class="card-header bg-white">
+                        <i class="bi bi-arrow-left"></i>
+                        Voltar
 
-                <h5 class="mb-0">
-                    Histórico de vendas
-                </h5>
-
-            </div>
-
-
-            <div class="card-body p-0">
-
-                <div class="table-responsive">
-
-                    <table class="table table-hover align-middle mb-0">
-
-                        <thead class="table-light">
-
-                            <tr>
-
-                                <th class="ps-4">
-                                    Código
-                                </th>
-
-                                <th>
-                                    Data
-                                </th>
-
-                                <th>
-                                    Cliente
-                                </th>
-
-                                <th>
-                                    Produtos
-                                </th>
-
-                                <th>
-                                    Pagamento
-                                </th>
-
-                                <th>
-                                    Total
-                                </th>
-
-                                <th>
-                                    Status
-                                </th>
-
-                                <th class="text-center">
-                                    Ações
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                        </tbody>
-
-                    </table>
-
+                    </a>
                 </div>
-
-            </div>
-
-
-            <!-- Paginação -->
-            <div class="card-footer bg-white">
-
-                <nav>
-
-                    <ul class="pagination justify-content-end mb-0">
-
-                        <li class="page-item disabled">
-
-                            <a class="page-link" href="#">
-                                Anterior
-                            </a>
-
-                        </li>
-
-                        <li class="page-item active">
-
-                            <a class="page-link" href="#">
-                                1
-                            </a>
-
-                        </li>
-
-                        <li class="page-item">
-
-                            <a class="page-link" href="#">
-                                2
-                            </a>
-
-                        </li>
-
-                        <li class="page-item">
-
-                            <a class="page-link" href="#">
-                                3
-                            </a>
-
-                        </li>
-
-                        <li class="page-item">
-
-                            <a class="page-link" href="#">
-                                Próxima
-                            </a>
-
-                        </li>
-
-                    </ul>
-
-                </nav>
-
-            </div>
-
-        </div>
 
     </main>
 

@@ -23,166 +23,54 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-
         <div class="container-fluid">
 
-            <!-- Botão para telas pequenas -->
+            <ul class="navbar-nav me-3 align-items-center">
+                <li class="nav-item ms-3 fs-3">
+                    <a class="nav-link" href="../Admin/Main-Admin.php">
+                        <i class="bi bi-person-fill-lock"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <a class="navbar-brand fw-bold" href="index.php">
+                LabMaker
+            </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal">
-
                 <span class="navbar-toggler-icon"></span>
-
             </button>
 
-            <div class="collapse navbar-collapse align-items-center" id="navbarPrincipal">
+            <div class="collapse navbar-collapse" id="navbarPrincipal">
 
-                <!-- Ações -->
-                <ul class="navbar-nav me-3 align-items-center">
-
-                    <li class="nav-item dropdown fs-5">
-
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-
-                            Ações
-
-                        </a>
-
-                        <ul class="dropdown-menu">
-
-                            <li>
-                                <a class="dropdown-item" href="Cadastros.php">
-                                    Cadastros
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="Vendas.php">
-                                    Vendas
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="Relatorios.php">
-                                    Relatórios
-                                </a>
-                            </li>
-
-                        </ul>
-
-                    </li>
-
-                </ul>
-
-
-                <!-- Logo -->
-                <a class="navbar-brand fw-bold" href="Main-Admin.php">
-                    LabMaker
-                </a>
-
-
-                <!-- Pesquisa -->
+                <!-- Barra de pesquisa -->
                 <form class="d-flex mx-auto w-50">
-
                     <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
 
                     <button class="btn btn-light" type="submit">
                         Buscar
                     </button>
-
                 </form>
 
+                <!-- Menu -->
+                <ul class="navbar-nav ms-auto">
 
-                <!-- Menu direito -->
-                <ul class="navbar-nav align-items-center">
-
-                    <!-- Departamentos -->
-                    <li class="nav-item dropdown fs-5">
-
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-
-                            Departamentos
-
-                        </a>
-
-                        <ul class="dropdown-menu">
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    Processadores
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    Placas-Mãe
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    Placas de Vídeo
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    Memórias RAM
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    Armazenamento
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    Fontes
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    Refrigeração
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    Gabinetes
-                                </a>
-                            </li>
-
-                        </ul>
-
-                    </li>
-
-
-                    <!-- Conta -->
                     <li class="nav-item ms-3 fs-3">
-
-                        <a class="nav-link" href="MinhaConta.php">
+                        <a class="nav-link" href="Minha_Conta_Cliente.php">
                             <i class="bi bi-person"></i>
                         </a>
-
                     </li>
 
-
-                    <!-- Carrinho -->
                     <li class="nav-item ms-3 fs-3">
-
-                        <a class="nav-link active" href="Carrinho.php">
+                        <a class="nav-link" href="Carrinho.php">
                             <i class="bi bi-cart"></i>
                         </a>
-
                     </li>
 
                 </ul>
 
             </div>
-
         </div>
-
     </nav>
 
 
@@ -190,36 +78,39 @@
     <main class="container py-5">
 
         <!-- Título -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="mb-4">
 
-            <div>
+            <h2 class="fw-bold">
+                <i class="bi bi-cart3"></i>
+                Meu Carrinho
+            </h2>
 
-                <h2 class="fw-bold">
-                    <i class="bi bi-cart3"></i>
-                    Meu Carrinho
-                </h2>
-
-                <p class="text-muted mb-0">
-                    Confira os produtos antes de finalizar sua compra.
-                </p>
-
-            </div>
-
-            <a href="index.php" class="btn btn-outline-primary">
-
-                <i class="bi bi-arrow-left"></i>
-                Continuar comprando
-
-            </a>
+            <p class="text-muted mb-0">
+                Confira os produtos antes de finalizar sua compra.
+            </p>
 
         </div>
 
 
         <div class="row g-4">
 
-
-            <!-- Produtos -->
+            <!-- COLUNA DOS PRODUTOS -->
             <div class="col-lg-8">
+
+                <!-- Lista de produtos -->
+                <div class="card shadow-sm mb-4">
+
+                    <div class="card-header bg-white">
+
+                        <h5 class="fw-bold mb-0">
+                            <i class="bi bi-box-seam text-primary"></i>
+                            Produtos no carrinho
+                        </h5>
+
+                    </div>
+
+                </div>
+
 
                 <!-- Frete -->
                 <div class="card shadow-sm">
@@ -237,7 +128,6 @@
                             Informe seu CEP para calcular o valor da entrega.
                         </p>
 
-
                         <div class="row g-2">
 
                             <div class="col-md-5">
@@ -249,9 +139,7 @@
                             <div class="col-md-auto">
 
                                 <button class="btn btn-primary">
-
                                     Calcular
-
                                 </button>
 
                             </div>
@@ -265,124 +153,69 @@
             </div>
 
 
-            <!-- Resumo -->
+            <!-- RESUMO DA COMPRA -->
             <div class="col-lg-4">
 
                 <div class="card shadow-sm">
 
-                    <div class="card-body p-4">
+                    <div class="card-header bg-white">
 
-                        <h4 class="fw-bold mb-4">
+                        <h5 class="fw-bold mb-0">
+                            <i class="bi bi-receipt text-primary"></i>
                             Resumo da compra
-                        </h4>
+                        </h5>
 
+                    </div>
 
-                        <!-- Subtotal -->
-                        <div class="d-flex justify-content-between mb-3">
+                    <div class="card-body">
 
-                            <span>
-                                Subtotal
-                            </span>
+                        <div class="d-flex justify-content-between mb-2">
 
-                            <span>
-                                R$ 2.149,97
-                            </span>
+                            <span>Subtotal:</span>
 
                         </div>
 
+                        <div class="d-flex justify-content-between mb-2">
 
-                        <!-- Frete -->
-                        <div class="d-flex justify-content-between mb-3">
-
-                            <span>
-                                Frete
-                            </span>
-
-                            <span class="text-primary">
-                                Calcular
-                            </span>
+                            <span>Frete:</span>
 
                         </div>
-
 
                         <hr>
 
-
-                        <!-- Total -->
-                        <div class="d-flex justify-content-between mb-2">
+                        <div class="d-flex justify-content-between mb-3">
 
                             <span class="fw-bold fs-5">
-                                Total
-                            </span>
-
-                            <span class="fw-bold fs-4">
-                                R$ 2.149,97
+                                Total:
                             </span>
 
                         </div>
 
+                        <button class="btn btn-primary w-100 btn-lg">
 
-                        <p class="text-muted text-end small">
-                            ou até 10x sem juros
-                        </p>
+                            <i class="bi bi-credit-card"></i>
+                            Finalizar compra
 
-
-                        <!-- Botão -->
-                        <div class="d-grid mt-4">
-
-                            <button class="btn btn-primary btn-lg">
-
-                                <i class="bi bi-lock-fill"></i>
-                                Finalizar compra
-
-                            </button>
-
-                        </div>
-
-
-                        <!-- Segurança -->
-                        <div class="mt-4">
-
-                            <div class="d-flex align-items-center mb-3">
-
-                                <i class="bi bi-shield-check text-primary fs-3 me-3"></i>
-
-                                <div>
-
-                                    <strong>Compra segura</strong>
-
-                                    <p class="text-muted small mb-0">
-                                        Seus dados estão protegidos.
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="d-flex align-items-center">
-
-                                <i class="bi bi-credit-card text-primary fs-3 me-3"></i>
-
-                                <div>
-
-                                    <strong>Pagamento facilitado</strong>
-
-                                    <p class="text-muted small mb-0">
-                                        Até 10x sem juros.
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-                        </div>
+                        </button>
 
                     </div>
 
                 </div>
 
             </div>
+
+        </div>
+
+
+        <!-- Botão voltar -->
+        <div class="mt-4">
+
+            <a href="javascript:history.back()" class="btn btn-primary">
+
+                <i class="bi bi-arrow-left"></i>
+                Voltar
+
+            </a>
 
         </div>
 

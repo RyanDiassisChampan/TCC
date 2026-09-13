@@ -7,50 +7,59 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
     <title>Cadastro de Funcionário</title>
 </head>
 
 <body>
 
-    <main class="container" style="max-width: 850px; margin-top: 50px; margin-bottom: 50px;">
+    <main class="container-fluid px-4" style="margin-top: 20px; margin-bottom: 20px;">
 
         <div class="card shadow">
 
-            <div class="card-header bg-primary text-white text-center">
+            <!-- CABEÇALHO -->
+            <div class="card-header bg-primary text-white text-center py-2">
+
                 <h3 style="margin: 0;">
-                    <i class="bi bi-person-badge"></i>
+                    <i class="bi bi-person-plus"></i>
                     Cadastro de Funcionário
                 </h3>
+
             </div>
 
-            <div class="card-body">
+            <div class="card-body py-3">
 
                 <form>
 
-                    <h5 class="mb-3">
+                    <!-- DADOS PESSOAIS -->
+                    <h5 class="mb-2">
                         <i class="bi bi-person"></i>
                         Dados pessoais
                     </h5>
 
-                    <div class="mb-3">
-
-                        <label for="nome" class="form-label">
-                            Nome
-                        </label>
-
-                        <input type="text" class="form-control" id="nome" name="nome" maxlength="100" required>
-
-                    </div>
-
                     <div class="row">
 
-                        <div class="col-md-6 mb-3">
+                        <!-- NOME -->
+                        <div class="col-md-6 mb-2">
 
-                            <label for="cpf" class="form-label">
+                            <label for="nome" class="form-label mb-1">
+                                Nome
+                            </label>
+
+                            <input type="text" class="form-control" id="nome" name="nome" maxlength="100" required>
+
+                        </div>
+
+                        <!-- CPF -->
+                        <div class="col-md-3 mb-2">
+
+                            <label for="cpf" class="form-label mb-1">
                                 CPF
                             </label>
 
@@ -59,9 +68,10 @@
 
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <!-- TELEFONE -->
+                        <div class="col-md-3 mb-2">
 
-                            <label for="telefone" class="form-label">
+                            <label for="telefone" class="form-label mb-1">
                                 Telefone
                             </label>
 
@@ -70,30 +80,21 @@
 
                         </div>
 
-                    </div>
+                        <!-- E-MAIL -->
+                        <div class="col-md-8 mb-2">
 
-                    <div class="mb-3">
+                            <label for="email" class="form-label mb-1">
+                                E-mail
+                            </label>
 
-                        <label for="email" class="form-label">
-                            E-mail
-                        </label>
+                            <input type="email" class="form-control" id="email" name="email" maxlength="100" required>
 
-                        <input type="email" class="form-control" id="email" name="email" maxlength="100" required>
+                        </div>
 
-                    </div>
+                        <!-- SENHA -->
+                        <div class="col-md-4 mb-2">
 
-                    <hr>
-
-                    <h5 class="mb-3">
-                        <i class="bi bi-shield-lock"></i>
-                        Acesso
-                    </h5>
-
-                    <div class="row">
-
-                        <div class="col-md-6 mb-3">
-
-                            <label for="senha" class="form-label">
+                            <label for="senha" class="form-label mb-1">
                                 Senha
                             </label>
 
@@ -104,18 +105,20 @@
 
                     </div>
 
-                    <hr>
+                    <hr class="my-2">
 
-                    <h5 class="mb-3">
+                    <!-- ENDEREÇO -->
+                    <h5 class="mb-2">
                         <i class="bi bi-house"></i>
                         Endereço
                     </h5>
 
                     <div class="row">
 
-                        <div class="col-md-9 mb-3">
+                        <!-- LOGRADOURO -->
+                        <div class="col-md-7 mb-2">
 
-                            <label for="logradouro" class="form-label">
+                            <label for="logradouro" class="form-label mb-1">
                                 Logradouro
                             </label>
 
@@ -123,9 +126,10 @@
 
                         </div>
 
-                        <div class="col-md-3 mb-3">
+                        <!-- NÚMERO -->
+                        <div class="col-md-2 mb-2">
 
-                            <label for="numero" class="form-label">
+                            <label for="numero" class="form-label mb-1">
                                 Número
                             </label>
 
@@ -133,43 +137,10 @@
 
                         </div>
 
-                    </div>
+                        <!-- CEP -->
+                        <div class="col-md-3 mb-2">
 
-                    <div class="mb-3">
-
-                        <label for="bairro" class="form-label">
-                            Bairro
-                        </label>
-
-                        <input type="text" class="form-control" id="bairro" name="bairro" maxlength="100">
-
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-md-7 mb-3">
-
-                            <label for="cidade" class="form-label">
-                                Cidade
-                            </label>
-
-                            <input type="text" class="form-control" id="cidade" name="cidade" maxlength="100">
-
-                        </div>
-
-                        <div class="col-md-2 mb-3">
-
-                            <label for="estado" class="form-label">
-                                UF
-                            </label>
-
-                            <input type="text" class="form-control" id="estado" name="estado" maxlength="2">
-
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-
-                            <label for="cep" class="form-label">
+                            <label for="cep" class="form-label mb-1">
                                 CEP
                             </label>
 
@@ -178,28 +149,67 @@
 
                         </div>
 
+                        <!-- BAIRRO -->
+                        <div class="col-md-5 mb-2">
+
+                            <label for="bairro" class="form-label mb-1">
+                                Bairro
+                            </label>
+
+                            <input type="text" class="form-control" id="bairro" name="bairro" maxlength="100">
+
+                        </div>
+
+                        <!-- CIDADE -->
+                        <div class="col-md-5 mb-2">
+
+                            <label for="cidade" class="form-label mb-1">
+                                Cidade
+                            </label>
+
+                            <input type="text" class="form-control" id="cidade" name="cidade" maxlength="100">
+
+                        </div>
+
+                        <!-- UF -->
+                        <div class="col-md-2 mb-2">
+
+                            <label for="estado" class="form-label mb-1">
+                                UF
+                            </label>
+
+                            <input type="text" class="form-control" id="estado" name="estado" maxlength="2">
+
+                        </div>
+
+                        <!-- COMPLEMENTO -->
+                        <div class="col-md-12 mb-2">
+
+                            <label for="complemento" class="form-label mb-1">
+                                Complemento
+                            </label>
+
+                            <input type="text" class="form-control" id="complemento" name="complemento" maxlength="100">
+
+                        </div>
+
                     </div>
 
-                    <div class="mb-4">
+                    <!-- BOTÕES -->
+                    <div class="d-flex justify-content-between mt-3">
 
-                        <label for="complemento" class="form-label">
-                            Complemento
-                        </label>
+                        <a href="javascript:history.back()" class="btn btn-primary">
 
-                        <input type="text" class="form-control" id="complemento" name="complemento" maxlength="100">
-
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-
-                        <a href="javascript:history.back()" class="btn btn-secondary">
                             <i class="bi bi-arrow-left"></i>
                             Voltar
+
                         </a>
 
                         <button type="submit" class="btn btn-primary">
+
                             <i class="bi bi-person-plus"></i>
                             Cadastrar Funcionário
+
                         </button>
 
                     </div>

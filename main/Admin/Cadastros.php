@@ -61,33 +61,9 @@
                 <!-- Menu direito -->
                 <ul class="navbar-nav align-items-center">
 
-                    <!-- Departamentos -->
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Departamentos
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Processadores</a></li>
-                            <li><a class="dropdown-item" href="#">Placas-Mãe</a></li>
-                            <li><a class="dropdown-item" href="#">Placas de Vídeo</a></li>
-                            <li><a class="dropdown-item" href="#">Memórias RAM</a></li>
-                            <li><a class="dropdown-item" href="#">Armazenamento</a></li>
-                            <li><a class="dropdown-item" href="#">Fonte</a></li>
-                            <li><a class="dropdown-item" href="#">Refrigeração</a></li>
-                            <li><a class="dropdown-item" href="#">Gabinete</a></li>
-                        </ul>
-                    </li>
-
                     <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="MinhaConta.php">
+                        <a class="nav-link" href="Minha_Conta_Admin.php">
                             <i class="bi bi-person"></i>
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Carrinho.php">
-                            <i class="bi bi-cart"></i>
                         </a>
                     </li>
 

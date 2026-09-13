@@ -33,7 +33,7 @@
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">Lembre-se de mim</label>
       </div>
-        <a href="Main.php" class="btn btn-primary">Entrar</a>
+        <a href="Minha_Conta_Cliente.php" class="btn btn-primary">Entrar</a>
         <br>
         <br>
         <p>Não possui uma conta? <a href="Cadastrar.php" style="text-align: center;">Cadastre-se</a></p>

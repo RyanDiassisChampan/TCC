@@ -19,11 +19,11 @@
 
       <ul class="navbar-nav me-3 align-items-center">
         <li class="nav-item ms-3 fs-3">
-            <a class="nav-link" href="../Admin/Main-Admin.php"><i class="bi bi-person-fill-lock"></i></a>
-          </li>
+          <a class="nav-link" href="../Admin/Main-Admin.php"><i class="bi bi-person-fill-lock"></i></a>
+        </li>
       </ul>
 
-      <a class="navbar-brand fw-bold" href="Main.php">
+      <a class="navbar-brand fw-bold" href="index.php">
         LabMaker
       </a>
 
@@ -44,26 +44,8 @@
         <!-- Menu -->
         <ul class="navbar-nav ms-auto">
 
-          <li class="nav-item dropdown mt-2  fs-5">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-              Departamentos
-            </a>
-
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Processadores</a></li>
-              <li><a class="dropdown-item" href="#">Placas-Mãe</a></li>
-              <li><a class="dropdown-item" href="#">Placas de Vídeo</a></li>
-              <li><a class="dropdown-item" href="#">Memórias Ram</a></li>
-              <li><a class="dropdown-item" href="#">Armazenamento</a></li>
-              <li><a class="dropdown-item" href="#">Fonte</a></li>
-              <li><a class="dropdown-item" href="#">Refrigeração</a></li>
-              <li><a class="dropdown-item" href="#">Gabinete</a></li>
-              <li><a class="dropdown-item" href="#"></a></li>
-            </ul>
-          </li>
-
           <li class="nav-item ms-3 fs-3">
-            <a class="nav-link" href="Login.php"><i class="bi bi-person"></i></a>
+            <a class="nav-link" href="Minha_Conta_Cliente.php"><i class="bi bi-person"></i></a>
           </li>
 
           <li class="nav-item ms-3 fs-3">
@@ -90,20 +72,19 @@
       <div class="col-md-6 col-lg-3">
         <a href="item-teste.php" class="text-decoration-none text-dark">
           <div class="card h-100 shadow-sm">
-            <img src="https://placehold.co/300x200" class="card-img-top" alt="Produto">
+            <img src="../../imagens/ryzen_55600GT.jpg" class="card-img-top" alt="Produto">
 
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">
-                Multímetro Digital
+                Ryzen 5 5600GT
               </h5>
 
               <p class="card-text">
-                Equipamento ideal para medições elétricas com
-                excelente precisão.
+                Processador AMD de alto desempenho para computadores e jogos.
               </p>
 
-              <h5 class="text-primary">
-                R$ 89,90
+              <h5 class="text-primary mt-auto">
+                R$ 849,90
               </h5>
             </div>
           </div>
@@ -114,19 +95,19 @@
       <div class="col-md-6 col-lg-3">
         <a href="item-teste.php" class="text-decoration-none text-dark">
           <div class="card h-100 shadow-sm">
-            <img src="https://placehold.co/300x200" class="card-img-top" alt="Produto">
+            <img src="../../imagens/corsair_vengeance_16GB_2x8.jpg" class="card-img-top" alt="Produto">
 
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">
-                Kit Arduino Uno
+                Corsair Vengeance 16GB DDR4 (2x8)
               </h5>
 
               <p class="card-text">
-                Kit completo para projetos de automação e robótica.
+                Memória RAM DDR4 de alta velocidade para maior desempenho.
               </p>
 
-              <h5 class="text-primary">
-                R$ 149,90
+              <h5 class="text-primary mt-auto">
+                R$ 450,00
               </h5>
             </div>
           </div>
@@ -137,19 +118,19 @@
       <div class="col-md-6 col-lg-3">
         <a href="item-teste.php" class="text-decoration-none text-dark">
           <div class="card h-100 shadow-sm">
-            <img src="https://placehold.co/300x200" class="card-img-top" alt="Produto">
+            <img src="../../imagens/ssd_kingston_NV3_1TB.jpg" class="card-img-top" alt="Produto">
 
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">
-                Sensor Ultrassônico
+                Kingston NV3 1TB
               </h5>
 
               <p class="card-text">
-                Sensor para medição de distância utilizado em diversos projetos.
+                SSD NVMe de 1TB com alta velocidade para armazenamento.
               </p>
 
-              <h5 class="text-primary">
-                R$ 24,90
+              <h5 class="text-primary mt-auto">
+                R$ 499,90
               </h5>
             </div>
           </div>
@@ -160,19 +141,19 @@
       <div class="col-md-6 col-lg-3">
         <a href="item-teste.php" class="text-decoration-none text-dark">
           <div class="card h-100 shadow-sm">
-            <img src="https://placehold.co/300x200" class="card-img-top" alt="Produto">
+            <img src="../../imagens/placa-mae_gigabyte_B550M_aorus_elite.jpg" class="card-img-top" alt="Produto">
 
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">
-                Fonte de Bancada
+                Gigabyte B550m Aorus Elite
               </h5>
 
               <p class="card-text">
-                Fonte regulável para laboratórios e manutenção eletrônica.
+                Placa-mãe AM4 com excelente suporte para processadores AMD.
               </p>
 
-              <h5 class="text-primary">
-                R$ 329,90
+              <h5 class="text-primary mt-auto">
+                R$ 899,90
               </h5>
             </div>
           </div>

@@ -7,14 +7,11 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
-    <title>Relatórios - LabMaker</title>
+    <title>LabMaker</title>
 </head>
 
 <body class="bg-light">
@@ -61,33 +58,9 @@
                 <!-- Menu direito -->
                 <ul class="navbar-nav align-items-center">
 
-                    <!-- Departamentos -->
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Departamentos
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Processadores</a></li>
-                            <li><a class="dropdown-item" href="#">Placas-Mãe</a></li>
-                            <li><a class="dropdown-item" href="#">Placas de Vídeo</a></li>
-                            <li><a class="dropdown-item" href="#">Memórias RAM</a></li>
-                            <li><a class="dropdown-item" href="#">Armazenamento</a></li>
-                            <li><a class="dropdown-item" href="#">Fonte</a></li>
-                            <li><a class="dropdown-item" href="#">Refrigeração</a></li>
-                            <li><a class="dropdown-item" href="#">Gabinete</a></li>
-                        </ul>
-                    </li>
-
                     <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Login-Admin.php">
+                        <a class="nav-link" href="Minha_Conta_Admin.php">
                             <i class="bi bi-person"></i>
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Carrinho.php">
-                            <i class="bi bi-cart"></i>
                         </a>
                     </li>
 
@@ -97,6 +70,7 @@
     </nav>
 
 
+    <!-- Conteúdo -->
     <main class="container py-5">
 
         <h2 class="text-center mb-2">
@@ -112,10 +86,10 @@
         <div class="row g-4 justify-content-center">
 
 
-            <!-- Clientes -->
+            <!-- Relatório de Vendas -->
             <div class="col-md-6 col-lg-4">
 
-                <a href="Vendas.php" class="text-decoration-none text-dark">
+                <a href="Relatorios_Vendas.php" class="text-decoration-none text-dark">
 
                     <div class="card h-100 shadow-sm">
 
@@ -124,8 +98,13 @@
                             <i class="bi bi-currency-dollar fs-1"></i>
 
                             <h4 class="card-title mt-3">
-                                Vendas
+                                Relatório de Vendas
                             </h4>
+
+                            <p class="text-muted">
+                                Consulte as vendas realizadas,
+                                valores e informações dos pedidos.
+                            </p>
 
                             <span class="btn btn-primary">
                                 Acessar
@@ -141,10 +120,10 @@
             </div>
 
 
-            <!-- Produtos -->
+            <!-- Relatório de Estoque -->
             <div class="col-md-6 col-lg-4">
 
-                <a href="Produtos/Relatorio-produto.php" class="text-decoration-none text-dark">
+                <a href="Relatorios_Estoque.php" class="text-decoration-none text-dark">
 
                     <div class="card h-100 shadow-sm">
 
@@ -153,8 +132,14 @@
                             <i class="bi bi-box-seam-fill fs-1"></i>
 
                             <h4 class="card-title mt-3">
-                                Produtos
+                                Relatório de Estoque
                             </h4>
+
+                            <p class="text-muted">
+                                Consulte os produtos disponíveis,
+                                quantidades e situação do estoque.
+                            </p>
+
                             <span class="btn btn-primary">
                                 Acessar
                                 <i class="bi bi-arrow-right"></i>
@@ -167,6 +152,9 @@
                 </a>
 
             </div>
+
+
+        </div>
 
     </main>
 

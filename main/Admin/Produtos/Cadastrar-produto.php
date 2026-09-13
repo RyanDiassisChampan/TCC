@@ -171,9 +171,11 @@
 
                     <div class="d-flex justify-content-between">
 
-                        <a href="javascript:history.back()" class="btn btn-secondary">
+                        <a href="javascript:history.back()" class="btn btn-primary">
+
                             <i class="bi bi-arrow-left"></i>
                             Voltar
+
                         </a>
 
                         <button type="submit" class="btn btn-primary">

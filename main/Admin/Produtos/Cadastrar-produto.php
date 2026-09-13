@@ -15,21 +15,48 @@
 </head>
 
 <body>
+    <?php
+    $conexao = mysqli_connect("localhost", "root", "", "tcc");
+    if (isset($_POST['cadastrar'])) {
+        $imagem = $_POST['imagem'];
+        $modelo = $_POST['modelo'];
+        $descricao = $_POST['descricao'];
+        $valor = $_POST['valor'];
+        $qntdEstoque = $_POST['qntdEstoque'];
+        $tipo = $_POST['tipo'];
+        $marca = $_POST['marca'];
+        $sql = "insert into tbProduto (Imagem, Modelo, Descricao, Valor, Qntd_Estoque, Tipo, Marca, Status) VALUES ('$imagem', '$modelo', '$descricao', '$valor', '$qntdEstoque', '$tipo', '$marca', 'Ativo')";
+        mysqli_query($conexao, $sql);
+        ?>
 
-    <main class="container" style="max-width: 750px; margin-top: 50px; margin-bottom: 50px;">
+        <div class="alert alert-success alert-dismissible fade show 
+            position-fixed top-0 start-50 translate-middle-x 
+            mt-3 shadow text-center" style="width: 90%; max-width: 500px; z-index: 1050;" role="alert">
 
-        <div class="card shadow">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <strong>Sucesso!</strong> Registro salvo com sucesso!
 
-            <div class="card-header bg-primary text-white text-center">
-                <h3 style="margin: 0;">
-                    <i class="bi bi-box-seam"></i>
-                    Cadastro de Produto
-                </h3>
-            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+        </div>
 
-            <div class="card-body">
+        <?php
+    }
 
-                <form>
+    ?>
+
+    <form method="POST">
+        <main class="container" style="max-width: 750px; margin-top: 50px; margin-bottom: 50px;">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 style="margin: 0;">
+                        <i class="bi bi-box-seam"></i>
+                        Cadastro de Produto
+                    </h3>
+                </div>
+
+                <div class="card-body">
 
                     <div class="mb-3">
                         <label for="imagem" class="form-label">
@@ -37,7 +64,7 @@
                         </label>
 
                         <input type="text" class="form-control" id="imagem" name="imagem" maxlength="100"
-                            placeholder="Nome ou caminho da imagem">
+                            placeholder="Nome ou caminho da imagem" required>
                     </div>
 
                     <div class="mb-3">
@@ -55,7 +82,7 @@
                         </label>
 
                         <textarea class="form-control" id="descricao" name="descricao" rows="4" maxlength="350"
-                            placeholder="Digite a descrição do produto"></textarea>
+                            placeholder="Digite a descrição do produto" required></textarea>
                     </div>
 
                     <div class="row">
@@ -81,21 +108,12 @@
 
                         <div class="col-md-6 mb-3">
 
-                            <label for="desconto" class="form-label">
-                                Desconto
+                            <label for="qntdEstoque" class="form-label">
+                                Quantidade no Estoque:
                             </label>
 
-                            <div class="input-group">
-
-                                <span class="input-group-text">
-                                    %
-                                </span>
-
-                                <input type="number" class="form-control" id="desconto" name="desconto" step="0.01"
-                                    min="0" placeholder="0,00">
-
-                            </div>
-
+                            <input type="number" class="form-control" id="qntdEstoque" name="qntdEstoque" step="1"
+                                min="1" placeholder="0" required>
                         </div>
 
                     </div>
@@ -114,19 +132,19 @@
                                     Selecione o tipo
                                 </option>
 
-                                <option value="1">
+                                <option value="Processador">
                                     Processador
                                 </option>
 
-                                <option value="2">
+                                <option value="Memória RAM">
                                     Memória RAM
                                 </option>
 
-                                <option value="3">
+                                <option value="Placa de vídeo">
                                     Placa de vídeo
                                 </option>
 
-                                <option value="4">
+                                <option value="SSD">
                                     SSD
                                 </option>
 
@@ -146,19 +164,19 @@
                                     Selecione a marca
                                 </option>
 
-                                <option value="1">
+                                <option value="AMD">
                                     AMD
                                 </option>
 
-                                <option value="2">
+                                <option value="Intel">
                                     Intel
                                 </option>
 
-                                <option value="3">
+                                <option value="Corsair">
                                     Corsair
                                 </option>
 
-                                <option value="4">
+                                <option value="Kingston">
                                     Kingston
                                 </option>
 
@@ -171,27 +189,26 @@
 
                     <div class="d-flex justify-content-between">
 
-                        <a href="javascript:history.back()" class="btn btn-primary">
+                        <a href="../Cadastros.php" class="btn btn-primary">
 
                             <i class="bi bi-arrow-left"></i>
                             Voltar
 
                         </a>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" name="cadastrar">
                             <i class="bi bi-plus-lg"></i>
                             Cadastrar Produto
                         </button>
 
                     </div>
 
-                </form>
+                </div>
 
             </div>
 
-        </div>
-
-    </main>
+        </main>
+    </form>
 
 </body>
 

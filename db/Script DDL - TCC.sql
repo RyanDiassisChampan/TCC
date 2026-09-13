@@ -8,7 +8,9 @@ CREATE TABLE tbProduto(
     Descricao VARCHAR(350),
     Valor DOUBLE NOT NULL,
     Qntd_Estoque INT NOT NULL,
-    Status VARCHAR(20),
+    Tipo VARCHAR(50) NOT NULL,
+    Marca VARCHAR(50) NOT NULL,
+    Status VARCHAR(20)
 );
 
 CREATE TABLE tbCliente(
@@ -53,7 +55,7 @@ CREATE TABLE tbVenda(
     tbCliente_Codigo INT NOT NULL,
     FormaRecebimento VARCHAR(50) NOT NULL,
 
-    FOREIGN KEY(tbCliente_Codigo) REFERENCES tbCliente(Codigo),
+    FOREIGN KEY(tbCliente_Codigo) REFERENCES tbCliente(Codigo)
 );
 
 CREATE TABLE tbVenda_Produto(

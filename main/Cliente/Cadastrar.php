@@ -1,189 +1,257 @@
+<?php
+//verificar se foi clicado no botão salvar
+if (isset($_POST['salvar'])) {
+    //1. Conectar no banco de dados (ip, usuário, senha, nome do banco)
+    $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
+
+    //2. Preparar os dados para inserir
+    $nome = $_POST['nome'];
+    $cpf = $_POST['cpf'];
+    $telefone = $_POST['telefone'];
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
+    $logradouro = $_POST['logradouro'];
+    $numero = $_POST['numero'];
+    $bairro = $_POST['bairro'];
+    $cidade = $_POST['cidade'];
+    $complemento = $_POST['complemento'];
+    $cep = $_POST['cep'];
+    $estado = $_POST['estado'];
+    
+    //3. Preparar a SQL para inserir
+    $sql = "insert into tbcliente (nome, cpf, telefone, email, senha, logradouro, numero, bairro, cidade, complemento, cep, estado)
+        values ('$nome', '$cpf', '$telefone', '$email', '$senha', '$logradouro', '$numero', '$bairro', '$cidade', '$complemento', '$cep', '$estado')";
+
+    //4. Executar a SQL
+    mysqli_query($conexao, $sql);
+
+    //5. Mostrar mensagem ao usuário
+    $mensagem = "Registro salvo com sucesso.";
+}
+?>
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
-    <!-- Bootstrap Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-    <title>Cadastro - LabMaker</title>
+    <title>Cadastro de Cliente</title>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <div class="container py-5">
+    <main class="container-fluid px-4" style="margin-top: 20px; margin-bottom: 20px;">
 
-        <div class="row justify-content-center">
+        <div class="card shadow">
 
-            <div class="col-md-8 col-lg-6">
+            <!-- CABEÇALHO -->
+            <div class="card-header bg-primary text-white text-center py-2">
 
-                <div class="card shadow border-0">
+                <h3 style="margin: 0;">
+                    Cadastro
+                </h3>
 
-                    <div class="card-header bg-primary text-white text-center">
-                        <h3 class="mb-0">
-                            <i class="bi bi-person-plus-fill"></i>
-                            Cadastro de Usuário
-                        </h3>
-                    </div>
+            </div>
 
-                    <div class="card-body">
+            <div class="card-body py-3">
 
-                        <form method="post">
+                <form method="post">
 
-                            <!-- Nome -->
-                            <div class="mb-3">
+                    <!-- DADOS PESSOAIS -->
+                    <h5 class="mb-2">
+                        <i class="bi bi-person"></i>
+                        Dados pessoais
+                    </h5>
 
-                                <label class="form-label">
-                                    Nome Completo
-                                </label>
+                    <div class="row">
 
-                                <div class="input-group">
+                        <!-- NOME -->
+                        <div class="col-md-6 mb-2">
 
-                                    <span class="input-group-text">
-                                        <i class="bi bi-person"></i>
-                                    </span>
+                            <label for="nome" class="form-label mb-1">
+                                Nome
+                            </label>
 
-                                    <input type="text" class="form-control" name="nome" placeholder="Digite seu nome"
-                                        required>
+                            <input type="text" class="form-control" id="nome" name="nome" maxlength="100" required>
 
-                                </div>
+                        </div>
 
-                            </div>
+                        <!-- CPF -->
+                        <div class="col-md-3 mb-2">
 
-                            <!-- Email -->
-                            <div class="mb-3">
+                            <label for="cpf" class="form-label mb-1">
+                                CPF
+                            </label>
 
-                                <label class="form-label">
-                                    Email
-                                </label>
+                            <input type="text" class="form-control" id="cpf" name="cpf" maxlength="14"
+                                placeholder="000.000.000-00" required>
 
-                                <div class="input-group">
+                        </div>
 
-                                    <span class="input-group-text">
-                                        <i class="bi bi-envelope"></i>
-                                    </span>
+                        <!-- TELEFONE -->
+                        <div class="col-md-3 mb-2">
 
-                                    <input type="email" class="form-control" name="email"
-                                        placeholder="Digite seu e-mail" required>
+                            <label for="telefone" class="form-label mb-1">
+                                Telefone
+                            </label>
 
-                                </div>
+                            <input type="text" class="form-control" id="telefone" name="telefone" maxlength="15"
+                                placeholder="(00) 00000-0000">
 
-                            </div>
+                        </div>
 
-                            <div class="row">
+                        <!-- E-MAIL -->
+                        <div class="col-md-8 mb-2">
 
-                                <!-- CPF -->
-                                <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label mb-1">
+                                E-mail
+                            </label>
 
-                                    <label class="form-label">
-                                        CPF
-                                    </label>
+                            <input type="email" class="form-control" id="email" name="email" maxlength="100" required>
 
-                                    <div class="input-group">
+                        </div>
 
-                                        <span class="input-group-text">
-                                            <i class="bi bi-card-text"></i>
-                                        </span>
+                        <!-- SENHA -->
+                        <div class="col-md-4 mb-2">
 
-                                        <input type="text" class="form-control" name="cpf" placeholder="000.000.000-00"
-                                            required>
+                            <label for="senha" class="form-label mb-1">
+                                Senha
+                            </label>
 
-                                    </div>
+                            <input type="password" class="form-control" id="senha" name="senha" maxlength="255"
+                                required>
 
-                                </div>
-
-                                <!-- Senha -->
-                                <div class="col-md-6 mb-3">
-
-                                    <label class="form-label">
-                                        Senha
-                                    </label>
-
-                                    <div class="input-group">
-
-                                        <span class="input-group-text">
-                                            <i class="bi bi-lock"></i>
-                                        </span>
-
-                                        <input type="password" class="form-control" name="senha"
-                                            placeholder="Digite sua senha" required>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <!-- Confirmar senha -->
-                            <div class="mb-4">
-
-                                <label class="form-label">
-                                    Confirmar Senha
-                                </label>
-
-                                <div class="input-group">
-
-                                    <span class="input-group-text">
-                                        <i class="bi bi-shield-lock"></i>
-                                    </span>
-
-                                    <input type="password" class="form-control" name="confirmarSenha"
-                                        placeholder="Confirme sua senha" required>
-
-                                </div>
-
-                            </div>
-
-                            <!-- Botões -->
-                            <div class="d-flex justify-content-between">
-
-                                <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
-
-                                    <i class="bi bi-arrow-left"></i>
-                                    Voltar
-
-                                </button>
-
-                                <button type="submit" name="salvar" class="btn btn-success">
-
-                                    <i class="bi bi-check-circle"></i>
-                                    Cadastrar
-
-                                </button>
-
-                            </div>
-
-                            <!-- Mensagem -->
-                            <?php if (isset($_POST['salvar'])) { ?>
-
-                                <div class="alert alert-success mt-4">
-
-                                    <i class="bi bi-check-circle-fill"></i>
-
-                                    <?= $mensagem ?>
-
-                                </div>
-
-                            <?php } ?>
-
-                        </form>
+                        </div>
 
                     </div>
 
-                </div>
+                    <hr class="my-2">
+
+                    <!-- ENDEREÇO -->
+                    <h5 class="mb-2">
+                        <i class="bi bi-house"></i>
+                        Endereço
+                    </h5>
+
+                    <div class="row">
+
+                        <!-- LOGRADOURO -->
+                        <div class="col-md-7 mb-2">
+
+                            <label for="logradouro" class="form-label mb-1">
+                                Logradouro
+                            </label>
+
+                            <input type="text" class="form-control" id="logradouro" name="logradouro" maxlength="45">
+
+                        </div>
+
+                        <!-- NÚMERO -->
+                        <div class="col-md-2 mb-2">
+
+                            <label for="numero" class="form-label mb-1">
+                                Número
+                            </label>
+
+                            <input type="text" class="form-control" id="numero" name="numero" maxlength="10">
+
+                        </div>
+
+                        <!-- CEP -->
+                        <div class="col-md-3 mb-2">
+
+                            <label for="cep" class="form-label mb-1">
+                                CEP
+                            </label>
+
+                            <input type="text" class="form-control" id="cep" name="cep" maxlength="10"
+                                placeholder="00000-000">
+
+                        </div>
+
+                        <!-- BAIRRO -->
+                        <div class="col-md-5 mb-2">
+
+                            <label for="bairro" class="form-label mb-1">
+                                Bairro
+                            </label>
+
+                            <input type="text" class="form-control" id="bairro" name="bairro" maxlength="100">
+
+                        </div>
+
+                        <!-- CIDADE -->
+                        <div class="col-md-5 mb-2">
+
+                            <label for="cidade" class="form-label mb-1">
+                                Cidade
+                            </label>
+
+                            <input type="text" class="form-control" id="cidade" name="cidade" maxlength="100">
+
+                        </div>
+
+                        <!-- UF -->
+                        <div class="col-md-2 mb-2">
+
+                            <label for="estado" class="form-label mb-1">
+                                UF
+                            </label>
+
+                            <input type="text" class="form-control" id="estado" name="estado" maxlength="2">
+
+                        </div>
+
+                        <!-- COMPLEMENTO -->
+                        <div class="col-md-12 mb-2">
+
+                            <label for="complemento" class="form-label mb-1">
+                                Complemento
+                            </label>
+
+                            <input type="text" class="form-control" id="complemento" name="complemento" maxlength="100">
+
+                        </div>
+
+                    </div>
+
+                    <!-- BOTÕES -->
+                    <div class="d-flex justify-content-between mt-3">
+
+                        <a href="javascript:history.back()" class="btn btn-primary">
+
+                            <i class="bi bi-arrow-left"></i>
+                            Voltar
+
+                        </a>
+
+                        <button type="submit" name="salvar" class="btn btn-primary">
+
+                            <i class="bi bi-person-plus"></i>
+                            Salvar
+
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 
         </div>
 
-    </div>
+    </main>
 
 </body>
 

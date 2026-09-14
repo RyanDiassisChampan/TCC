@@ -88,40 +88,6 @@
         <!-- Cards -->
         <div class="row g-4 justify-content-center">
 
-
-            <!-- Clientes -->
-            <div class="col-md-6 col-lg-4">
-
-                <a href="Clientes/Cadastrar-cliente.php" class="text-decoration-none text-dark">
-
-                    <div class="card h-100 shadow-sm">
-
-                        <div class="card-body text-center p-4">
-
-                            <i class="bi bi-person-plus-fill text-primary fs-1"></i>
-
-                            <h4 class="card-title mt-3">
-                                Clientes
-                            </h4>
-
-                            <p class="card-text text-muted">
-                                Cadastre e gerencie os clientes da LabMaker.
-                            </p>
-
-                            <span class="btn btn-primary">
-                                Acessar
-                                <i class="bi bi-arrow-right"></i>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </a>
-
-            </div>
-
-
             <!-- Produtos -->
             <div class="col-md-6 col-lg-4">
 

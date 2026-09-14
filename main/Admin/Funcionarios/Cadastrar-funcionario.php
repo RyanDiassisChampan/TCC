@@ -19,7 +19,7 @@ if (isset($_POST['salvar'])) {
     $estado = $_POST['estado'];
     
     //3. Preparar a SQL para inserir
-    $sql = "insert into funcionario (nome, cpf, telefone, email, senha, logradouro, numero, bairro, cidade, complemento, cep, estado)
+    $sql = "insert into tbfuncionario (nome, cpf, telefone, email, senha, logradouro, numero, bairro, cidade, complemento, cep, estado)
         values ('$nome', '$cpf', '$telefone', '$email', '$senha', '$logradouro', '$numero', '$bairro', '$cidade', '$complemento', '$cep', '$estado')";
 
     //4. Executar a SQL

@@ -15,7 +15,7 @@
 
 <body style="min-height: 100vh; display: flex; flex-direction: column;">
   <main style="flex: 1;">
-    <h1 style="text-align: center; margin-top: 50px; margin-bottom: 50px">Login de Usuário</h1>
+    <h1 style="text-align: center; margin-top: 50px; margin-bottom: 50px">Login</h1>
 
     <form class="container p-4"
       style="border-style: solid; border-width: 2px; border-color: black; border-radius: 10px; max-width: 500px;">

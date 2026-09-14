@@ -197,8 +197,7 @@
                         </a>
 
                         <button type="submit" class="btn btn-primary" name="cadastrar">
-                            <i class="bi bi-plus-lg"></i>
-                            Cadastrar Produto
+                            Salvar
                         </button>
 
                     </div>

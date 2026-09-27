@@ -85,7 +85,7 @@ $resultado = mysqli_query($conn, $sql);
 
         <div class="col-md-6 col-lg-3">
 
-          <a href="item-teste.php?id=<?php echo $produto['Codigo']; ?>" class="text-decoration-none text-dark">
+          <a href="tela_produto.php?Codigo=<?php echo $produto['Codigo']; ?>" class="text-decoration-none text-dark">
 
             <div class="card h-100 shadow-sm">
 

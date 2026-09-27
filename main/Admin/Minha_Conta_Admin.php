@@ -92,22 +92,6 @@
                                 <i class="bi bi-person me-2"></i>
                                 Meus Dados
                             </a>
-
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <i class="bi bi-bag me-2"></i>
-                                Meus Pedidos
-                            </a>
-
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <i class="bi bi-geo-alt me-2"></i>
-                                Meus Endereços
-                            </a>
-
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <i class="bi bi-lock me-2"></i>
-                                Alterar Senha
-                            </a>
-
                             <a href="#" class="list-group-item list-group-item-action text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i>
                                 Sair

@@ -1,89 +1,154 @@
+<?php
+
+$conexao = mysqli_connect("localhost", "root", "", "tcc");
+
+if (!$conexao) {
+    die("Erro na conexão com o banco: " . mysqli_connect_error());
+}
+
+if (isset($_POST['cadastrar'])) {
+
+    $modelo = $_POST['modelo'];
+    $descricao = $_POST['descricao'];
+    $valor = $_POST['valor'];
+    $qntdEstoque = $_POST['qntdEstoque'];
+    $tipo = $_POST['tipo'];
+    $marca = $_POST['marca'];
+
+    /*
+     * UPLOAD DA IMAGEM
+     */
+
+    $nomeImagem = $_FILES['imagem']['name'];
+    $arquivoTemporario = $_FILES['imagem']['tmp_name'];
+
+    // Pasta onde as imagens serão armazenadas
+    $pasta = "../../../imagens/";
+
+    // Caminho completo da imagem
+    $caminhoImagem = $pasta . basename($nomeImagem);
+
+    // Move a imagem para a pasta imagens
+    if (move_uploaded_file($arquivoTemporario, $caminhoImagem)) {
+
+        // Salva no banco somente o nome da imagem
+        $sql = "INSERT INTO tbProduto 
+                (Imagem, Modelo, Descricao, Valor, Qntd_Estoque, Tipo, Marca, Status) 
+                VALUES 
+                ('$nomeImagem', '$modelo', '$descricao', '$valor', '$qntdEstoque', '$tipo', '$marca', 'Ativo')";
+
+        if (mysqli_query($conexao, $sql)) {
+            ?>
+
+            <div class="alert alert-success alert-dismissible fade show 
+                position-fixed top-0 start-50 translate-middle-x 
+                mt-3 shadow text-center" style="width: 90%; max-width: 500px; z-index: 1050;" role="alert">
+
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong>Sucesso!</strong> Registro salvo com sucesso!
+
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+
+            </div>
+
+            <?php
+        } else {
+            echo "Erro ao cadastrar produto: " . mysqli_error($conexao);
+        }
+
+    } else {
+
+        echo "Erro ao enviar a imagem.";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYjWrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
     <title>Cadastro de Produto</title>
+
 </head>
 
 <body>
-    <?php
-    $conexao = mysqli_connect("localhost", "root", "", "tcc");
-    if (isset($_POST['cadastrar'])) {
-        $imagem = $_POST['imagem'];
-        $modelo = $_POST['modelo'];
-        $descricao = $_POST['descricao'];
-        $valor = $_POST['valor'];
-        $qntdEstoque = $_POST['qntdEstoque'];
-        $tipo = $_POST['tipo'];
-        $marca = $_POST['marca'];
-        $sql = "insert into tbProduto (Imagem, Modelo, Descricao, Valor, Qntd_Estoque, Tipo, Marca, Status) VALUES ('$imagem', '$modelo', '$descricao', '$valor', '$qntdEstoque', '$tipo', '$marca', 'Ativo')";
-        mysqli_query($conexao, $sql);
-        ?>
 
-        <div class="alert alert-success alert-dismissible fade show 
-            position-fixed top-0 start-50 translate-middle-x 
-            mt-3 shadow text-center" style="width: 90%; max-width: 500px; z-index: 1050;" role="alert">
+    <form method="POST" enctype="multipart/form-data">
 
-            <i class="bi bi-check-circle-fill me-2"></i>
-            <strong>Sucesso!</strong> Registro salvo com sucesso!
-
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-        </div>
-
-        <?php
-    }
-
-    ?>
-
-    <form method="POST">
         <main class="container" style="max-width: 750px; margin-top: 50px; margin-bottom: 50px;">
 
             <div class="card shadow">
 
                 <div class="card-header bg-primary text-white text-center">
+
                     <h3 style="margin: 0;">
+
                         <i class="bi bi-box-seam"></i>
+
                         Cadastro de Produto
+
                     </h3>
+
                 </div>
 
                 <div class="card-body">
 
+                    <!-- IMAGEM -->
+
                     <div class="mb-3">
+
                         <label for="imagem" class="form-label">
                             Imagem
                         </label>
 
-                        <input type="text" class="form-control" id="imagem" name="imagem" maxlength="100"
-                            placeholder="Nome ou caminho da imagem" required>
+                        <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*" required>
+
                     </div>
 
+
+                    <!-- MODELO -->
+
                     <div class="mb-3">
+
                         <label for="modelo" class="form-label">
                             Modelo
                         </label>
 
                         <input type="text" class="form-control" id="modelo" name="modelo" maxlength="100"
                             placeholder="Digite o modelo" required>
+
                     </div>
 
+
+                    <!-- DESCRIÇÃO -->
+
                     <div class="mb-3">
+
                         <label for="descricao" class="form-label">
                             Descrição
                         </label>
 
                         <textarea class="form-control" id="descricao" name="descricao" rows="4" maxlength="350"
                             placeholder="Digite a descrição do produto" required></textarea>
+
                     </div>
+
+
+                    <!-- VALOR E ESTOQUE -->
 
                     <div class="row">
 
@@ -106,6 +171,7 @@
 
                         </div>
 
+
                         <div class="col-md-6 mb-3">
 
                             <label for="qntdEstoque" class="form-label">
@@ -114,9 +180,13 @@
 
                             <input type="number" class="form-control" id="qntdEstoque" name="qntdEstoque" step="1"
                                 min="1" placeholder="0" required>
+
                         </div>
 
                     </div>
+
+
+                    <!-- TIPO E MARCA -->
 
                     <div class="row">
 
@@ -151,6 +221,7 @@
                             </select>
 
                         </div>
+
 
                         <div class="col-md-6 mb-3">
 
@@ -187,17 +258,23 @@
                     </div>
 
 
+                    <!-- BOTÕES -->
+
                     <div class="d-flex justify-content-between">
 
                         <a href="../Cadastros.php" class="btn btn-primary">
 
                             <i class="bi bi-arrow-left"></i>
+
                             Voltar
 
                         </a>
 
+
                         <button type="submit" class="btn btn-primary" name="cadastrar">
+
                             Salvar
+
                         </button>
 
                     </div>
@@ -207,6 +284,7 @@
             </div>
 
         </main>
+
     </form>
 
 </body>

@@ -12,6 +12,8 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <title>LabMaker</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="bg-light">

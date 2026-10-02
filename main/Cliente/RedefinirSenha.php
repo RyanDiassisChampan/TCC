@@ -14,6 +14,8 @@
 
     <title>Redefinir Senha - LabMaker</title>
 
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="bg-light">

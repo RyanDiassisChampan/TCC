@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="bg-light">
@@ -125,7 +127,7 @@
                                     Nome completo
                                 </label>
 
-                                <input type="text" class="form-control" value="Ryan Diassis Champan">
+                                <input type="text" class="form-control" placeholder="Nome completo">
                             </div>
 
                             <!-- CPF -->
@@ -134,7 +136,7 @@
                                     CPF
                                 </label>
 
-                                <input type="text" class="form-control" value="000.000.000-00">
+                                <input type="text" class="form-control" placeholder="000.000.000-00">
                             </div>
 
                             <!-- Email -->
@@ -143,7 +145,7 @@
                                     E-mail
                                 </label>
 
-                                <input type="email" class="form-control" value="email@exemplo.com">
+                                <input type="email" class="form-control" placeholder="email@exemplo.com">
                             </div>
 
                             <!-- Telefone -->
@@ -152,7 +154,7 @@
                                     Telefone
                                 </label>
 
-                                <input type="text" class="form-control" value="(44) 99999-9999">
+                                <input type="text" class="form-control" placeholder="(44) 99999-9999">
                             </div>
 
                         </div>
@@ -171,7 +173,7 @@
                                     CEP
                                 </label>
 
-                                <input type="text" class="form-control" value="00000-000">
+                                <input type="text" class="form-control" placeholder="00000-000">
                             </div>
 
                             <div class="col-md-8 mb-3">
@@ -179,7 +181,7 @@
                                     Endereço
                                 </label>
 
-                                <input type="text" class="form-control" value="Rua Exemplo">
+                                <input type="text" class="form-control" placeholder="Rua Exemplo">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -187,7 +189,7 @@
                                     Número
                                 </label>
 
-                                <input type="text" class="form-control" value="123">
+                                <input type="text" class="form-control" placeholder="Número">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -195,7 +197,7 @@
                                     Cidade
                                 </label>
 
-                                <input type="text" class="form-control" value="Umuarama">
+                                <input type="text" class="form-control" placeholder="Cidade">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -203,7 +205,7 @@
                                     Estado
                                 </label>
 
-                                <input type="text" class="form-control" value="PR" readonly>
+                                <input type="text" class="form-control" placeholder="PR">
                             </div>
 
                         </div>

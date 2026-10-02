@@ -11,6 +11,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - LabMaker</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body style="min-height: 100vh; display: flex; flex-direction: column;">

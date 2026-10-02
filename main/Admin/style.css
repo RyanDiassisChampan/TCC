@@ -1,14 +1,203 @@
-.card{
-    border: 3px;
-    border-style: solid;
-    border-color: rgb(231, 13, 177);
-    
+
+/* =========================================================
+   LABMAKER - PALETA VISUAL
+   Somente identidade visual / cores
+   ========================================================= */
+
+:root {
+    --lm-fundo: #dfe4e9;
+    --lm-cinza-claro: #eef1f4;
+    --lm-branco: #ffffff;
+    --lm-azul: #0866f5;
+    --lm-azul-hover: #0554d1;
+    --lm-azul-escuro: #06243a;
+    --lm-preto: #15191d;
+    --lm-cinza: #68737d;
+    --lm-borda: #c9d1d8;
 }
 
-.card-link {
-    display: inline-block;
-    text-decoration: none;
-    color: inherit;
-    margin-left: 100px;
-    margin-right: 100px;
+/* Fundo geral */
+body,
+body.bg-light {
+    background-color: var(--lm-fundo) !important;
+    color: var(--lm-preto);
 }
+
+/* Navbar */
+.navbar.bg-primary {
+    background-color: var(--lm-azul-escuro) !important;
+    border-bottom: 3px solid var(--lm-azul);
+}
+
+.navbar.bg-primary .navbar-brand,
+.navbar.bg-primary .nav-link {
+    color: var(--lm-branco) !important;
+}
+
+.navbar.bg-primary .nav-link:hover {
+    color: #69a7ff !important;
+}
+
+/* Busca */
+.navbar .form-control {
+    background-color: var(--lm-branco);
+    color: var(--lm-preto);
+    border-color: var(--lm-borda);
+}
+
+.navbar .btn-light {
+    background-color: var(--lm-branco) !important;
+    color: var(--lm-azul) !important;
+    border-color: var(--lm-branco) !important;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6,
+.card-title {
+    color: var(--lm-preto);
+}
+
+/* Textos secundários */
+.card-text {
+    color: var(--lm-cinza);
+}
+
+/* Cards */
+.card {
+    background-color: var(--lm-cinza-claro);
+    border: 1px solid var(--lm-borda);
+    border-radius: 10px;
+}
+
+.card:hover {
+    border-color: #b9c3cc;
+}
+
+/* Área da imagem dos produtos */
+.card-img-top {
+    background-color: var(--lm-branco);
+}
+
+/* Preços e destaques */
+.text-primary {
+    color: var(--lm-azul) !important;
+}
+
+/* Botões azuis */
+.btn-primary {
+    background-color: var(--lm-azul) !important;
+    border-color: var(--lm-azul) !important;
+    color: var(--lm-branco) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--lm-azul-hover) !important;
+    border-color: var(--lm-azul-hover) !important;
+}
+
+/* Botões outline azuis */
+.btn-outline-primary {
+    color: var(--lm-azul) !important;
+    border-color: var(--lm-azul) !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--lm-azul) !important;
+    color: var(--lm-branco) !important;
+}
+
+/* Campos */
+.form-control,
+.form-select {
+    background-color: var(--lm-branco);
+    color: var(--lm-preto);
+    border-color: var(--lm-borda);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--lm-azul);
+    box-shadow: 0 0 0 0.2rem rgba(8, 102, 245, 0.15);
+}
+
+/* Dropdown */
+.dropdown-menu {
+    background-color: var(--lm-branco);
+    border-color: var(--lm-borda);
+}
+
+.dropdown-item {
+    color: var(--lm-preto);
+}
+
+.dropdown-item:hover {
+    background-color: #e8edf2;
+    color: var(--lm-azul);
+}
+
+/* Tabelas */
+.table {
+    --bs-table-bg: var(--lm-cinza-claro);
+    --bs-table-color: var(--lm-preto);
+    border-color: var(--lm-borda);
+}
+
+.table thead th {
+    background-color: var(--lm-azul-escuro);
+    color: var(--lm-branco);
+    border-color: var(--lm-azul-escuro);
+}
+
+/* Áreas brancas de conteúdo usadas nas telas */
+.produto-container,
+.informacoes-produto {
+    background-color: var(--lm-cinza-claro);
+    border-color: var(--lm-borda);
+}
+
+/* Imagem principal da página de produto */
+.imagem-produto,
+.imagem-miniatura {
+    background-color: var(--lm-branco);
+}
+
+/* Links */
+a {
+    color: var(--lm-azul);
+}
+
+/* Mantém links de cards com texto preto */
+a.text-dark {
+    color: var(--lm-preto) !important;
+}
+
+/* Bordas e divisores */
+hr {
+    border-color: var(--lm-borda);
+    opacity: 1;
+}
+
+/* Campos e botões neutros */
+.btn-outline-secondary {
+    color: var(--lm-preto);
+    border-color: var(--lm-borda);
+}
+
+.btn-outline-secondary:hover {
+    background-color: #d4dbe1;
+    border-color: #b9c3cc;
+    color: var(--lm-preto);
+}
+
+/* Paginação */
+.page-link {
+    color: var(--lm-azul);
+    border-color: var(--lm-borda);
+}
+
+.page-item.active .page-link {
+    background-color: var(--lm-azul);
+    border-color: var(--lm-azul);
+}
+
+/* Alertas continuam usando as cores próprias de status */

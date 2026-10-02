@@ -1,64 +1,116 @@
 <?php
+require_once "../../../includes/validacoes.php";
+
 
 $conexao = mysqli_connect("localhost", "root", "", "tcc");
 
+$erros = [];
+$mensagem = "";
+
 if (!$conexao) {
-    die("Erro na conexão com o banco: " . mysqli_connect_error());
+    $erros[] = "Erro na conexão com o banco de dados.";
 }
 
-if (isset($_POST['cadastrar'])) {
+if (isset($_POST['cadastrar']) && empty($erros)) {
 
-    $modelo = $_POST['modelo'];
-    $descricao = $_POST['descricao'];
-    $valor = $_POST['valor'];
-    $qntdEstoque = $_POST['qntdEstoque'];
-    $tipo = $_POST['tipo'];
-    $marca = $_POST['marca'];
+    $modelo = trim($_POST['modelo'] ?? '');
+    $descricao = trim($_POST['descricao'] ?? '');
+    $valor = $_POST['valor'] ?? '';
+    $qntdEstoque = $_POST['qntdEstoque'] ?? '';
+    $tipo = trim($_POST['tipo'] ?? '');
+    $marca = trim($_POST['marca'] ?? '');
 
-    /*
-     * UPLOAD DA IMAGEM
-     */
+    if (!validarProdutoModelo($modelo)) {
+        $erros[] = "Informe um modelo válido com até 100 caracteres.";
+    }
 
-    $nomeImagem = $_FILES['imagem']['name'];
-    $arquivoTemporario = $_FILES['imagem']['tmp_name'];
+    if (!validarProdutoDescricao($descricao)) {
+        $erros[] = "Informe uma descrição com até 350 caracteres.";
+    }
 
-    // Pasta onde as imagens serão armazenadas
-    $pasta = "../../../imagens/";
+    if (!validarValorProduto($valor)) {
+        $erros[] = "O valor deve ser maior que R$ 0,00.";
+    }
 
-    // Caminho completo da imagem
-    $caminhoImagem = $pasta . basename($nomeImagem);
+    if (!validarEstoque($qntdEstoque)) {
+        $erros[] = "A quantidade em estoque deve ser um número inteiro maior ou igual a zero.";
+    }
 
-    // Move a imagem para a pasta imagens
-    if (move_uploaded_file($arquivoTemporario, $caminhoImagem)) {
+    if ($tipo === '') {
+        $erros[] = "Selecione o tipo do produto.";
+    }
 
-        // Salva no banco somente o nome da imagem
-        $sql = "INSERT INTO tbProduto 
-                (Imagem, Modelo, Descricao, Valor, Qntd_Estoque, Tipo, Marca, Status) 
-                VALUES 
-                ('$nomeImagem', '$modelo', '$descricao', '$valor', '$qntdEstoque', '$tipo', '$marca', 'Ativo')";
+    if (!validarProdutoMarca($marca)) {
+        $erros[] = "Informe uma marca válida.";
+    }
 
-        if (mysqli_query($conexao, $sql)) {
-            ?>
-
-            <div class="alert alert-success alert-dismissible fade show 
-                position-fixed top-0 start-50 translate-middle-x 
-                mt-3 shadow text-center" style="width: 90%; max-width: 500px; z-index: 1050;" role="alert">
-
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <strong>Sucesso!</strong> Registro salvo com sucesso!
-
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
-
-            </div>
-
-            <?php
-        } else {
-            echo "Erro ao cadastrar produto: " . mysqli_error($conexao);
-        }
-
+    if (!isset($_FILES['imagem']) || $_FILES['imagem']['error'] !== UPLOAD_ERR_OK) {
+        $erros[] = "Selecione uma imagem válida.";
     } else {
 
-        echo "Erro ao enviar a imagem.";
+        $arquivo = $_FILES['imagem'];
+
+        if ($arquivo['size'] > 5 * 1024 * 1024) {
+            $erros[] = "A imagem não pode ter mais de 5 MB.";
+        }
+
+        $tiposPermitidos = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        $tipoImagem = mime_content_type($arquivo['tmp_name']);
+
+        if (!in_array($tipoImagem, $tiposPermitidos, true)) {
+            $erros[] = "A imagem deve estar no formato JPG, PNG ou WEBP.";
+        }
+    }
+
+    if (empty($erros)) {
+
+        $nomeOriginal = basename($_FILES['imagem']['name']);
+        $extensao = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
+
+        $nomeImagem = uniqid('produto_', true) . '.' . $extensao;
+
+        $pasta = "../../../imagens/";
+        $caminhoImagem = $pasta . $nomeImagem;
+
+        if (move_uploaded_file($_FILES['imagem']['tmp_name'], $caminhoImagem)) {
+
+            $sql = "INSERT INTO tbProduto
+                    (Imagem, Modelo, Descricao, Valor, Qntd_Estoque, Tipo, Marca, Status)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 'Ativo')";
+
+            $stmt = mysqli_prepare($conexao, $sql);
+
+            mysqli_stmt_bind_param(
+                $stmt,
+                "sssdiss",
+                $nomeImagem,
+                $modelo,
+                $descricao,
+                $valor,
+                $qntdEstoque,
+                $tipo,
+                $marca
+            );
+
+            if (mysqli_stmt_execute($stmt)) {
+                $mensagem = "Registro salvo com sucesso.";
+            } else {
+                $erros[] = "Erro ao cadastrar o produto.";
+                if (file_exists($caminhoImagem)) {
+                    unlink($caminhoImagem);
+                }
+            }
+
+            mysqli_stmt_close($stmt);
+
+        } else {
+            $erros[] = "Não foi possível enviar a imagem.";
+        }
     }
 }
 
@@ -83,6 +135,8 @@ if (isset($_POST['cadastrar'])) {
 
     <title>Cadastro de Produto</title>
 
+
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
@@ -106,6 +160,24 @@ if (isset($_POST['cadastrar'])) {
                 </div>
 
                 <div class="card-body">
+
+                    <?php if (!empty($erros)) { ?>
+                        <div class="alert alert-danger">
+                            <strong>Verifique os dados:</strong>
+                            <ul class="mb-0 mt-2">
+                                <?php foreach ($erros as $erro) { ?>
+                                    <li><?php echo htmlspecialchars($erro); ?></li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    <?php } ?>
+
+                    <?php if ($mensagem !== '') { ?>
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <?php echo htmlspecialchars($mensagem); ?>
+                        </div>
+                    <?php } ?>
 
                     <!-- IMAGEM -->
 
@@ -164,7 +236,7 @@ if (isset($_POST['cadastrar'])) {
                                     R$
                                 </span>
 
-                                <input type="number" class="form-control" id="valor" name="valor" step="0.01" min="0"
+                                <input type="number" class="form-control" id="valor" name="valor" step="0.01" min="0.01"
                                     placeholder="0,00" required>
 
                             </div>
@@ -179,7 +251,7 @@ if (isset($_POST['cadastrar'])) {
                             </label>
 
                             <input type="number" class="form-control" id="qntdEstoque" name="qntdEstoque" step="1"
-                                min="1" placeholder="0" required>
+                                min="0" placeholder="0" required>
 
                         </div>
 
@@ -287,6 +359,7 @@ if (isset($_POST['cadastrar'])) {
 
     </form>
 
+<script src="../../../includes/validacoes.js"></script>
 </body>
 
 </html>

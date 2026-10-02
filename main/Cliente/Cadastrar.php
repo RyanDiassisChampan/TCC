@@ -1,32 +1,73 @@
 <?php
-//verificar se foi clicado no botão salvar
+require_once "../../includes/validacoes.php";
+
+$erros = [];
+$mensagem = "";
+
 if (isset($_POST['salvar'])) {
-    //1. Conectar no banco de dados (ip, usuário, senha, nome do banco)
     $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
 
-    //2. Preparar os dados para inserir
-    $nome = $_POST['nome'];
-    $cpf = $_POST['cpf'];
-    $telefone = $_POST['telefone'];
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
-    $logradouro = $_POST['logradouro'];
-    $numero = $_POST['numero'];
-    $bairro = $_POST['bairro'];
-    $cidade = $_POST['cidade'];
-    $complemento = $_POST['complemento'];
-    $cep = $_POST['cep'];
-    $estado = $_POST['estado'];
-    
-    //3. Preparar a SQL para inserir
-    $sql = "insert into tbcliente (nome, cpf, telefone, email, senha, logradouro, numero, bairro, cidade, complemento, cep, estado)
-        values ('$nome', '$cpf', '$telefone', '$email', '$senha', '$logradouro', '$numero', '$bairro', '$cidade', '$complemento', '$cep', '$estado')";
+    if (!$conexao) {
+        $erros[] = "Não foi possível conectar ao banco de dados.";
+    } else {
+        $nome = valorPost('nome');
+        $cpf = valorPost('cpf');
+        $telefone = valorPost('telefone');
+        $email = valorPost('email');
+        $senha = $_POST['senha'] ?? '';
+        $logradouro = valorPost('logradouro');
+        $numero = valorPost('numero');
+        $bairro = valorPost('bairro');
+        $cidade = valorPost('cidade');
+        $complemento = valorPost('complemento');
+        $cep = valorPost('cep');
+        $estado = strtoupper(valorPost('estado'));
 
-    //4. Executar a SQL
-    mysqli_query($conexao, $sql);
+        if (!validarNome($nome)) $erros[] = "O nome deve conter apenas letras, espaços e ter pelo menos 3 caracteres.";
+        if (!validarCPF($cpf)) $erros[] = "Digite um CPF válido.";
+        if ($telefone !== '' && !validarTelefone($telefone)) $erros[] = "Digite um telefone válido.";
+        if (!validarEmail($email)) $erros[] = "Digite um e-mail válido.";
+        if (!validarSenha($senha)) $erros[] = "A senha deve possuir pelo menos 6 caracteres.";
+        if (!validarLogradouro($logradouro, 45)) $erros[] = "O logradouro contém caracteres inválidos ou ultrapassa 45 caracteres.";
+        if (!validarNumeroEndereco($numero)) $erros[] = "O número do endereço contém caracteres inválidos.";
+        if (!validarTextoSemNumeros($bairro, 100)) $erros[] = "O bairro deve conter apenas letras, espaços, hífen e apóstrofo.";
+        if (!validarTextoSemNumeros($cidade, 100)) $erros[] = "A cidade deve conter apenas letras, espaços, hífen e apóstrofo.";
+        if (!validarComplemento($complemento, 100)) $erros[] = "O complemento contém caracteres inválidos ou ultrapassa 100 caracteres.";
+        if (!validarCEP($cep)) $erros[] = "Digite um CEP válido no formato 00000-000.";
+        if (!validarUF($estado)) $erros[] = "Digite uma UF válida com 2 letras.";
 
-    //5. Mostrar mensagem ao usuário
-    $mensagem = "Registro salvo com sucesso.";
+        if (empty($erros)) {
+            $verificar = mysqli_prepare($conexao, "SELECT Codigo FROM tbcliente WHERE CPF = ?");
+            mysqli_stmt_bind_param($verificar, "s", $cpf);
+            mysqli_stmt_execute($verificar);
+            mysqli_stmt_store_result($verificar);
+            if (mysqli_stmt_num_rows($verificar) > 0) $erros[] = "Este CPF já está cadastrado.";
+            mysqli_stmt_close($verificar);
+        }
+
+        if (empty($erros)) {
+            $sql = "INSERT INTO tbcliente
+                    (nome, cpf, telefone, email, senha, logradouro, numero, bairro, cidade, complemento, cep, estado)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            $stmt = mysqli_prepare($conexao, $sql);
+            mysqli_stmt_bind_param(
+                $stmt, "ssssssssssss",
+                $nome, $cpf, $telefone, $email, $senha,
+                $logradouro, $numero, $bairro, $cidade,
+                $complemento, $cep, $estado
+            );
+
+            if (mysqli_stmt_execute($stmt)) {
+                $mensagem = "Registro salvo com sucesso.";
+            } else {
+                $erros[] = "Não foi possível salvar o registro.";
+            }
+            mysqli_stmt_close($stmt);
+        }
+
+        mysqli_close($conexao);
+    }
 }
 ?>
 
@@ -47,6 +88,8 @@ if (isset($_POST['salvar'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     <title>Cadastro de Cliente</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -66,6 +109,24 @@ if (isset($_POST['salvar'])) {
 
             <div class="card-body py-3">
 
+                <?php if (!empty($erros)) { ?>
+                    <div class="alert alert-danger">
+                        <strong>Verifique os dados:</strong>
+                        <ul class="mb-0 mt-2">
+                            <?php foreach ($erros as $erro) { ?>
+                                <li><?php echo htmlspecialchars($erro); ?></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                <?php } ?>
+
+                <?php if ($mensagem !== '') { ?>
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle"></i>
+                        <?php echo htmlspecialchars($mensagem); ?>
+                    </div>
+                <?php } ?>
+
                 <form method="post">
 
                     <!-- DADOS PESSOAIS -->
@@ -83,7 +144,7 @@ if (isset($_POST['salvar'])) {
                                 Nome
                             </label>
 
-                            <input type="text" class="form-control" id="nome" name="nome" maxlength="100" required>
+                            <input type="text" class="form-control" id="nome" name="nome" maxlength="100" minlength="3" pattern="[A-Za-zÀ-ÿ\s'-]+" required>
 
                         </div>
 
@@ -94,7 +155,7 @@ if (isset($_POST['salvar'])) {
                                 CPF
                             </label>
 
-                            <input type="text" class="form-control" id="cpf" name="cpf" maxlength="14"
+                            <input type="text" class="form-control" id="cpf" name="cpf" maxlength="14" minlength="14" inputmode="numeric"
                                 placeholder="000.000.000-00" required>
 
                         </div>
@@ -106,7 +167,7 @@ if (isset($_POST['salvar'])) {
                                 Telefone
                             </label>
 
-                            <input type="text" class="form-control" id="telefone" name="telefone" maxlength="15"
+                            <input type="text" class="form-control" id="telefone" name="telefone" maxlength="15" inputmode="tel"
                                 placeholder="(00) 00000-0000">
 
                         </div>
@@ -129,7 +190,7 @@ if (isset($_POST['salvar'])) {
                                 Senha
                             </label>
 
-                            <input type="password" class="form-control" id="senha" name="senha" maxlength="255"
+                            <input type="password" class="form-control" id="senha" name="senha" maxlength="255" minlength="6"
                                 required>
 
                         </div>
@@ -164,7 +225,7 @@ if (isset($_POST['salvar'])) {
                                 Número
                             </label>
 
-                            <input type="text" class="form-control" id="numero" name="numero" maxlength="10">
+                            <input type="text" class="form-control" id="numero" name="numero" maxlength="10" pattern="[0-9A-Za-z\s/\-]+">
 
                         </div>
 
@@ -175,7 +236,7 @@ if (isset($_POST['salvar'])) {
                                 CEP
                             </label>
 
-                            <input type="text" class="form-control" id="cep" name="cep" maxlength="10"
+                            <input type="text" class="form-control" id="cep" name="cep" maxlength="9" minlength="9" inputmode="numeric"
                                 placeholder="00000-000">
 
                         </div>
@@ -209,7 +270,7 @@ if (isset($_POST['salvar'])) {
                                 UF
                             </label>
 
-                            <input type="text" class="form-control" id="estado" name="estado" maxlength="2">
+                            <input type="text" class="form-control" id="estado" name="estado" maxlength="2" minlength="2" pattern="[A-Za-z]{2}">
 
                         </div>
 
@@ -253,6 +314,7 @@ if (isset($_POST['salvar'])) {
 
     </main>
 
+<script src="../../includes/validacoes.js"></script>
 </body>
 
 </html>

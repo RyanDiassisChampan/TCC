@@ -6,8 +6,28 @@ if (!$conn) {
   die("Erro na conexão com o banco: " . mysqli_connect_error());
 }
 
-$sql = "SELECT * FROM tbProduto WHERE Status = 'Ativo'";
-$resultado = mysqli_query($conn, $sql);
+$busca = trim($_GET['busca'] ?? '');
+
+if ($busca !== '') {
+  $termo = "%" . $busca . "%";
+
+  $sql = "SELECT * FROM tbProduto
+            WHERE Status = 'Ativo'
+            AND (
+                Modelo LIKE ?
+                OR Descricao LIKE ?
+                OR Marca LIKE ?
+                OR Tipo LIKE ?
+            )";
+
+  $stmt = mysqli_prepare($conn, $sql);
+  mysqli_stmt_bind_param($stmt, "ssss", $termo, $termo, $termo, $termo);
+  mysqli_stmt_execute($stmt);
+  $resultado = mysqli_stmt_get_result($stmt);
+} else {
+  $sql = "SELECT * FROM tbProduto WHERE Status = 'Ativo'";
+  $resultado = mysqli_query($conn, $sql);
+}
 
 ?>
 
@@ -23,7 +43,7 @@ $resultado = mysqli_query($conn, $sql);
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <title>LabMaker</title>
 
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="bg-light">
@@ -49,8 +69,9 @@ $resultado = mysqli_query($conn, $sql);
       <div class="collapse navbar-collapse" id="navbarPrincipal">
 
         <!-- Barra de pesquisa -->
-        <form class="d-flex mx-auto w-50">
-          <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
+        <form class="d-flex mx-auto w-50" method="GET" action="index.php">
+          <input class="form-control me-2" type="search" name="busca" placeholder="Pesquisar produtos..."
+            value="<?php echo htmlspecialchars($busca, ENT_QUOTES, 'UTF-8'); ?>">
           <button class="btn btn-light" type="submit">
             Buscar
           </button>
@@ -82,6 +103,19 @@ $resultado = mysqli_query($conn, $sql);
 
     <!-- Cards -->
     <div class="row g-4">
+
+      <?php if (mysqli_num_rows($resultado) === 0) { ?>
+        <div class="col-12">
+          <div class="alert alert-secondary text-center shadow-sm">
+            <?php if ($busca !== '') { ?>
+              Nenhum produto encontrado para
+              <strong><?php echo htmlspecialchars($busca, ENT_QUOTES, 'UTF-8'); ?></strong>.
+            <?php } else { ?>
+              Nenhum produto disponível no momento.
+            <?php } ?>
+          </div>
+        </div>
+      <?php } ?>
 
       <?php while ($produto = mysqli_fetch_assoc($resultado)) { ?>
 

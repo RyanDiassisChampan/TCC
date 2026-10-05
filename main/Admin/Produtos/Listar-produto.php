@@ -2,21 +2,21 @@
 
 //1. Conectar no banco de dados (ip, usuário, senha, Modelo do banco)
 $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
-if (isset($_GET['id'])) {
-    $sql = "delete from produto where id = " . $_GET['id'];
+if (isset($_GET['Codigo'])) {
+    $sql = "delete from tbProduto where Codigo = " . $_GET['Codigo'];
     mysqli_query($conexao, $sql);
     $mensagem = "Registro excluído com sucesso.";
 }
 
 
 //2. Prepara o SQL
-$sql = "select * from produto";
+$sql = "select * from tbProduto";
 
 //3. Executar a SQL
 $resultado = mysqli_query($conexao, $sql);
 
 //5. Mostrar mensagem ao usuário
-$mensagem = "Registro exclído com sucesso.";
+$mensagem = "Registro excluído com sucesso.";
 ?>
 
 <!DOCTYPE html>
@@ -57,8 +57,8 @@ $mensagem = "Registro exclído com sucesso.";
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
+                            <li><a class="dropdown-item" href="../Cadastros.php">Cadastros</a></li>
+                            <li><a class="dropdown-item" href="../Relatorios.php">Relatórios</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -115,7 +115,7 @@ $mensagem = "Registro exclído com sucesso.";
             </div>
     </nav>
     <div class="container">
-        <?php if (isset($_GET['id'])) { ?>
+        <?php if (isset($_GET['Codigo'])) { ?>
             <div class="alert alert-success" role="alert">
                 <i class="bi bi-check-circle"></i>
                 <?= $mensagem ?>
@@ -130,11 +130,11 @@ $mensagem = "Registro exclído com sucesso.";
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">Codigo</th>
                     <th scope="col">Modelo</th>
                     <th scope="col">Descrição</th>
                     <th scope="col">Valor</th>
-                    <th scope="col">Desconto</th>
+                    <th scope="col">Quantidade em Estoque</th>
                     <th scope="col">Status</th>
                     <th scope="col">Ações</th>
                 </tr>
@@ -142,16 +142,16 @@ $mensagem = "Registro exclído com sucesso.";
             <tbody>
                 <?php while ($linha = mysqli_fetch_array($resultado)) { ?>
                     <tr>
-                        <th><?= $linha['id'] ?> </th>
-                        <td><?= $linha['modelo'] ?></td>
-                        <td><?= $linha['descricao'] ?></td>
-                        <td><?= $linha['valor'] ?></td>
-                        <td><?= $linha['desconto'] ?></td>
-                        <td><?= $linha['statusproduto'] ?></td>
+                        <th><?= $linha['Codigo'] ?> </th>
+                        <td><?= $linha['Modelo'] ?></td>
+                        <td><?= $linha['Descricao'] ?></td>
+                        <td><?= $linha['Valor'] ?></td>
+                        <td><?= $linha['Qntd_Estoque'] ?></td>
+                        <td><?= $linha['Status'] ?></td>
                         <td>
-                            <a class="btn btn-warning" href="produto-alterar.php?id=<?= $linha['id'] ?>"><i
+                            <a class="btn btn-warning" href="Alterar-produto.php?Codigo=<?= $linha['Codigo'] ?>"><i
                                     class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-danger" href="produto-listar.php?id=<?= $linha['id'] ?>"
+                            <a class="btn btn-danger" href="Listar-Produtos.php?Codigo=<?= $linha['Codigo'] ?>"
                                 onclick="return confirm('Deseja excluir este registro?')"><i class="bi bi-trash"></i></a>
                         </td>
                     </tr>

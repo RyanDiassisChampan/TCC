@@ -1,4 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const estoque = document.getElementById("qntdEstoque");
+
+    if (estoque) {
+        estoque.addEventListener("input", function () {
+            this.value = this.value.replace(/\D/g, "");
+        });
+    }
+
+    const valor = document.getElementById("valor");
+
+    if (valor) {
+        valor.addEventListener("input", function () {
+            this.value = this.value.replace(/[^0-9,.]/g, "");
+        });
+    }
 
     function somenteNumeros(valor) {
         return valor.replace(/\D/g, "");

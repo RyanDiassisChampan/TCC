@@ -149,7 +149,7 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
 
                 <div class="card-header bg-primary text-white text-center">
 
-                    <h3 style="margin: 0;">
+                    <h3 style="margin: 0; color: white;">
 
                         <i class="bi bi-box-seam"></i>
 
@@ -236,7 +236,7 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
                                     R$
                                 </span>
 
-                                <input type="number" class="form-control" id="valor" name="valor" step="0.01" min="0.01"
+                                <input type="text" class="form-control" id="valor" name="valor" inputmode="decimal"
                                     placeholder="0,00" required>
 
                             </div>
@@ -250,8 +250,8 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
                                 Quantidade no Estoque:
                             </label>
 
-                            <input type="number" class="form-control" id="qntdEstoque" name="qntdEstoque" step="1"
-                                min="0" placeholder="0" required>
+                            <input type="text" class="form-control" id="qntdEstoque" name="qntdEstoque"
+                                inputmode="numeric" placeholder="0" required>
 
                         </div>
 
@@ -359,7 +359,7 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
 
     </form>
 
-<script src="../../../includes/validacoes.js"></script>
+    <script src="../../../includes/validacoes.js"></script>
 </body>
 
 </html>

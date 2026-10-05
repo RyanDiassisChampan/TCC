@@ -6,19 +6,21 @@ $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
 if (isset($_POST['salvar'])) {
 
     //2. Preparar os dados para inserir
-    $nome = $_POST['nome'];
+    $modelo = $_POST['modelo'];
     $descricao = $_POST['descricao'];
-    $preco = $_POST['preco'];
-    $statusproduto = $_POST['statusproduto'];
+    $valor = $_POST['valor'];
+    $qntdEstoque = $_POST['qntdEstoque'];
+    $status = $_POST['Status'];
 
 
     //3. Preparar a SQL para inserir
-    $sql = "update produto
-    set nome = '" . $_POST['nome'] . "',
-    descricao = '" . $_POST['descricao'] . "',
-    preco = '" . $_POST['preco'] . "',
-    statusproduto = '" . $_POST['statusproduto'] . "'
-        where id = " . $_GET['id'];
+    $sql = "update tbproduto
+        set Modelo = '$modelo',
+            Descricao = '$descricao',
+            Valor = '$valor',
+            Qntd_Estoque = '$qntdEstoque',
+            Status = '$status'
+        where Codigo = " . $_GET['Codigo'];
 
     //4. Executar a SQL
     mysqli_query($conexao, $sql);
@@ -28,7 +30,7 @@ if (isset($_POST['salvar'])) {
 }
 
 
-$sql = "select * from produto where id = " . $_GET['id'];
+$sql = "select * from tbproduto where Codigo = " . $_GET['Codigo'];
 $resultado = mysqli_query($conexao, $sql);
 $registro = mysqli_fetch_array($resultado);
 ?>
@@ -62,26 +64,30 @@ $registro = mysqli_fetch_array($resultado);
         </div>
         <form method="post">
             <div class="mb-3">
-                <label for="nome" class="form-label">Nome:</label>
-                <input name="nome" type="text" class="form-control" value="<?= $registro['nome'] ?>" id="nome">
+                <label for="modelo" class="form-label">Modelo:</label>
+                <input name="modelo" type="text" class="form-control" value="<?= $registro['Modelo'] ?>" id="modelo">
             </div>
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição:</label>
-                <input name="descricao" type="text" class="form-control" value="<?= $registro['descricao'] ?>"
+                <input name="descricao" type="text" class="form-control" value="<?= $registro['Descricao'] ?>"
                     id="descricao">
             </div>
             <div class="mb-3">
-                <label for="preco" class="form-label">Preço:</label>
-                <input name="preco" type="text" class="form-control" value="<?= $registro['preco'] ?>" id="preco">
+                <label for="valor" class="form-label">Valor:</label>
+                <input name="valor" type="text" class="form-control" value="<?= $registro['Valor'] ?>" id="valor">
             </div>
             <div class="mb-3">
-                <label for="statusproduto" class="form-label">Status:</label>
-                <select class="form-select" name="statusproduto" id="statusproduto">
-                    <option value="Ativo" <?= ($registro['statusproduto'] == "Ativo") ? "selected" : "" ?>>Ativo</option>
-                    <option value="Inativo" <?= ($registro['statusproduto'] == "Inativo") ? "selected" : "" ?>>Inativo</option>
+                <label for="qntdEstoque" class="form-label">Quantidade em Estoque:</label>
+                <input name="qntdEstoque" type="text" class="form-control" value="<?= $registro['Qntd_Estoque'] ?>" id="qntdEstoque">
+            </div>
+            <div class="mb-3">
+                <label for="Status" class="form-label">Status:</label>
+                <select class="form-select" name="Status" id="Status">
+                    <option value="Ativo" <?= ($registro['Status'] == "Ativo") ? "selected" : "" ?>>Ativo</option>
+                    <option value="Inativo" <?= ($registro['Status'] == "Inativo") ? "selected" : "" ?>>Inativo</option>
                 </select>
             </div>
-            <a href="produto-listar.php" class="btn btn-primary">
+            <a href="Listar-produto.php" class="btn btn-primary">
                 <i class="bi bi-arrow-return-left"></i>Voltar</a>
             <button name="salvar" type="submit" class="btn btn-primary"><i class="bi bi-floppy"></i> Salvar</button>
             <br>

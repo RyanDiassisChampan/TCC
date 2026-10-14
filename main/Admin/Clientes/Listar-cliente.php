@@ -1,44 +1,52 @@
 <?php
 
 //1. Conectar no banco de dados (ip, usuário, senha, nome do banco)
+
 $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
-if (isset($_GET['id'])) {
-    $sql = "delete from cliente where id = " . $_GET['id'];
+
+if (isset($_GET['codigo'])) {
+
+    $sql = "delete from tbCliente where codigo = " . $_GET['codigo'];
+
     mysqli_query($conexao, $sql);
+
     $mensagem = "Registro excluído com sucesso.";
+
 }
 
-
 //2. Prepara o SQL
-$sql = "select * from cliente";
+
+$sql = "select * from tbCliente";
 
 //3. Executar a SQL
+
 $resultado = mysqli_query($conexao, $sql);
 
 //5. Mostrar mensagem ao usuário
+
 $mensagem = "Registro exclído com sucesso.";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <title>LabMaker</title>
 
     <link rel="stylesheet" href="../style.css">
 </head>
 
-<body>
-    <!-- Navbar -->
+<body class="bg-light">
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
         <div class="container-fluid">
 
@@ -57,8 +65,9 @@ $mensagem = "Registro exclído com sucesso.";
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
+                            <li><a class="dropdown-item" href="../Cadastros.php">Cadastros</a></li>
+                            <li><a class="dropdown-item" href="../Relatorios.php">Relatórios</a></li>
+                            <li><a class="dropdown-item" href="../Listagens.php">Listagens</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -80,85 +89,115 @@ $mensagem = "Registro exclído com sucesso.";
                 <!-- Menu direito -->
                 <ul class="navbar-nav align-items-center">
 
-                    <!-- Departamentos -->
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Departamentos
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Processadores</a></li>
-                            <li><a class="dropdown-item" href="#">Placas-Mãe</a></li>
-                            <li><a class="dropdown-item" href="#">Placas de Vídeo</a></li>
-                            <li><a class="dropdown-item" href="#">Memórias RAM</a></li>
-                            <li><a class="dropdown-item" href="#">Armazenamento</a></li>
-                            <li><a class="dropdown-item" href="#">Fonte</a></li>
-                            <li><a class="dropdown-item" href="#">Refrigeração</a></li>
-                            <li><a class="dropdown-item" href="#">Gabinete</a></li>
-                        </ul>
-                    </li>
-
                     <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="../Login-Admin.php">
+                        <a class="nav-link" href="../Minha_Conta_Admin.php">
                             <i class="bi bi-person"></i>
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Carrinho.php">
-                            <i class="bi bi-cart"></i>
                         </a>
                     </li>
 
                 </ul>
 
             </div>
+        </div>
     </nav>
+
     <div class="container">
-        <?php if (isset($_GET['id'])) { ?>
+
+        <?php if (isset($_GET['codigo'])) { ?>
+
             <div class="alert alert-success" role="alert">
+
                 <i class="bi bi-check-circle"></i>
+
                 <?= $mensagem ?>
+
             </div>
+
         <?php } ?>
 
         <div class="card mt-3 mb-3">
+
             <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-card-list"></i> Listagem de Cliente</h5>
+
+                <h5 class="card-title">
+
+                    <i class="bi bi-card-list"></i> Listagem de Clientes
+
+                </h5>
+
             </div>
+
         </div>
+
         <table class="table">
+
             <thead>
+
                 <tr>
-                    <th scope="col">ID</th>
+
+                    <th scope="col">Código</th>
+
                     <th scope="col">Nome</th>
+
                     <th scope="col">CPF</th>
+
                     <th scope="col">Telefone</th>
+
                     <th scope="col">Email</th>
+
                     <th scope="col">Status</th>
+
                     <th scope="col">Ações</th>
+
                 </tr>
+
             </thead>
+
             <tbody>
+
                 <?php while ($linha = mysqli_fetch_array($resultado)) { ?>
+
                     <tr>
-                        <th><?= $linha['id'] ?> </th>
+
+                        <th><?= $linha['codigo'] ?></th>
+
                         <td><?= $linha['nome'] ?></td>
+
                         <td><?= $linha['cpf'] ?></td>
+
                         <td><?= $linha['telefone'] ?></td>
+
                         <td><?= $linha['email'] ?></td>
+
                         <td><?= $linha['status'] ?></td>
+
                         <td>
-                            <a class="btn btn-warning" href="cliente-alterar.php?id=<?= $linha['id'] ?>"><i
-                                    class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-danger" href="cliente-listar.php?id=<?= $linha['id'] ?>"
-                                onclick="return confirm('Deseja excluir este registro?')"><i class="bi bi-trash"></i></a>
+
+                            <a class="btn btn-warning" href="tbCliente-alterar.php?codigo=<?= $linha['codigo'] ?>">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </a>
+
+                            <a class="btn btn-danger" href="tbCliente-listar.php?codigo=<?= $linha['codigo'] ?>"
+                                onclick="return confirm('Deseja excluir este registro?')">
+
+                                <i class="bi bi-trash"></i>
+
+                            </a>
+
                         </td>
+
                     </tr>
+
                 <?php } ?>
+
             </tbody>
+
         </table>
+
     </div>
+
 </body>
 
 </html>

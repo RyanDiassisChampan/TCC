@@ -1,75 +1,97 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+$conexao = mysqli_connect("localhost", "root", "", "tcc");
+if (!$conexao) {
+    die("Erro na conexão com o banco de dados: " . mysqli_connect_error());
+}
+mysqli_set_charset($conexao, "utf8mb4");
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+$busca = trim($_GET['busca'] ?? '');
+$status = $_GET['status'] ?? '';
+$dataInicial = $_GET['data_inicial'] ?? '';
+$dataFinal = $_GET['data_final'] ?? '';
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <title>LabMaker</title>
+$vendas = [];
+$totalVendas = 0;
+$valorTotal = 0;
 
-    <link rel="stylesheet" href="style.css">
-</head>
+$sql = "SELECT v.Codigo, v.Data, v.Valor_Total, v.Status, v.FormaRecebimento,
+               c.Nome AS Cliente,
+               COALESCE(GROUP_CONCAT(CONCAT(p.Modelo, ' (', vp.Qtd_Produto, 'x)') SEPARATOR ', '), '-') AS Produtos
+        FROM tbVenda v
+        INNER JOIN tbCliente c ON c.Codigo = v.tbCliente_Codigo
+        LEFT JOIN tbVenda_Produto vp ON vp.tbVenda_Codigo = v.Codigo
+        LEFT JOIN tbProduto p ON p.Codigo = vp.tbProduto_Codigo
+        WHERE 1=1";
 
-<body class="bg-light">
+$parametros = [];
+$tipos = '';
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-        <div class="container-fluid">
+if ($busca !== '') {
+    $sql .= " AND (CAST(v.Codigo AS CHAR) LIKE ? OR c.Nome LIKE ?)";
+    $termo = "%$busca%";
+    $parametros[] = $termo;
+    $parametros[] = $termo;
+    $tipos .= 'ss';
+}
 
-            <!-- Botão para telas pequenas -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+if ($status !== '') {
+    $sql .= " AND v.Status = ?";
+    $parametros[] = $status;
+    $tipos .= 's';
+}
 
-            <div class="collapse navbar-collapse align-items-center" id="navbarPrincipal">
+if ($dataInicial !== '') {
+    $sql .= " AND v.Data >= ?";
+    $parametros[] = $dataInicial;
+    $tipos .= 's';
+}
 
-                <!-- Ações -->
-                <ul class="navbar-nav me-3 align-items-center">
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Ações
-                        </a>
+if ($dataFinal !== '') {
+    $sql .= " AND v.Data <= ?";
+    $parametros[] = $dataFinal;
+    $tipos .= 's';
+}
 
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
-                        </ul>
-                    </li>
-                </ul>
+$sql .= " GROUP BY v.Codigo, v.Data, v.Valor_Total, v.Status, v.FormaRecebimento, c.Nome
+          ORDER BY v.Data DESC, v.Codigo DESC";
 
-                <!-- Logo -->
-                <a class="navbar-brand fw-bold" href="Main-Admin.php">
-                    LabMaker
-                </a>
+$stmt = mysqli_prepare($conexao, $sql);
+if ($stmt) {
+    if ($parametros) {
+        mysqli_stmt_bind_param($stmt, $tipos, ...$parametros);
+    }
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+    while ($linha = mysqli_fetch_assoc($resultado)) {
+        $vendas[] = $linha;
+        $totalVendas++;
+        $valorTotal += (float) $linha['Valor_Total'];
+    }
+    mysqli_stmt_close($stmt);
+}
 
-                <!-- Pesquisa -->
-                <form class="d-flex mx-auto w-50">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
+function h($valor)
+{
+    return htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
+}
+function valorReal($valor)
+{
+    return 'R$ ' . number_format((float) $valor, 2, ',', '.');
+}
+function classeStatus($status)
+{
+    $status = strtolower((string) $status);
+    if ($status === 'pago')
+        return 'bg-success';
+    if ($status === 'pendente')
+        return 'bg-warning text-dark';
+    if ($status === 'cancelado')
+        return 'bg-danger';
+    return 'bg-secondary';
+}
 
-                    <button class="btn btn-light" type="submit">
-                        Buscar
-                    </button>
-                </form>
-
-                <!-- Menu direito -->
-                <ul class="navbar-nav align-items-center">
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="MinhaConta.php">
-                            <i class="bi bi-person"></i>
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
-    </nav>
+include("../../includes/headerAdmin.php");
+?>
 
 
     <!-- Conteúdo -->
@@ -91,109 +113,66 @@
 
         <!-- Filtros -->
         <div class="card shadow-sm mb-4">
-
             <div class="card-body">
-
-                <div class="row g-3">
-
-
-                    <!-- Pesquisa -->
-                    <div class="col-md-4">
-
-                        <label class="form-label">
-                            Pesquisar
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-
-                                <i class="bi bi-search"></i>
-
-                            </span>
-
-                            <input type="text" class="form-control" placeholder="Código da venda ou cliente">
-
+                <form method="GET">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Pesquisar</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" name="busca" class="form-control"
+                                    placeholder="Código da venda ou cliente" value="<?= h($busca) ?>">
+                            </div>
                         </div>
-
+                        <div class="col-md-2">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="" <?= $status === '' ? 'selected' : '' ?>>Todos</option>
+                                <option value="Pago" <?= $status === 'Pago' ? 'selected' : '' ?>>Pago</option>
+                                <option value="Pendente" <?= $status === 'Pendente' ? 'selected' : '' ?>>Pendente</option>
+                                <option value="Cancelado" <?= $status === 'Cancelado' ? 'selected' : '' ?>>Cancelado
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Data inicial</label>
+                            <input type="date" name="data_inicial" class="form-control" value="<?= h($dataInicial) ?>">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Data final</label>
+                            <input type="date" name="data_final" class="form-control" value="<?= h($dataFinal) ?>">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-funnel"></i>
+                                Filtrar</button>
+                        </div>
                     </div>
-
-
-                    <!-- Status -->
-                    <div class="col-md-2">
-
-                        <label class="form-label">
-                            Status
-                        </label>
-
-                        <select class="form-select">
-
-                            <option selected>
-                                Todos
-                            </option>
-
-                            <option>
-                                Pago
-                            </option>
-
-                            <option>
-                                Pendente
-                            </option>
-
-                            <option>
-                                Cancelado
-                            </option>
-
-                        </select>
-
+                    <div class="d-flex justify-content-end mt-3">
+                        <a href="Relatorios_Vendas.php" class="btn btn-outline-secondary btn-sm"><i
+                                class="bi bi-eraser"></i> Limpar filtros</a>
                     </div>
-
-
-                    <!-- Data inicial -->
-                    <div class="col-md-2">
-
-                        <label class="form-label">
-                            Data inicial
-                        </label>
-
-                        <input type="date" class="form-control">
-
-                    </div>
-
-
-                    <!-- Data final -->
-                    <div class="col-md-2">
-
-                        <label class="form-label">
-                            Data final
-                        </label>
-
-                        <input type="date" class="form-control">
-
-                    </div>
-
-
-                    <!-- Filtrar -->
-                    <div class="col-md-2 d-flex align-items-end">
-
-                        <button class="btn btn-primary w-100">
-
-                            <i class="bi bi-funnel"></i>
-
-                            Filtrar
-
-                        </button>
-
-                    </div>
-
-                </div>
-
+                </form>
             </div>
-
         </div>
 
-
         <!-- Resumo -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body"><small class="text-muted">Vendas encontradas</small>
+                        <h4 class="mb-0"><?= $totalVendas ?></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body"><small class="text-muted">Valor total</small>
+                        <h4 class="mb-0"><?= valorReal($valorTotal) ?></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4 mb-4">
 
             <!-- Tabela -->
@@ -259,7 +238,28 @@
                             </thead>
 
                             <tbody>
-
+                                <?php if (empty($vendas)) { ?>
+                                    <tr>
+                                        <td colspan="9" class="text-center text-muted py-4">Nenhuma venda encontrada.</td>
+                                    </tr>
+                                <?php } else { ?>
+                                    <?php foreach ($vendas as $venda) { ?>
+                                        <tr>
+                                            <td class="ps-4"><?= h($venda['Codigo']) ?></td>
+                                            <td><?= $venda['Data'] ? date('d/m/Y', strtotime($venda['Data'])) : '-' ?></td>
+                                            <td><?= h($venda['Cliente']) ?></td>
+                                            <td><?= h($venda['Produtos']) ?></td>
+                                            <td><?= h($venda['FormaRecebimento']) ?></td>
+                                            <td><?= strtolower((string) $venda['Status']) === 'pago' ? valorReal($venda['Valor_Total']) : '-' ?>
+                                            </td>
+                                            <td><?= valorReal($venda['Valor_Total']) ?></td>
+                                            <td><span
+                                                    class="badge <?= classeStatus($venda['Status']) ?>"><?= h($venda['Status']) ?></span>
+                                            </td>
+                                            <td class="text-center pe-4">-</td>
+                                        </tr>
+                                    <?php } ?>
+                                <?php } ?>
                             </tbody>
 
                         </table>
@@ -268,15 +268,17 @@
 
                 </div>
 
+            </div>
+        </div>
 
-                <div class="mt-4">
-                    <a href="javascript:history.back()" class="btn btn-primary">
+        <div class="mt-3">
+            <a href="javascript:history.back()" class="btn btn-primary">
 
-                        <i class="bi bi-arrow-left"></i>
-                        Voltar
+                <i class="bi bi-arrow-left"></i>
+                Voltar
 
-                    </a>
-                </div>
+            </a>
+        </div>
 
     </main>
 

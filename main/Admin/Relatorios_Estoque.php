@@ -1,98 +1,81 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<?php
+$conexao = mysqli_connect("localhost", "root", "", "tcc");
+if (!$conexao) {
+    die("Erro na conexão com o banco de dados: " . mysqli_connect_error());
+}
+mysqli_set_charset($conexao, "utf8mb4");
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+$busca = trim($_GET['produto'] ?? '');
+$tipo = $_GET['tipo'] ?? '';
+$marca = $_GET['marca'] ?? '';
+$situacao = $_GET['situacao'] ?? '';
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <title>LabMaker</title>
+$tipos = [];
+$marcas = [];
+$produtos = [];
 
-    <link rel="stylesheet" href="style.css">
-</head>
+$resultadoTipos = mysqli_query($conexao, "SELECT DISTINCT Tipo FROM tbProduto WHERE Tipo <> '' ORDER BY Tipo");
+if ($resultadoTipos) {
+    while ($linha = mysqli_fetch_assoc($resultadoTipos)) $tipos[] = $linha['Tipo'];
+}
+$resultadoMarcas = mysqli_query($conexao, "SELECT DISTINCT Marca FROM tbProduto WHERE Marca <> '' ORDER BY Marca");
+if ($resultadoMarcas) {
+    while ($linha = mysqli_fetch_assoc($resultadoMarcas)) $marcas[] = $linha['Marca'];
+}
 
-<body class="bg-light">
+$sql = "SELECT Codigo, Modelo, Tipo, Marca, Qntd_Estoque, Valor, Status
+        FROM tbProduto WHERE 1=1";
+$parametros = [];
+$tiposSql = '';
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-        <div class="container-fluid">
+if ($busca !== '') {
+    $sql .= " AND (Modelo LIKE ? OR CAST(Codigo AS CHAR) LIKE ? OR Descricao LIKE ?)";
+    $termo = "%$busca%";
+    $parametros[] = $termo;
+    $parametros[] = $termo;
+    $parametros[] = $termo;
+    $tiposSql .= 'sss';
+}
+if ($tipo !== '') {
+    $sql .= " AND Tipo = ?";
+    $parametros[] = $tipo;
+    $tiposSql .= 's';
+}
+if ($marca !== '') {
+    $sql .= " AND Marca = ?";
+    $parametros[] = $marca;
+    $tiposSql .= 's';
+}
 
-            <!-- Botão para telas pequenas -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal">
+if ($situacao === 'Em estoque') {
+    $sql .= " AND Qntd_Estoque > 0";
+} elseif ($situacao === 'Estoque baixo') {
+    $sql .= " AND Qntd_Estoque BETWEEN 1 AND 5";
+} elseif ($situacao === 'Sem estoque') {
+    $sql .= " AND Qntd_Estoque <= 0";
+}
 
-                <span class="navbar-toggler-icon"></span>
+$sql .= " ORDER BY Modelo ASC";
+$stmt = mysqli_prepare($conexao, $sql);
+if ($stmt) {
+    if ($parametros) mysqli_stmt_bind_param($stmt, $tiposSql, ...$parametros);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+    while ($linha = mysqli_fetch_assoc($resultado)) $produtos[] = $linha;
+    mysqli_stmt_close($stmt);
+}
 
-            </button>
-
-            <div class="collapse navbar-collapse align-items-center" id="navbarPrincipal">
-
-                <!-- Ações -->
-                <ul class="navbar-nav me-3 align-items-center">
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Ações
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
-
-                <!-- Logo -->
-                <a class="navbar-brand fw-bold" href="Main-Admin.php">
-
-                    LabMaker
-
-                </a>
-
-
-                <!-- Pesquisa -->
-                <form class="d-flex mx-auto w-50">
-
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
-
-                    <button class="btn btn-light" type="submit">
-
-                        Buscar
-
-                    </button>
-
-                </form>
-
-
-                <!-- Menu direito -->
-                <ul class="navbar-nav align-items-center">
-
-
-                    <!-- Usuário -->
-                    <li class="nav-item ms-3 fs-3">
-
-                        <a class="nav-link" href="Login-Admin.php">
-
-                            <i class="bi bi-person"></i>
-
-                        </a>
-
-                    </li>
-
-                </ul>
-
-            </div>
-
-        </div>
-    </nav>
-
-
+function h($valor) { return htmlspecialchars((string)$valor, ENT_QUOTES, 'UTF-8'); }
+function valorReal($valor) { return 'R$ ' . number_format((float)$valor, 2, ',', '.'); }
+function situacao($quantidade) {
+    if ((int)$quantidade <= 0) return ['Sem estoque', 'bg-danger'];
+    if ((int)$quantidade <= 5) return ['Estoque baixo', 'bg-warning text-dark'];
+    return ['Em estoque', 'bg-success'];
+}
+include("../../includes/headerAdmin.php");
+?>
     <!-- Conteúdo -->
-    <main class="container py-5">
+    <main class="container-fluid px-4 py-4">
 
         <!-- Título -->
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -112,139 +95,49 @@
 
         <!-- Filtros -->
         <div class="card shadow-sm mb-4">
-
-            <div class="card-header bg-white">
-
-                <h5 class="mb-0">
-
-                    <i class="bi bi-funnel"></i>
-                    Filtros
-
-                </h5>
-
-            </div>
-
+            <div class="card-header bg-white"><h5 class="mb-0"><i class="bi bi-funnel"></i> Filtros</h5></div>
             <div class="card-body">
-
-                <div class="row g-3">
-
-                    <!-- Produto -->
-                    <div class="col-md-5">
-
-                        <label class="form-label">
-                            Produto
-                        </label>
-
-                        <input type="text" class="form-control" placeholder="Digite o nome do produto">
-
+                <form method="GET">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Produto</label>
+                            <input type="text" name="produto" class="form-control" placeholder="Nome, código ou descrição" value="<?= h($busca) ?>">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Tipo</label>
+                            <select name="tipo" class="form-select">
+                                <option value="">Todos os Tipos</option>
+                                <?php foreach ($tipos as $item) { ?>
+                                    <option value="<?= h($item) ?>" <?= $tipo === $item ? 'selected' : '' ?>><?= h($item) ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Marca</label>
+                            <select name="marca" class="form-select">
+                                <option value="">Todas as Marcas</option>
+                                <?php foreach ($marcas as $item) { ?>
+                                    <option value="<?= h($item) ?>" <?= $marca === $item ? 'selected' : '' ?>><?= h($item) ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Situação</label>
+                            <select name="situacao" class="form-select">
+                                <option value="" <?= $situacao === '' ? 'selected' : '' ?>>Todas</option>
+                                <option value="Em estoque" <?= $situacao === 'Em estoque' ? 'selected' : '' ?>>Em estoque</option>
+                                <option value="Estoque baixo" <?= $situacao === 'Estoque baixo' ? 'selected' : '' ?>>Estoque baixo</option>
+                                <option value="Sem estoque" <?= $situacao === 'Sem estoque' ? 'selected' : '' ?>>Sem estoque</option>
+                            </select>
+                        </div>
                     </div>
-
-
-                    <!-- Tipo -->
-                    <div class="col-md-4">
-
-                        <label class="form-label">
-                            Tipo
-                        </label>
-
-                        <select class="form-select">
-
-                            <option selected>
-                                Todos os Tipos
-                            </option>
-
-                            <option>
-                                Processadores
-                            </option>
-
-                            <option>
-                                Placas-Mãe
-                            </option>
-
-                            <option>
-                                Placas de Vídeo
-                            </option>
-
-                            <option>
-                                Memórias RAM
-                            </option>
-
-                            <option>
-                                Armazenamento
-                            </option>
-
-                            <option>
-                                Fonte
-                            </option>
-
-                            <option>
-                                Refrigeração
-                            </option>
-
-                            <option>
-                                Gabinete
-                            </option>
-
-                        </select>
-
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="Relatorios_Estoque.php" class="btn btn-secondary"><i class="bi bi-eraser"></i> Limpar</a>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Pesquisar</button>
                     </div>
-
-
-                    <!-- Situação -->
-                    <div class="col-md-3">
-
-                        <label class="form-label">
-                            Situação
-                        </label>
-
-                        <select class="form-select">
-
-                            <option selected>
-                                Todas
-                            </option>
-
-                            <option>
-                                Em estoque
-                            </option>
-
-                            <option>
-                                Estoque baixo
-                            </option>
-
-                            <option>
-                                Sem estoque
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Botões -->
-                <div class="d-flex justify-content-end gap-2 mt-4">
-
-                    <button type="button" class="btn btn-secondary">
-
-                        <i class="bi bi-eraser"></i>
-                        Limpar
-
-                    </button>
-
-                    <button type="button" class="btn btn-primary">
-
-                        <i class="bi bi-search"></i>
-                        Pesquisar
-
-                    </button>
-
-                </div>
-
+                </form>
             </div>
-
         </div>
-
 
         <!-- Resumo -->
         <div class="row g-4 mb-4">
@@ -298,6 +191,10 @@
                                         Tipo
                                     </th>
 
+                                    <th>
+                                        Marca
+                                    </th>
+
                                     <th class="text-center">
                                         Quantidade
                                     </th>
@@ -320,42 +217,25 @@
 
 
                             <tbody>
-
-                                <tr>
-
-                                    <td>
-                                        001
-                                    </td>
-
-                                    <td>
-                                        Ryzen 5 5600GT
-                                    </td>
-
-                                    <td>
-                                        Processadores
-                                    </td>
-
-                                    <td class="text-center">
-                                        15
-                                    </td>
-
-                                    <td>
-                                        R$ 899,90
-                                    </td>
-
-                                    <td>
-                                        R$ 13.498,50
-                                    </td>
-
-                                    <td class="text-center">
-
-                                        <span class="badge text-bg-success">
-                                            Em estoque
-                                        </span>
-
-                                    </td>
-
-                                </tr>
+                                <?php if (empty($produtos)) { ?>
+                                    <tr><td colspan="8" class="text-center text-muted py-4">Nenhum produto encontrado.</td></tr>
+                                <?php } else { ?>
+                                    <?php foreach ($produtos as $produto) {
+                                        [$textoSituacao, $classeSituacao] = situacao($produto['Qntd_Estoque']);
+                                        $valorEstoque = (float)$produto['Valor'] * (int)$produto['Qntd_Estoque'];
+                                    ?>
+                                        <tr>
+                                            <td><?= h($produto['Codigo']) ?></td>
+                                            <td><?= h($produto['Modelo']) ?></td>
+                                            <td><?= h($produto['Tipo']) ?></td>
+                                            <td><?= h($produto['Marca']) ?></td>
+                                            <td class="text-center"><?= h($produto['Qntd_Estoque']) ?></td>
+                                            <td><?= valorReal($produto['Valor']) ?></td>
+                                            <td><?= valorReal($valorEstoque) ?></td>
+                                            <td class="text-center"><span class="badge <?= $classeSituacao ?>"><?= $textoSituacao ?></span></td>
+                                        </tr>
+                                    <?php } ?>
+                                <?php } ?>
                             </tbody>
 
                         </table>

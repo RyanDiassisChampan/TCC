@@ -36,26 +36,8 @@ $produto = mysqli_fetch_assoc($resultado);
 
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-BR">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>
-        <?php echo htmlspecialchars($produto['Modelo']); ?> - LabMaker Admin
-    </title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
-    <style>
+<style>
         body {
             background-color: #f8f9fa;
         }
@@ -109,63 +91,7 @@ $produto = mysqli_fetch_assoc($resultado);
         }
     </style>
 
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body class="bg-light">
-
-   <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-        <div class="container-fluid">
-
-            <!-- Botão para telas pequenas -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse align-items-center" id="navbarPrincipal">
-
-                <!-- Ações -->
-                <ul class="navbar-nav me-3 align-items-center">
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Ações
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <!-- Logo -->
-                <a class="navbar-brand fw-bold" href="Main-Admin.php">
-                    LabMaker
-                </a>
-
-                <!-- Pesquisa -->
-                <form class="d-flex mx-auto w-50">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
-
-                    <button class="btn btn-light" type="submit">
-                        Buscar
-                    </button>
-                </form>
-
-                <!-- Menu direito -->
-                <ul class="navbar-nav align-items-center">
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Minha_Conta_Admin.php">
-                            <i class="bi bi-person"></i>
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
-    </nav>
+<?php include"../../includes/headerAdmin.php" ?>
 
     <!-- CONTEÚDO -->
 
@@ -294,26 +220,6 @@ $produto = mysqli_fetch_assoc($resultado);
 
                     <?php } ?>
 
-                    <!-- Status -->
-
-                    <p>
-                        <strong>Status:</strong>
-
-                        <?php if ($produto['Status'] == 'Ativo') { ?>
-
-                            <span class="badge bg-success">
-                                Ativo
-                            </span>
-
-                        <?php } else { ?>
-
-                            <span class="badge bg-secondary">
-                                <?php echo htmlspecialchars($produto['Status']); ?>
-                            </span>
-
-                        <?php } ?>
-                    </p>
-
                     <!-- Ações administrativas -->
 
                     <div class="d-flex flex-wrap gap-2 mt-4">
@@ -324,14 +230,6 @@ $produto = mysqli_fetch_assoc($resultado);
 
                             <i class="bi bi-pencil-square"></i>
                             Alterar produto
-                        </a>
-
-                        <a
-                            href="Produtos/Listar-produto.php"
-                            class="btn btn-outline-secondary">
-
-                            <i class="bi bi-list-ul"></i>
-                            Listar produtos
                         </a>
 
                     </div>
@@ -436,13 +334,6 @@ $produto = mysqli_fetch_assoc($resultado);
                             <td>
                                 <?php echo (int) $produto['Qntd_Estoque']; ?>
                                 unidade(s)
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>Status</th>
-                            <td>
-                                <?php echo htmlspecialchars($produto['Status']); ?>
                             </td>
                         </tr>
 

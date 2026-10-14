@@ -20,25 +20,25 @@ $mensagem = "Registro excluído com sucesso.";
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <title>LabMaker</title>
 
     <link rel="stylesheet" href="../style.css">
 </head>
 
-<body>
-    <!-- Navbar -->
+<body class="bg-light">
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
         <div class="container-fluid">
 
@@ -59,6 +59,7 @@ $mensagem = "Registro excluído com sucesso.";
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="../Cadastros.php">Cadastros</a></li>
                             <li><a class="dropdown-item" href="../Relatorios.php">Relatórios</a></li>
+                            <li><a class="dropdown-item" href="../Listagens.php">Listagens</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -80,40 +81,18 @@ $mensagem = "Registro excluído com sucesso.";
                 <!-- Menu direito -->
                 <ul class="navbar-nav align-items-center">
 
-                    <!-- Departamentos -->
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Departamentos
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Processadores</a></li>
-                            <li><a class="dropdown-item" href="#">Placas-Mãe</a></li>
-                            <li><a class="dropdown-item" href="#">Placas de Vídeo</a></li>
-                            <li><a class="dropdown-item" href="#">Memórias RAM</a></li>
-                            <li><a class="dropdown-item" href="#">Armazenamento</a></li>
-                            <li><a class="dropdown-item" href="#">Fonte</a></li>
-                            <li><a class="dropdown-item" href="#">Refrigeração</a></li>
-                            <li><a class="dropdown-item" href="#">Gabinete</a></li>
-                        </ul>
-                    </li>
-
                     <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="../Login-Admin.php">
+                        <a class="nav-link" href="../Minha_Conta_Admin.php">
                             <i class="bi bi-person"></i>
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Carrinho.php">
-                            <i class="bi bi-cart"></i>
                         </a>
                     </li>
 
                 </ul>
 
             </div>
+        </div>
     </nav>
+
     <div class="container">
         <?php if (isset($_GET['Codigo'])) { ?>
             <div class="alert alert-success" role="alert">
@@ -151,7 +130,7 @@ $mensagem = "Registro excluído com sucesso.";
                         <td>
                             <a class="btn btn-warning" href="Alterar-produto.php?Codigo=<?= $linha['Codigo'] ?>"><i
                                     class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-danger" href="Listar-Produtos.php?Codigo=<?= $linha['Codigo'] ?>"
+                            <a class="btn btn-danger" href="Listar-Produto.php?Codigo=<?= $linha['Codigo'] ?>"
                                 onclick="return confirm('Deseja excluir este registro?')"><i class="bi bi-trash"></i></a>
                         </td>
                     </tr>

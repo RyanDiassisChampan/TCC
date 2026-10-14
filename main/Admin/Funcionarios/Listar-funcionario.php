@@ -59,6 +59,7 @@ $mensagem = "Registro exclído com sucesso.";
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
                             <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
+                            <li><a class="dropdown-item" href="Listagens.php">Listagens</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -113,6 +114,7 @@ $mensagem = "Registro exclído com sucesso.";
                 </ul>
 
             </div>
+        </div>
     </nav>
     <div class="container">
         <?php if (isset($_GET['id'])) { ?>

@@ -486,7 +486,10 @@ $produto = mysqli_fetch_assoc($resultado);
                 <?php if ($produto['Qntd_Estoque'] > 0) { ?>
 
 
-                    <div class="row mt-4">
+                    <form method="POST" action="Carrinho.php" class="mt-4">
+                    <input type="hidden" name="acao" value="adicionar">
+                    <input type="hidden" name="idProduto" value="<?php echo (int)$produto['Codigo']; ?>">
+                    <div class="row">
 
 
                         <!-- Quantidade -->
@@ -501,6 +504,7 @@ $produto = mysqli_fetch_assoc($resultado);
 
                             <input
                                 type="number"
+                                name="quantidade"
                                 class="form-control"
                                 value="1"
                                 min="1"
@@ -521,6 +525,7 @@ $produto = mysqli_fetch_assoc($resultado);
                             </label>
 
                             <button
+                                type="submit"
                                 class="btn btn-primary w-100 botao-comprar"
                             >
 
@@ -534,6 +539,7 @@ $produto = mysqli_fetch_assoc($resultado);
 
 
                     </div>
+                    </form>
 
 
                 <?php } ?>

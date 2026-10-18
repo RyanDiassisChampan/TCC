@@ -40,82 +40,42 @@ $mensagem = "Registro exclído com sucesso.";
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-        <div class="container-fluid">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal" aria-controls="navbarPrincipal" aria-expanded="false" aria-label="Alternar navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <!-- Botão para telas pequenas -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <div class="collapse navbar-collapse align-items-center" id="navbarPrincipal">
+            <ul class="navbar-nav me-3 align-items-center">
+                <li class="nav-item dropdown fs-5">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Ações
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="../Cadastros.php">Cadastros</a></li>
+                        <li><a class="dropdown-item" href="../Relatorios.php">Relatórios</a></li>
+                        <li><a class="dropdown-item" href="../Listagens.php">Listagens</a></li>
+                    </ul>
+                </li>
+            </ul>
 
-            <div class="collapse navbar-collapse align-items-center" id="navbarPrincipal">
+            <a class="navbar-brand fw-bold" href="../Main-Admin.php">LabMaker</a>
 
-                <!-- Ações -->
-                <ul class="navbar-nav me-3 align-items-center">
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Ações
-                        </a>
+            <form class="d-flex mx-auto w-50" method="GET" action="../Listagens.php">
+                <input class="form-control me-2" type="search" name="busca" placeholder="Pesquisar..." aria-label="Pesquisar">
+                <button class="btn btn-light" type="submit">Buscar</button>
+            </form>
 
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="Cadastros.php">Cadastros</a></li>
-                            <li><a class="dropdown-item" href="Relatorios.php">Relatórios</a></li>
-                            <li><a class="dropdown-item" href="Listagens.php">Listagens</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <!-- Logo -->
-                <a class="navbar-brand fw-bold" href="../Main-Admin.php">
-                    LabMaker
-                </a>
-
-                <!-- Pesquisa -->
-                <form class="d-flex mx-auto w-50">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
-
-                    <button class="btn btn-light" type="submit">
-                        Buscar
-                    </button>
-                </form>
-
-                <!-- Menu direito -->
-                <ul class="navbar-nav align-items-center">
-
-                    <!-- Departamentos -->
-                    <li class="nav-item dropdown fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Departamentos
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Processadores</a></li>
-                            <li><a class="dropdown-item" href="#">Placas-Mãe</a></li>
-                            <li><a class="dropdown-item" href="#">Placas de Vídeo</a></li>
-                            <li><a class="dropdown-item" href="#">Memórias RAM</a></li>
-                            <li><a class="dropdown-item" href="#">Armazenamento</a></li>
-                            <li><a class="dropdown-item" href="#">Fonte</a></li>
-                            <li><a class="dropdown-item" href="#">Refrigeração</a></li>
-                            <li><a class="dropdown-item" href="#">Gabinete</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="../Login-Admin.php">
-                            <i class="bi bi-person"></i>
-                        </a>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Carrinho.php">
-                            <i class="bi bi-cart"></i>
-                        </a>
-                    </li>
-
-                </ul>
-
-            </div>
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item ms-3 fs-3">
+                    <a class="nav-link" href="../Minha_Conta_Admin.php" aria-label="Minha conta">
+                        <i class="bi bi-person"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
     <div class="container">
         <?php if (isset($_GET['id'])) { ?>
             <div class="alert alert-success" role="alert">

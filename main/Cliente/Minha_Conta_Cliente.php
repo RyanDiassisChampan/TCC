@@ -14,51 +14,9 @@
 
 <body class="bg-light">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-        <div class="container-fluid">
-
-            <ul class="navbar-nav me-3 align-items-center">
-                <li class="nav-item ms-3 fs-3">
-                    <a class="nav-link" href="../Admin/Main-Admin.php"><i class="bi bi-person-fill-lock"></i></a>
-                </li>
-            </ul>
-
-            <a class="navbar-brand fw-bold" href="index.php">
-                LabMaker
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarPrincipal">
-
-                <!-- Barra de pesquisa -->
-                <form class="d-flex mx-auto w-50">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
-                    <button class="btn btn-light" type="submit">
-                        Buscar
-                    </button>
-                </form>
-
-                <!-- Menu -->
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Minha_Conta_Cliente.php"><i class="bi bi-person"></i></a>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Carrinho.php"><i class="bi bi-cart"></i></a>
-                    </li>
-
-                </ul>
-
-            </div>
-        </div>
-    </nav>
-
+<?php
+include"../../includes/header.php";
+?>
 
     <!-- Conteúdo -->
     <main class="container mt-4 mb-5">

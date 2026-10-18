@@ -99,9 +99,9 @@ if (isset($_POST['salvar'])) {
         <div class="card shadow">
 
             <!-- CABEÇALHO -->
-            <div class="card-header bg-primary text-white text-center py-2">
+            <div class="card-header bg-primary text-center py-2">
 
-                <h3 style="margin: 0;">
+                <h3 style="margin: 0; color: white;">
                     <i class="bi bi-person-plus"></i>
                     Cadastro de Funcionário
                 </h3>

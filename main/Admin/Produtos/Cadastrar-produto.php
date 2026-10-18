@@ -147,7 +147,7 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
 
             <div class="card shadow">
 
-                <div class="card-header bg-primary text-white text-center">
+                <div class="card-header bg-primary text-center">
 
                     <h3 style="margin: 0; color: white;">
 

@@ -29,7 +29,7 @@ if ($busca !== '') {
   $resultado = mysqli_query($conn, $sql);
 }
 
-include"../../includes/header.php ";
+include"../../includes/header.php";
 ?>
 
   <!-- Título -->

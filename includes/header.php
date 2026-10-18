@@ -1,3 +1,13 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+
+// A navbar é reutilizada em várias páginas; evita variável indefinida.
+$busca = trim($_GET['busca'] ?? '');
+
+$clienteConectado = !empty($_SESSION['id']) && (($_SESSION['tipo'] ?? '') === 'cliente');
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -48,12 +58,17 @@
         <ul class="navbar-nav ms-auto">
 
           <li class="nav-item ms-3 fs-3">
-            <a class="nav-link" href="Minha_Conta_Cliente.php"><i class="bi bi-person"></i></a>
+            <a class="nav-link" href="<?php echo $clienteConectado ? 'Minha_Conta_Cliente.php' : 'Login.php'; ?>" title="<?php echo $clienteConectado ? 'Minha conta' : 'Entrar'; ?>"><i class="bi bi-person"></i></a>
           </li>
 
           <li class="nav-item ms-3 fs-3">
-            <a class="nav-link" href="Carrinho.php"><i class="bi bi-cart"></i></a>
+            <a class="nav-link" href="Carrinho.php" title="Carrinho de compras"><i class="bi bi-cart"></i></a>
           </li>
+          <?php if ($clienteConectado) { ?>
+          <li class="nav-item ms-3">
+            <a class="nav-link" href="Logout.php" title="Sair da conta"><i class="bi bi-box-arrow-right"></i> <span class="fs-6">Sair</span></a>
+          </li>
+          <?php } ?>
 
         </ul>
 

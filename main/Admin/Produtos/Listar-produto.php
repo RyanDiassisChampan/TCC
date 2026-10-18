@@ -2,9 +2,12 @@
 
 //1. Conectar no banco de dados (ip, usuário, senha, Modelo do banco)
 $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
-if (isset($_GET['Codigo'])) {
-    $sql = "delete from tbProduto where Codigo = " . $_GET['Codigo'];
-    mysqli_query($conexao, $sql);
+if (isset($_GET['Codigo']) && filter_var($_GET['Codigo'], FILTER_VALIDATE_INT)) {
+    $codigoExcluir = (int) $_GET['Codigo'];
+    $stmtExcluir = mysqli_prepare($conexao, 'DELETE FROM tbProduto WHERE Codigo = ?');
+    mysqli_stmt_bind_param($stmtExcluir, 'i', $codigoExcluir);
+    mysqli_stmt_execute($stmtExcluir);
+    mysqli_stmt_close($stmtExcluir);
     $mensagem = "Registro excluído com sucesso.";
 }
 
@@ -69,10 +72,11 @@ $mensagem = "Registro excluído com sucesso.";
                     LabMaker
                 </a>
 
-                <!-- Pesquisa -->
-                <form class="d-flex mx-auto w-50">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
-
+                <!-- Pesquisa de produtos -->
+                <form class="d-flex mx-auto w-50" method="GET" action="/TCC/main/Admin/Main-Admin.php" role="search">
+                    <input class="form-control me-2" type="search" name="busca"
+                        placeholder="Pesquisar produtos..." aria-label="Pesquisar produtos"
+                        value="<?= htmlspecialchars($_GET['busca'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     <button class="btn btn-light" type="submit">
                         Buscar
                     </button>
@@ -106,10 +110,12 @@ $mensagem = "Registro excluído com sucesso.";
                 <h5 class="card-title"><i class="bi bi-card-list"></i> Listagem de Produto </h5>
             </div>
         </div>
-        <table class="table">
+        <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
             <thead>
                 <tr>
                     <th scope="col">Codigo</th>
+                    <th scope="col">Imagem</th>
                     <th scope="col">Modelo</th>
                     <th scope="col">Descrição</th>
                     <th scope="col">Valor</th>
@@ -122,11 +128,18 @@ $mensagem = "Registro excluído com sucesso.";
                 <?php while ($linha = mysqli_fetch_array($resultado)) { ?>
                     <tr>
                         <th><?= $linha['Codigo'] ?> </th>
-                        <td><?= $linha['Modelo'] ?></td>
-                        <td><?= $linha['Descricao'] ?></td>
-                        <td><?= $linha['Valor'] ?></td>
-                        <td><?= $linha['Qntd_Estoque'] ?></td>
-                        <td><?= $linha['Status'] ?></td>
+                        <td class="align-middle">
+                            <?php if (!empty($linha['Imagem']) && is_file(__DIR__ . '/../../../imagens/' . basename($linha['Imagem']))) { ?>
+                                <img src="../../../imagens/<?= rawurlencode(basename($linha['Imagem'])) ?>" alt="Imagem de <?= htmlspecialchars($linha['Modelo'], ENT_QUOTES, 'UTF-8') ?>" class="img-thumbnail" style="width: 76px; height: 68px; object-fit: contain; background: #fff;">
+                            <?php } else { ?>
+                                <span class="text-muted small">Sem imagem</span>
+                            <?php } ?>
+                        </td>
+                        <td class="align-middle"><?= htmlspecialchars($linha['Modelo'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($linha['Descricao'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td>R$ <?= number_format((float)$linha['Valor'], 2, ',', '.') ?></td>
+                        <td><?= (int)$linha['Qntd_Estoque'] ?></td>
+                        <td><?= htmlspecialchars($linha['Status'], ENT_QUOTES, 'UTF-8') ?></td>
                         <td>
                             <a class="btn btn-warning" href="Alterar-produto.php?Codigo=<?= $linha['Codigo'] ?>"><i
                                     class="bi bi-pencil-square"></i></a>
@@ -137,6 +150,7 @@ $mensagem = "Registro excluído com sucesso.";
                 <?php } ?>
             </tbody>
         </table>
+        </div>
     </div>
 </body>
 

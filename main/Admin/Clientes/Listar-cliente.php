@@ -77,10 +77,11 @@ $mensagem = "Registro exclído com sucesso.";
                     LabMaker
                 </a>
 
-                <!-- Pesquisa -->
-                <form class="d-flex mx-auto w-50">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
-
+                <!-- Pesquisa de produtos -->
+                <form class="d-flex mx-auto w-50" method="GET" action="/TCC/main/Admin/Main-Admin.php" role="search">
+                    <input class="form-control me-2" type="search" name="busca"
+                        placeholder="Pesquisar produtos..." aria-label="Pesquisar produtos"
+                        value="<?= htmlspecialchars($_GET['busca'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     <button class="btn btn-light" type="submit">
                         Buscar
                     </button>

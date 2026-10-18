@@ -6,8 +6,28 @@ if (!$conn) {
     die("Erro na conexão com o banco: " . mysqli_connect_error());
 }
 
-$sql = "SELECT * FROM tbProduto WHERE Status = 'Ativo'";
-$resultado = mysqli_query($conn, $sql);
+$busca = trim($_GET['busca'] ?? '');
+
+if ($busca !== '') {
+    $termo = '%' . $busca . '%';
+    $sql = "SELECT * FROM tbProduto
+            WHERE Status = 'Ativo'
+              AND (Modelo LIKE ? OR Descricao LIKE ? OR Tipo LIKE ? OR Marca LIKE ?)
+            ORDER BY Modelo";
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        die("Erro ao preparar a pesquisa: " . mysqli_error($conn));
+    }
+
+    mysqli_stmt_bind_param($stmt, "ssss", $termo, $termo, $termo, $termo);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+} else {
+    $sql = "SELECT * FROM tbProduto WHERE Status = 'Ativo' ORDER BY Modelo";
+    $resultado = mysqli_query($conn, $sql);
+}
+
 include("../../includes/headerAdmin.php");
 ?>
 
@@ -15,13 +35,20 @@ include("../../includes/headerAdmin.php");
     <div class="container mt-5">
 
         <h2 class="text-center mb-4">
-            Produtos em destaque
+            <?= $busca !== '' ? 'Resultados da busca' : 'Produtos em destaque' ?>
         </h2>
+
+        <?php if ($busca !== '') { ?>
+            <p class="text-center text-muted mb-4">
+                Pesquisa por: <strong><?= htmlspecialchars($busca, ENT_QUOTES, 'UTF-8') ?></strong>
+            </p>
+        <?php } ?>
 
         <!-- Cards -->
         <div class="row g-4">
 
-            <?php while ($produto = mysqli_fetch_assoc($resultado)) { ?>
+            <?php if ($resultado && mysqli_num_rows($resultado) > 0) { ?>
+                <?php while ($produto = mysqli_fetch_assoc($resultado)) { ?>
 
                 <div class="col-md-6 col-lg-3">
 
@@ -54,6 +81,14 @@ include("../../includes/headerAdmin.php");
 
                 </div>
 
+                <?php } ?>
+            <?php } else { ?>
+                <div class="col-12">
+                    <div class="alert alert-warning text-center" role="alert">
+                        <i class="bi bi-search"></i>
+                        Nenhum produto encontrado para essa pesquisa.
+                    </div>
+                </div>
             <?php } ?>
 
         </div>

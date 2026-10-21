@@ -39,43 +39,7 @@ $mensagem = "Registro exclído com sucesso.";
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal" aria-controls="navbarPrincipal" aria-expanded="false" aria-label="Alternar navegação">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse align-items-center" id="navbarPrincipal">
-            <ul class="navbar-nav me-3 align-items-center">
-                <li class="nav-item dropdown fs-5">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Ações
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="../Cadastros.php">Cadastros</a></li>
-                        <li><a class="dropdown-item" href="../Relatorios.php">Relatórios</a></li>
-                        <li><a class="dropdown-item" href="../Listagens.php">Listagens</a></li>
-                    </ul>
-                </li>
-            </ul>
-
-            <a class="navbar-brand fw-bold" href="../Main-Admin.php">LabMaker</a>
-
-            <form class="d-flex mx-auto w-50" method="GET" action="../Listagens.php">
-                <input class="form-control me-2" type="search" name="busca" placeholder="Pesquisar..." aria-label="Pesquisar">
-                <button class="btn btn-light" type="submit">Buscar</button>
-            </form>
-
-            <ul class="navbar-nav align-items-center">
-                <li class="nav-item ms-3 fs-3">
-                    <a class="nav-link" href="../Minha_Conta_Admin.php" aria-label="Minha conta">
-                        <i class="bi bi-person"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+    <?php include_once __DIR__ . '/../../../includes/navbar_funcionario.php'; ?>
     <div class="container">
         <?php if (isset($_GET['id'])) { ?>
             <div class="alert alert-success" role="alert">

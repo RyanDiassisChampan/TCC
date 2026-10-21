@@ -1,9 +1,27 @@
 <?php
 session_start();
 
+/* Se o visitante tentar adicionar um produto sem estar conectado, guarda a
+   seleção temporariamente para concluir a ação após o login. */
+if ((empty($_SESSION['id']) || ($_SESSION['tipo'] ?? '') !== 'cliente')
+    && $_SERVER['REQUEST_METHOD'] === 'POST'
+    && ($_POST['acao'] ?? '') === 'adicionar') {
+    $_SESSION['produto_pendente_carrinho'] = [
+        'idProduto' => (int)($_POST['idProduto'] ?? 0),
+        'quantidade' => max(1, (int)($_POST['quantidade'] ?? 1))
+    ];
+}
+
 if (empty($_SESSION['id']) || ($_SESSION['tipo'] ?? '') !== 'cliente') {
     header("Location: Login.php?retorno=Carrinho.php");
     exit;
+}
+
+/* Após o login, transforma o produto pendente em uma inclusão normal. */
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_SESSION['produto_pendente_carrinho'])) {
+    $_POST = array_merge($_POST, $_SESSION['produto_pendente_carrinho'], ['acao' => 'adicionar']);
+    unset($_SESSION['produto_pendente_carrinho']);
+    $_SERVER['REQUEST_METHOD'] = 'POST';
 }
 
 $conn = mysqli_connect("localhost", "root", "", "tcc");
@@ -49,9 +67,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $acao = $_POST['acao'] ?? '';
 
     if ($acao === 'adicionar') {
-        $idProduto = filter_input(INPUT_POST, 'idProduto', FILTER_VALIDATE_INT);
-        $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_VALIDATE_INT);
-        $quantidade = max(1, (int) $quantidade);
+        // Use $_POST directly: o produto pendente após o login é inserido
+        // artificialmente no array $_POST e não é lido por filter_input().
+        $idProduto = filter_var($_POST['idProduto'] ?? null, FILTER_VALIDATE_INT);
+        $quantidadeRecebida = filter_var($_POST['quantidade'] ?? 1, FILTER_VALIDATE_INT);
+        $quantidade = max(1, (int) ($quantidadeRecebida === false ? 1 : $quantidadeRecebida));
+        if ($idProduto === false || $idProduto === null || $idProduto < 1) {
+            $erro = "Produto inválido. Atualize a página e tente novamente.";
+        } else {
 
         $stmt = mysqli_prepare($conn, "SELECT Qntd_Estoque FROM tbProduto WHERE Codigo = ? AND Status = 'Ativo'");
         mysqli_stmt_bind_param($stmt, "i", $idProduto);
@@ -59,8 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $produto = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
         mysqli_stmt_close($stmt);
 
-        if (!$produto) {
-            $erro = "Produto não encontrado ou indisponível.";
+        if (!$produto || (int)$produto['Qntd_Estoque'] < 1) {
+            $erro = "Produto não encontrado, indisponível ou sem estoque.";
         } elseif ($quantidade > (int)$produto['Qntd_Estoque']) {
             $erro = "A quantidade solicitada ultrapassa o estoque disponível.";
         } else {
@@ -73,14 +96,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: Carrinho.php?adicionado=1");
             exit;
         }
+        }
     } elseif ($acao === 'atualizar') {
         foreach (($_POST['quantidades'] ?? []) as $itemId => $qtd) {
             $itemId = (int)$itemId;
             $qtd = max(1, (int)$qtd);
+            // Não permite quantidade zero nem mantém no carrinho produtos sem estoque.
+            $stmt = mysqli_prepare($conn, "DELETE i FROM tbItemCarrinho i
+                INNER JOIN tbProduto p ON p.Codigo = i.idProduto
+                WHERE i.idItem = ? AND i.idCarrinho = ? AND (p.Status <> 'Ativo' OR p.Qntd_Estoque < 1)");
+            mysqli_stmt_bind_param($stmt, "ii", $itemId, $idCarrinho);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+
             $stmt = mysqli_prepare($conn, "UPDATE tbItemCarrinho i
                 INNER JOIN tbProduto p ON p.Codigo = i.idProduto
                 SET i.quantidade = LEAST(?, p.Qntd_Estoque)
-                WHERE i.idItem = ? AND i.idCarrinho = ? AND p.Status = 'Ativo'");
+                WHERE i.idItem = ? AND i.idCarrinho = ? AND p.Status = 'Ativo' AND p.Qntd_Estoque > 0");
             mysqli_stmt_bind_param($stmt, "iii", $qtd, $itemId, $idCarrinho);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
@@ -95,6 +127,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_close($stmt);
         header("Location: Carrinho.php?removido=1");
         exit;
+    } elseif ($acao === 'finalizar') {
+        $forma = trim($_POST['formaRecebimento'] ?? '');
+        $formasPermitidas = ['Pix', 'Cartão', 'Dinheiro'];
+        if (!in_array($forma, $formasPermitidas, true)) {
+            $erro = "Selecione uma forma de recebimento válida.";
+        } else {
+            mysqli_begin_transaction($conn);
+            try {
+                $stmt = mysqli_prepare($conn, "SELECT p.Codigo, p.Modelo, p.Valor, p.Qntd_Estoque, i.quantidade
+                    FROM tbItemCarrinho i
+                    INNER JOIN tbProduto p ON p.Codigo = i.idProduto
+                    WHERE i.idCarrinho = ? AND p.Status = 'Ativo' FOR UPDATE");
+                mysqli_stmt_bind_param($stmt, "i", $idCarrinho);
+                mysqli_stmt_execute($stmt);
+                $res = mysqli_stmt_get_result($stmt);
+                $compra = [];
+                $valorTotal = 0;
+                while ($linha = mysqli_fetch_assoc($res)) {
+                    if ((int)$linha['quantidade'] < 1 || (int)$linha['quantidade'] > (int)$linha['Qntd_Estoque']) {
+                        throw new Exception("Estoque insuficiente para o produto: " . $linha['Modelo']);
+                    }
+                    $linha['Valor'] = (float)$linha['Valor'];
+                    $valorTotal += $linha['Valor'] * (int)$linha['quantidade'];
+                    $compra[] = $linha;
+                }
+                mysqli_stmt_close($stmt);
+                if (!$compra) {
+                    throw new Exception("Seu carrinho está vazio.");
+                }
+
+                $stmt = mysqli_prepare($conn, "INSERT INTO tbVenda (Data, Valor_Total, Status, tbCliente_Codigo, FormaRecebimento)
+                    VALUES (CURDATE(), ?, 'Pendente', ?, ?)");
+                mysqli_stmt_bind_param($stmt, "dis", $valorTotal, $idCliente, $forma);
+                if (!mysqli_stmt_execute($stmt)) {
+                    throw new Exception("Não foi possível registrar o pedido.");
+                }
+                $idVenda = mysqli_insert_id($conn);
+                mysqli_stmt_close($stmt);
+
+                $stmtItem = mysqli_prepare($conn, "INSERT INTO tbVenda_Produto (tbProduto_Codigo, tbVenda_Codigo, Qtd_Produto, Valor_Unitario, Valor_Total)
+                    VALUES (?, ?, ?, ?, ?)");
+                $stmtEstoque = mysqli_prepare($conn, "UPDATE tbProduto SET Qntd_Estoque = Qntd_Estoque - ? WHERE Codigo = ? AND Qntd_Estoque >= ?");
+                foreach ($compra as $linha) {
+                    $idProd = (int)$linha['Codigo'];
+                    $qtd = (int)$linha['quantidade'];
+                    $unitario = (float)$linha['Valor'];
+                    $subtotal = $qtd * $unitario;
+                    mysqli_stmt_bind_param($stmtItem, "iiidd", $idProd, $idVenda, $qtd, $unitario, $subtotal);
+                    if (!mysqli_stmt_execute($stmtItem)) {
+                        throw new Exception("Não foi possível registrar os itens do pedido.");
+                    }
+                    mysqli_stmt_bind_param($stmtEstoque, "iii", $qtd, $idProd, $qtd);
+                    if (!mysqli_stmt_execute($stmtEstoque) || mysqli_stmt_affected_rows($stmtEstoque) !== 1) {
+                        throw new Exception("O estoque mudou durante a compra. Atualize o carrinho e tente novamente.");
+                    }
+                }
+                mysqli_stmt_close($stmtItem);
+                mysqli_stmt_close($stmtEstoque);
+                $stmt = mysqli_prepare($conn, "DELETE FROM tbItemCarrinho WHERE idCarrinho = ?");
+                mysqli_stmt_bind_param($stmt, "i", $idCarrinho);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_close($stmt);
+                mysqli_commit($conn);
+                header("Location: Carrinho.php?pedido=" . $idVenda);
+                exit;
+            } catch (Throwable $ex) {
+                mysqli_rollback($conn);
+                $erro = $ex->getMessage();
+            }
+        }
     }
 }
 
@@ -148,23 +250,7 @@ body { background:#f5f6f8; }
 </style>
 </head>
 <body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
- <div class="container-fluid">
-  <a class="navbar-brand fw-bold" href="index.php">LabMaker</a>
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal"><span class="navbar-toggler-icon"></span></button>
-  <div class="collapse navbar-collapse" id="navbarPrincipal">
-   <form class="d-flex mx-auto w-50" method="GET" action="index.php">
-    <input class="form-control me-2" type="search" name="busca" placeholder="Pesquisar produtos...">
-    <button class="btn btn-light" type="submit">Buscar</button>
-   </form>
-   <ul class="navbar-nav ms-auto">
-    <li class="nav-item ms-3 fs-3"><a class="nav-link" href="Minha_Conta_Cliente.php" aria-label="Minha conta"><i class="bi bi-person"></i></a></li>
-    <li class="nav-item ms-3 fs-3"><a class="nav-link active" href="Carrinho.php" aria-label="Carrinho"><i class="bi bi-cart"></i></a></li>
-    <li class="nav-item ms-3"><a class="nav-link" href="Logout.php">Sair</a></li>
-   </ul>
-  </div>
- </div>
-</nav>
+<?php include_once __DIR__ . '/../../includes/navbar_cliente.php'; ?>
 <main class="container py-4 py-lg-5">
  <div class="mb-4">
   <h2 class="fw-bold mb-1"><i class="bi bi-cart3 me-2"></i>Meu carrinho</h2>
@@ -173,6 +259,7 @@ body { background:#f5f6f8; }
  <?php if (isset($_GET['adicionado'])) { ?><div class="alert alert-success">Produto adicionado ao carrinho.</div><?php } ?>
  <?php if (isset($_GET['atualizado'])) { ?><div class="alert alert-success">Quantidades atualizadas.</div><?php } ?>
  <?php if (isset($_GET['removido'])) { ?><div class="alert alert-success">Produto removido do carrinho.</div><?php } ?>
+ <?php if (isset($_GET['pedido']) && ctype_digit((string)$_GET['pedido'])) { ?><div class="alert alert-success"><strong>Pedido #<?php echo (int)$_GET['pedido']; ?> registrado!</strong> O pedido foi enviado para acompanhamento com status pendente de pagamento/recebimento.</div><?php } ?>
  <?php if ($erro) { ?><div class="alert alert-danger"><?php echo e($erro); ?></div><?php } ?>
  <div class="row g-4 align-items-start">
   <section class="col-lg-8">
@@ -230,8 +317,22 @@ body { background:#f5f6f8; }
      <div class="d-flex justify-content-between mb-3"><span class="text-secondary">Frete</span><span class="text-secondary">Calculado posteriormente</span></div>
      <hr>
      <div class="d-flex justify-content-between align-items-center mb-3"><span class="fw-bold fs-5">Total</span><span class="fw-bold fs-4 text-primary">R$ <?php echo number_format($total,2,',','.'); ?></span></div>
-     <button class="btn btn-primary btn-lg w-100" type="button" disabled title="A finalização será integrada ao módulo de vendas"><i class="bi bi-credit-card me-2"></i>Finalizar compra</button>
-     <small class="d-block text-secondary mt-2">A finalização do pedido ainda precisa ser integrada ao módulo de vendas.</small>
+     <?php if ($itens) { ?>
+     <form method="POST" class="mt-3">
+      <input type="hidden" name="acao" value="finalizar">
+      <label for="formaRecebimento" class="form-label fw-semibold">Forma de recebimento</label>
+      <select class="form-select mb-3" id="formaRecebimento" name="formaRecebimento" required>
+       <option value="">Selecione...</option>
+       <option value="Pix">Pix</option>
+       <option value="Cartão">Cartão</option>
+       <option value="Dinheiro">Dinheiro</option>
+      </select>
+      <button class="btn btn-primary btn-lg w-100" type="submit" onclick="return confirm('Confirmar o pedido e registrar a venda?')"><i class="bi bi-credit-card me-2"></i>Finalizar pedido</button>
+     </form>
+     <small class="d-block text-secondary mt-2">O pedido será registrado como pendente. O pagamento não é processado pelo site.</small>
+     <?php } else { ?>
+      <button class="btn btn-primary btn-lg w-100" type="button" disabled><i class="bi bi-credit-card me-2"></i>Finalizar pedido</button>
+     <?php } ?>
     </div>
    </div>
   </aside>

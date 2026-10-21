@@ -17,61 +17,7 @@
 <body class="bg-light">
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
-        <div class="container">
-
-            <a class="navbar-brand fw-bold" href="LabMaker-Main.php">
-                LabMaker
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarPrincipal">
-
-                <!-- Barra de pesquisa -->
-                <form class="d-flex mx-auto w-50">
-                    <input class="form-control me-2" type="search" placeholder="Pesquisar produtos...">
-                    <button class="btn btn-light" type="submit">
-                        Buscar
-                    </button>
-                </form>
-
-                <!-- Menu -->
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item dropdown mt-2  fs-5">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Departamentos
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Processadores</a></li>
-                            <li><a class="dropdown-item" href="#">Placas-Mãe</a></li>
-                            <li><a class="dropdown-item" href="#">Placas de Vídeo</a></li>
-                            <li><a class="dropdown-item" href="#">Memórias Ram</a></li>
-                            <li><a class="dropdown-item" href="#">Armazenamento</a></li>
-                            <li><a class="dropdown-item" href="#">Fonte</a></li>
-                            <li><a class="dropdown-item" href="#">Refrigeração</a></li>
-                            <li><a class="dropdown-item" href="#">Gabinete</a></li>
-                            <li><a class="dropdown-item" href="#"></a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="MinhaConta.php"><i class="bi bi-person"></i></a>
-                    </li>
-
-                    <li class="nav-item ms-3 fs-3">
-                        <a class="nav-link" href="Carrinho.php"><i class="bi bi-cart"></i></a>
-                    </li>
-
-                </ul>
-
-            </div>
-        </div>
-    </nav>
+    <?php include_once __DIR__ . '/../../includes/navbar_cliente.php'; ?>
 
     <div class="container mt-5">
 

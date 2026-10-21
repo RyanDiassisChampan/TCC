@@ -82,7 +82,7 @@ include("../../includes/headerAdmin.php");
                 </div>
 
                 <?php } ?>
-            <?php } else { ?>
+            <?php } elseif ($busca !== '') { ?>
                 <div class="col-12">
                     <div class="alert alert-warning text-center" role="alert">
                         <i class="bi bi-search"></i>

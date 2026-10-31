@@ -137,12 +137,17 @@ function h($valor) {
                 </div>
                 <div class="row g-3">
                     <div class="col-md-6 mb-3">
-                        <label for="valor" class="form-label">Valor (R$)</label>
-                        <input name="valor" type="number" step="0.01" min="0" class="form-control" value="<?= h($registro['Valor']) ?>" id="valor" required>
+                        <label for="valor" class="form-label">Valor</label>
+                        <div class="input-group">
+                            <span class="input-group-text">R$</span>
+                            <input type="text" class="form-control" id="valor" name="valor" inputmode="decimal"
+                                placeholder="0,00" value="<?= h(number_format((float)$registro['Valor'], 2, ',', '.')) ?>" required>
+                        </div>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="qntdEstoque" class="form-label">Quantidade em estoque</label>
-                        <input name="qntdEstoque" type="number" min="0" step="1" class="form-control" value="<?= h($registro['Qntd_Estoque']) ?>" id="qntdEstoque" required>
+                        <label for="qntdEstoque" class="form-label">Quantidade no Estoque:</label>
+                        <input type="text" class="form-control" id="qntdEstoque" name="qntdEstoque"
+                            inputmode="numeric" placeholder="0" value="<?= h($registro['Qntd_Estoque']) ?>" required>
                     </div>
                 </div>
                 <div class="mb-3">

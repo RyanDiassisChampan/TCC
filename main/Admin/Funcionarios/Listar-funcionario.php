@@ -3,14 +3,14 @@
 //1. Conectar no banco de dados (ip, usuário, senha, nome do banco)
 $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
 if (isset($_GET['id'])) {
-    $sql = "delete from cliente where id = " . $_GET['id'];
+    $sql = "delete from tbFuncionario where codigo = " . $_GET['codigo'];
     mysqli_query($conexao, $sql);
     $mensagem = "Registro excluído com sucesso.";
 }
 
 
 //2. Prepara o SQL
-$sql = "select * from cliente";
+$sql = "select * from tbFuncionario";
 
 //3. Executar a SQL
 $resultado = mysqli_query($conexao, $sql);
@@ -50,7 +50,7 @@ $mensagem = "Registro exclído com sucesso.";
 
         <div class="card mt-3 mb-3">
             <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-card-list"></i> Listagem de Funcionário</h5>
+                <h5 class="card-title"><i class="bi bi-card-list"></i> Listagem de Funcionários</h5>
             </div>
         </div>
         <table class="table">
@@ -75,9 +75,9 @@ $mensagem = "Registro exclído com sucesso.";
                         <td><?= $linha['email'] ?></td>
                         <td><?= $linha['status'] ?></td>
                         <td>
-                            <a class="btn btn-warning" href="cliente-alterar.php?id=<?= $linha['id'] ?>"><i
+                            <a class="btn btn-warning" href="funcionario-alterar.php?codigo=<?= $linha['codigo'] ?>"><i
                                     class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-danger" href="cliente-listar.php?id=<?= $linha['id'] ?>"
+                            <a class="btn btn-danger" href="funcionario-listar.php?codigo=<?= $linha['codigo'] ?>"
                                 onclick="return confirm('Deseja excluir este registro?')"><i class="bi bi-trash"></i></a>
                         </td>
                     </tr>

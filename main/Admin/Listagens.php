@@ -80,6 +80,38 @@
 
             </div>
 
+            <!-- Funcionarios -->
+            <div class="col-md-6 col-lg-4">
+
+                <a href="Funcionarios/Listar-funcionario.php" class="text-decoration-none text-dark">
+
+                    <div class="card h-100 shadow-sm">
+
+                        <div class="card-body text-center p-4">
+
+                            <i class="bi bi-people-fill text-primary fs-1"></i>
+
+                            <h4 class="card-title mt-3">
+                                Funcionários
+                            </h4>
+
+                            <p class="card-text text-muted">
+                                Consulte os funcioárioss cadastrados no sistema.
+                            </p>
+
+                            <span class="btn btn-primary">
+                                Acessar
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
         </div>
 
     </main>

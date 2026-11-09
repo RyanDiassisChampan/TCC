@@ -15,6 +15,74 @@ if (!$conn) {
 mysqli_set_charset($conn, "utf8mb4");
 
 $idCliente = (int) $_SESSION['id'];
+if (empty($_SESSION['csrf_meus_pedidos'])) {
+    $_SESSION['csrf_meus_pedidos'] = bin2hex(random_bytes(32));
+}
+$mensagemPedido = '';
+$erroPedido = '';
+
+// Exclui somente pedidos pertencentes ao cliente autenticado.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['acao'] ?? '') === 'excluir_pedido') {
+    $token = (string) ($_POST['csrf_token'] ?? '');
+    $codigoPedido = filter_input(INPUT_POST, 'codigo_pedido', FILTER_VALIDATE_INT);
+    if (!$codigoPedido || !hash_equals($_SESSION['csrf_meus_pedidos'], $token)) {
+        $erroPedido = 'Não foi possível validar a solicitação. Atualize a página e tente novamente.';
+    } else {
+        mysqli_begin_transaction($conn);
+        try {
+            $stmtPedido = mysqli_prepare($conn, "SELECT Codigo FROM tbVenda WHERE Codigo = ? AND tbCliente_Codigo = ? FOR UPDATE");
+            mysqli_stmt_bind_param($stmtPedido, 'ii', $codigoPedido, $idCliente);
+            mysqli_stmt_execute($stmtPedido);
+            $pedidoEncontrado = mysqli_stmt_get_result($stmtPedido);
+            if (!mysqli_fetch_assoc($pedidoEncontrado)) {
+                throw new Exception('Pedido não encontrado ou não pertence à sua conta.');
+            }
+            mysqli_stmt_close($stmtPedido);
+
+            // Devolve ao estoque as quantidades que foram baixadas na finalização da compra.
+            $stmtItens = mysqli_prepare($conn, "SELECT tbProduto_Codigo, Qtd_Produto FROM tbVenda_Produto WHERE tbVenda_Codigo = ? FOR UPDATE");
+            mysqli_stmt_bind_param($stmtItens, 'i', $codigoPedido);
+            mysqli_stmt_execute($stmtItens);
+            $resultadoItens = mysqli_stmt_get_result($stmtItens);
+            $itensPedido = [];
+            while ($itemPedido = mysqli_fetch_assoc($resultadoItens)) { $itensPedido[] = $itemPedido; }
+            mysqli_stmt_close($stmtItens);
+
+            $stmtEstoque = mysqli_prepare($conn, "UPDATE tbProduto SET Qntd_Estoque = Qntd_Estoque + ? WHERE Codigo = ?");
+            foreach ($itensPedido as $itemPedido) {
+                $quantidadeDevolver = (int) $itemPedido['Qtd_Produto'];
+                $codigoProduto = (int) $itemPedido['tbProduto_Codigo'];
+                mysqli_stmt_bind_param($stmtEstoque, 'ii', $quantidadeDevolver, $codigoProduto);
+                if (!mysqli_stmt_execute($stmtEstoque)) {
+                    throw new Exception('Não foi possível atualizar o estoque dos produtos.');
+                }
+            }
+            mysqli_stmt_close($stmtEstoque);
+
+            $stmtExcluirItens = mysqli_prepare($conn, "DELETE FROM tbVenda_Produto WHERE tbVenda_Codigo = ?");
+            mysqli_stmt_bind_param($stmtExcluirItens, 'i', $codigoPedido);
+            if (!mysqli_stmt_execute($stmtExcluirItens)) { throw new Exception('Não foi possível excluir os itens do pedido.'); }
+            mysqli_stmt_close($stmtExcluirItens);
+
+            $stmtExcluirPedido = mysqli_prepare($conn, "DELETE FROM tbVenda WHERE Codigo = ? AND tbCliente_Codigo = ?");
+            mysqli_stmt_bind_param($stmtExcluirPedido, 'ii', $codigoPedido, $idCliente);
+            if (!mysqli_stmt_execute($stmtExcluirPedido) || mysqli_stmt_affected_rows($stmtExcluirPedido) !== 1) {
+                throw new Exception('Não foi possível excluir o pedido.');
+            }
+            mysqli_stmt_close($stmtExcluirPedido);
+            mysqli_commit($conn);
+            header('Location: Meus_Pedidos.php?excluido=1');
+            exit;
+        } catch (Throwable $e) {
+            mysqli_rollback($conn);
+            $erroPedido = $e->getMessage();
+        }
+    }
+}
+if (isset($_GET['excluido']) && $_GET['excluido'] === '1') {
+    $mensagemPedido = 'Pedido excluído com sucesso.';
+}
+
 $sql = "SELECT v.Codigo, v.Data, v.Valor_Total, v.Status, v.FormaRecebimento,
                p.Modelo, vp.Qtd_Produto, vp.Valor_Unitario, vp.Valor_Total AS Subtotal
         FROM tbVenda v
@@ -77,6 +145,8 @@ include("../../includes/header.php");
 ?>
 
 <main class="container mt-4 mb-5">
+    <?php if ($mensagemPedido !== '') { ?><div class="alert alert-success alert-dismissible fade show" role="alert"><i class="bi bi-check-circle-fill me-2"></i><?= hPedido($mensagemPedido) ?><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button></div><?php } ?>
+    <?php if ($erroPedido !== '') { ?><div class="alert alert-danger" role="alert"><?= hPedido($erroPedido) ?></div><?php } ?>
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
         <div>
             <h2 class="mb-1"><i class="bi bi-bag-check"></i> Meus Pedidos</h2>
@@ -170,9 +240,17 @@ include("../../includes/header.php");
                                 </table>
                             </div>
                         <?php } ?>
-                        <div class="text-muted small">
-                            <i class="bi bi-credit-card me-1"></i>
-                            Forma de recebimento: <strong><?= hPedido($pedido['FormaRecebimento']) ?></strong>
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-3">
+                            <div class="text-muted small">
+                                <i class="bi bi-bag-check me-1"></i>
+                                Forma de recebimento: <strong><?= hPedido($pedido['FormaRecebimento']) ?></strong>
+                            </div>
+                            <form method="POST" class="m-0" onsubmit="return confirm('Tem certeza de que deseja excluir definitivamente o pedido #<?= (int) $pedido['Codigo'] ?>? Os produtos voltarão ao estoque.');">
+                                <input type="hidden" name="acao" value="excluir_pedido">
+                                <input type="hidden" name="codigo_pedido" value="<?= (int) $pedido['Codigo'] ?>">
+                                <input type="hidden" name="csrf_token" value="<?= hPedido($_SESSION['csrf_meus_pedidos']) ?>">
+                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>Excluir pedido</button>
+                            </form>
                         </div>
                     </div>
                 </div>

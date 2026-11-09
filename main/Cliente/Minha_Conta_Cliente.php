@@ -15,7 +15,28 @@
 <body class="bg-light">
 
 <?php
-include"../../includes/header.php";
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+if (empty($_SESSION['id']) || ($_SESSION['tipo'] ?? '') !== 'cliente') {
+    header("Location: Login.php");
+    exit;
+}
+$connConta = mysqli_connect("localhost", "root", "", "tcc");
+$dadosConta = [];
+if ($connConta) {
+    mysqli_set_charset($connConta, "utf8mb4");
+    $idConta = (int) $_SESSION['id'];
+    $stmtConta = mysqli_prepare($connConta, "SELECT Nome, CPF, Email, Telefone, CEP, Logradouro, Numero, Cidade, Estado FROM tbCliente WHERE Codigo = ? LIMIT 1");
+    mysqli_stmt_bind_param($stmtConta, "i", $idConta);
+    mysqli_stmt_execute($stmtConta);
+    $dadosConta = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtConta)) ?: [];
+    mysqli_stmt_close($stmtConta);
+    if (!empty($dadosConta['Nome'])) { $_SESSION['nome'] = $dadosConta['Nome']; }
+}
+function valorContaCliente($campo) {
+    global $dadosConta;
+    return htmlspecialchars((string)($dadosConta[$campo] ?? ''), ENT_QUOTES, 'UTF-8');
+}
+include "../../includes/header.php";
 ?>
 
     <!-- Conteúdo -->
@@ -35,7 +56,7 @@ include"../../includes/header.php";
                     <div class="card-body">
 
                         <h5 class="card-title mb-3">
-                            Olá, Ryan!
+                            Olá, <?php echo htmlspecialchars($_SESSION['nome'] ?? ($dadosConta['Nome'] ?? 'Cliente'), ENT_QUOTES, 'UTF-8'); ?>!
                         </h5>
 
                         <div class="list-group">
@@ -83,7 +104,7 @@ include"../../includes/header.php";
                                     Nome completo
                                 </label>
 
-                                <input type="text" name="nome" class="form-control" placeholder="Nome completo" maxlength="100">
+                                <input type="text" name="nome" class="form-control" placeholder="Nome completo" maxlength="100" value="<?php echo valorContaCliente('Nome'); ?>">
                             </div>
 
                             <!-- CPF -->
@@ -92,7 +113,7 @@ include"../../includes/header.php";
                                     CPF
                                 </label>
 
-                                <input type="text" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14">
+                                <input type="text" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14" value="<?php echo valorContaCliente('CPF'); ?>">
                             </div>
 
                             <!-- Email -->
@@ -101,7 +122,7 @@ include"../../includes/header.php";
                                     E-mail
                                 </label>
 
-                                <input type="email" name="email" class="form-control" placeholder="email@exemplo.com" maxlength="100">
+                                <input type="email" name="email" class="form-control" placeholder="email@exemplo.com" maxlength="100" value="<?php echo valorContaCliente('Email'); ?>">
                             </div>
 
                             <!-- Telefone -->
@@ -110,7 +131,7 @@ include"../../includes/header.php";
                                     Telefone
                                 </label>
 
-                                <input type="text" name="telefone" class="form-control" placeholder="(44) 99999-9999" maxlength="15">
+                                <input type="text" name="telefone" class="form-control" placeholder="(44) 99999-9999" maxlength="15" value="<?php echo valorContaCliente('Telefone'); ?>">
                             </div>
 
                         </div>
@@ -129,7 +150,7 @@ include"../../includes/header.php";
                                     CEP
                                 </label>
 
-                                <input type="text" name="cep" class="form-control" placeholder="00000-000" maxlength="9">
+                                <input type="text" name="cep" class="form-control" placeholder="00000-000" maxlength="9" value="<?php echo valorContaCliente('CEP'); ?>">
                             </div>
 
                             <div class="col-md-8 mb-3">
@@ -137,7 +158,7 @@ include"../../includes/header.php";
                                     Endereço
                                 </label>
 
-                                <input type="text" name="logradouro" class="form-control" placeholder="Rua Exemplo" maxlength="45">
+                                <input type="text" name="logradouro" class="form-control" placeholder="Rua Exemplo" maxlength="45" value="<?php echo valorContaCliente('Logradouro'); ?>">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -145,7 +166,7 @@ include"../../includes/header.php";
                                     Número
                                 </label>
 
-                                <input type="text" name="numero" class="form-control" placeholder="Número" maxlength="10">
+                                <input type="text" name="numero" class="form-control" placeholder="Número" maxlength="10" value="<?php echo valorContaCliente('Numero'); ?>">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -153,7 +174,7 @@ include"../../includes/header.php";
                                     Cidade
                                 </label>
 
-                                <input type="text" name="cidade" class="form-control" placeholder="Cidade" maxlength="100">
+                                <input type="text" name="cidade" class="form-control" placeholder="Cidade" maxlength="100" value="<?php echo valorContaCliente('Cidade'); ?>">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -161,7 +182,7 @@ include"../../includes/header.php";
                                     Estado
                                 </label>
 
-                                <input type="text" name="estado" class="form-control" placeholder="PR" maxlength="2">
+                                <input type="text" name="estado" class="form-control" placeholder="PR" maxlength="2" value="<?php echo valorContaCliente('Estado'); ?>">
                             </div>
 
                         </div>

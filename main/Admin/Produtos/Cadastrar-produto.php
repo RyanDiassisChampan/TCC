@@ -274,21 +274,18 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
                                     Selecione o tipo
                                 </option>
 
-                                <option value="Processador">
-                                    Processador
-                                </option>
-
-                                <option value="Memória RAM">
-                                    Memória RAM
-                                </option>
-
-                                <option value="Placa de vídeo">
-                                    Placa de vídeo
-                                </option>
-
-                                <option value="SSD">
-                                    SSD
-                                </option>
+                                <option value="Processador">Processador</option>
+                                <option value="Placa-mãe">Placa-mãe</option>
+                                <option value="Placa de vídeo">Placa de vídeo</option>
+                                <option value="Memória RAM">Memória RAM</option>
+                                <option value="SSD">SSD</option>
+                                <option value="HD">HD</option>
+                                <option value="Fonte">Fonte</option>
+                                <option value="Gabinete">Gabinete</option>
+                                <option value="Cooler">Cooler</option>
+                                <option value="Water Cooler">Water Cooler</option>
+                                <option value="Ventoinha">Ventoinha</option>
+                                <option value="Refrigeração">Refrigeração</option>
 
                             </select>
 

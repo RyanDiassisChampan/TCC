@@ -101,7 +101,7 @@ if (isset($_POST['salvar'])) {
             <!-- CABEÇALHO -->
             <div class="card-header bg-primary text-white text-center py-2">
 
-                <h3 style="margin: 0;">
+                <h3 style="margin: 0; color: white">
                     Cadastro
                 </h3>
 

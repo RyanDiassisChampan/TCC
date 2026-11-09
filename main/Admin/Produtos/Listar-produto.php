@@ -88,8 +88,6 @@ $mensagem = "Registro excluído com sucesso.";
                         <td><?= (int)$linha['Qntd_Estoque'] ?></td>
                         <td><?= htmlspecialchars($linha['Status'], ENT_QUOTES, 'UTF-8') ?></td>
                         <td>
-                            <a class="btn btn-warning" href="Alterar-produto.php?Codigo=<?= $linha['Codigo'] ?>"><i
-                                    class="bi bi-pencil-square"></i></a>
                             <a class="btn btn-danger" href="Listar-Produto.php?Codigo=<?= $linha['Codigo'] ?>"
                                 onclick="return confirm('Deseja excluir este registro?')"><i class="bi bi-trash"></i></a>
                         </td>

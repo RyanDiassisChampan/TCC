@@ -40,16 +40,16 @@ include"../../includes/header.php";
 
                         <div class="list-group">
 
-                            <a href="#" class="list-group-item list-group-item-action active">
+                            <a href="Minha_Conta_Cliente.php#meus-dados" class="list-group-item list-group-item-action active">
                                 <i class="bi bi-person me-2"></i>
                                 Meus Dados
                             </a>
 
-                            <a href="#" class="list-group-item list-group-item-action">
+                            <a href="Meus_Pedidos.php" class="list-group-item list-group-item-action">
                                 <i class="bi bi-bag me-2"></i>
                                 Meus Pedidos
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action text-danger">
+                            <a href="Logout.php" class="list-group-item list-group-item-action text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i>
                                 Sair
                             </a>
@@ -64,12 +64,13 @@ include"../../includes/header.php";
 
 
             <!-- Dados da conta -->
-            <div class="col-md-9">
+            <div class="col-md-9" id="meus-dados">
 
                 <div class="card shadow-sm">
 
                     <div class="card-body">
 
+                        <form method="post" novalidate>
                         <h4 class="mb-4">
                             Meus Dados
                         </h4>
@@ -82,7 +83,7 @@ include"../../includes/header.php";
                                     Nome completo
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Nome completo">
+                                <input type="text" name="nome" class="form-control" placeholder="Nome completo" maxlength="100">
                             </div>
 
                             <!-- CPF -->
@@ -91,7 +92,7 @@ include"../../includes/header.php";
                                     CPF
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="000.000.000-00">
+                                <input type="text" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14">
                             </div>
 
                             <!-- Email -->
@@ -100,7 +101,7 @@ include"../../includes/header.php";
                                     E-mail
                                 </label>
 
-                                <input type="email" class="form-control" placeholder="email@exemplo.com">
+                                <input type="email" name="email" class="form-control" placeholder="email@exemplo.com" maxlength="100">
                             </div>
 
                             <!-- Telefone -->
@@ -109,7 +110,7 @@ include"../../includes/header.php";
                                     Telefone
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="(44) 99999-9999">
+                                <input type="text" name="telefone" class="form-control" placeholder="(44) 99999-9999" maxlength="15">
                             </div>
 
                         </div>
@@ -128,7 +129,7 @@ include"../../includes/header.php";
                                     CEP
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="00000-000">
+                                <input type="text" name="cep" class="form-control" placeholder="00000-000" maxlength="9">
                             </div>
 
                             <div class="col-md-8 mb-3">
@@ -136,7 +137,7 @@ include"../../includes/header.php";
                                     Endereço
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Rua Exemplo">
+                                <input type="text" name="logradouro" class="form-control" placeholder="Rua Exemplo" maxlength="45">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -144,7 +145,7 @@ include"../../includes/header.php";
                                     Número
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Número">
+                                <input type="text" name="numero" class="form-control" placeholder="Número" maxlength="10">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -152,7 +153,7 @@ include"../../includes/header.php";
                                     Cidade
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Cidade">
+                                <input type="text" name="cidade" class="form-control" placeholder="Cidade" maxlength="100">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -160,7 +161,7 @@ include"../../includes/header.php";
                                     Estado
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="PR">
+                                <input type="text" name="estado" class="form-control" placeholder="PR" maxlength="2">
                             </div>
 
                         </div>
@@ -168,12 +169,13 @@ include"../../includes/header.php";
                         <!-- Botão -->
                         <div class="text-end mt-3">
 
-                            <button class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-pencil"></i>
                                 Editar dados
                             </button>
 
                         </div>
+                        </form>
 
                     </div>
 
@@ -184,6 +186,8 @@ include"../../includes/header.php";
         </div>
 
     </main>
+
+    <script src="../../includes/validacoes.js"></script>
 
 </body>
 

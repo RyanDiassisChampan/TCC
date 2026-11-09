@@ -48,6 +48,7 @@
 
                     <div class="card-body">
 
+                        <form method="post" novalidate>
                         <h4 class="mb-4">
                             Meus Dados
                         </h4>
@@ -60,7 +61,7 @@
                                     Nome completo
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Nome completo">
+                                <input type="text" name="nome" class="form-control" placeholder="Nome completo" maxlength="100">
                             </div>
 
                             <!-- CPF -->
@@ -69,7 +70,7 @@
                                     CPF
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="000.000.000-00">
+                                <input type="text" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14">
                             </div>
 
                             <!-- Email -->
@@ -78,7 +79,7 @@
                                     E-mail
                                 </label>
 
-                                <input type="email" class="form-control" placeholder="email@exemplo.com">
+                                <input type="email" name="email" class="form-control" placeholder="email@exemplo.com" maxlength="100">
                             </div>
 
                             <!-- Telefone -->
@@ -87,7 +88,7 @@
                                     Telefone
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="(44) 99999-9999">
+                                <input type="text" name="telefone" class="form-control" placeholder="(44) 99999-9999" maxlength="15">
                             </div>
 
                         </div>
@@ -106,7 +107,7 @@
                                     CEP
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="00000-000">
+                                <input type="text" name="cep" class="form-control" placeholder="00000-000" maxlength="9">
                             </div>
 
                             <div class="col-md-8 mb-3">
@@ -114,7 +115,7 @@
                                     Endereço
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Rua Exemplo">
+                                <input type="text" name="logradouro" class="form-control" placeholder="Rua Exemplo" maxlength="45">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -122,7 +123,7 @@
                                     Número
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Número">
+                                <input type="text" name="numero" class="form-control" placeholder="Número" maxlength="10">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -130,7 +131,7 @@
                                     Cidade
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="Cidade">
+                                <input type="text" name="cidade" class="form-control" placeholder="Cidade" maxlength="100">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -138,7 +139,7 @@
                                     Estado
                                 </label>
 
-                                <input type="text" class="form-control" placeholder="PR">
+                                <input type="text" name="estado" class="form-control" placeholder="PR" maxlength="2">
                             </div>
 
                         </div>
@@ -146,12 +147,13 @@
                         <!-- Botão -->
                         <div class="text-end mt-3">
 
-                            <button class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-pencil"></i>
                                 Editar dados
                             </button>
 
                         </div>
+                        </form>
 
                     </div>
 
@@ -162,6 +164,8 @@
         </div>
 
     </main>
+
+    <script src="../../includes/validacoes.js"></script>
 
 </body>
 

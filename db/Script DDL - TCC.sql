@@ -70,9 +70,3 @@ CREATE TABLE tbVenda_Produto(
     FOREIGN KEY(tbProduto_Codigo) REFERENCES tbProduto(Codigo),
     FOREIGN KEY(tbVenda_Codigo) REFERENCES tbVenda(Codigo)
 );
-
-Insert into tbCliente {
-    codigo
-
-
-}

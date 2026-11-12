@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } elseif ($acao === 'finalizar') {
         $forma = trim($_POST['formaRecebimento'] ?? '');
-        $formasPermitidas = ['Pix', 'Cartão', 'Dinheiro'];
+        $formasPermitidas = ['Pix', 'Dinheiro'];
         if (!in_array($forma, $formasPermitidas, true)) {
             $erro = "Selecione uma forma de recebimento válida.";
         } else {
@@ -297,7 +297,6 @@ body { background:#f5f6f8; }
        </div>
       <?php } ?>
       <div class="d-flex flex-wrap justify-content-between gap-2 p-3 border-top">
-       <a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Continuar comprando</a>
        <button class="btn btn-primary" type="submit"><i class="bi bi-arrow-repeat me-1"></i>Atualizar carrinho</button>
       </div>
      </form>
@@ -324,14 +323,13 @@ body { background:#f5f6f8; }
       <select class="form-select mb-3" id="formaRecebimento" name="formaRecebimento" required>
        <option value="">Selecione...</option>
        <option value="Pix">Pix</option>
-       <option value="Cartão">Cartão</option>
        <option value="Dinheiro">Dinheiro</option>
       </select>
-      <button class="btn btn-primary btn-lg w-100" type="submit" onclick="return confirm('Confirmar o pedido e registrar a venda?')"><i class="bi bi-credit-card me-2"></i>Finalizar pedido</button>
+      <button class="btn btn-primary btn-lg w-100" type="submit" onclick="return confirm('Confirmar o pedido e registrar a venda?')"><i class="bi bi-bag-check me-2"></i>Finalizar pedido</button>
      </form>
      <small class="d-block text-secondary mt-2">O pedido será registrado como pendente. O pagamento não é processado pelo site.</small>
      <?php } else { ?>
-      <button class="btn btn-primary btn-lg w-100" type="button" disabled><i class="bi bi-credit-card me-2"></i>Finalizar pedido</button>
+      <button class="btn btn-primary btn-lg w-100" type="button" disabled><i class="bi bi-bag-check me-2"></i>Finalizar pedido</button>
      <?php } ?>
     </div>
    </div>

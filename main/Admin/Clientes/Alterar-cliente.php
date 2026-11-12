@@ -6,10 +6,10 @@ $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
 if (isset($_POST['salvar'])) {
 
     //2. Preparar os dados para inserir
-    $nome = $_POST['nome'];
-    $descricao = $_POST['descricao'];
-    $preco = $_POST['preco'];
-    $statusproduto = $_POST['statusproduto'];
+    $Nome = $_POST['Nome'];
+    $Descricao = $_POST['Descricao'];
+    $Preco = $_POST['Preco'];
+    $Statusproduto = $_POST['Statusproduto'];
 
 
     //3. Preparar a SQL para inserir

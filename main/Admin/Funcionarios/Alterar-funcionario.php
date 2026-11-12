@@ -6,19 +6,19 @@ $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
 if (isset($_POST['salvar'])) {
 
     //2. Preparar os dados para inserir
-    $nome = $_POST['nome'];
-    $descricao = $_POST['descricao'];
-    $preco = $_POST['preco'];
-    $statusproduto = $_POST['statusproduto'];
+    $nome = $_POST['Nome'];
+    $descricao = $_POST['Descricao'];
+    $preco = $_POST['Preco'];
+    $statusproduto = $_POST['Statusproduto'];
 
 
     //3. Preparar a SQL para inserir
-    $sql = "update funcionario
-    set nome = '" . $_POST['nome'] . "',
-    descricao = '" . $_POST['descricao'] . "',
-    preco = '" . $_POST['preco'] . "',
-    statusproduto = '" . $_POST['statusproduto'] . "'
-        where id = " . $_GET['id'];
+    $sql = "update tbFuncionario
+    set Nome = '" . $_POST['Nome'] . "',
+    Descricao = '" . $_POST['Descricao'] . "',
+    Preco = '" . $_POST['Preco'] . "',
+    Statusproduto = '" . $_POST['Statusproduto'] . "'
+        where Codigo = " . $_GET['Codigo'];
 
     //4. Executar a SQL
     mysqli_query($conexao, $sql);
@@ -28,7 +28,7 @@ if (isset($_POST['salvar'])) {
 }
 
 
-$sql = "select * from produto where id = " . $_GET['id'];
+$sql = "select * from tbProduto where Codigo = " . $_GET['Codigo'];
 $resultado = mysqli_query($conexao, $sql);
 $registro = mysqli_fetch_array($resultado);
 ?>
@@ -63,11 +63,11 @@ $registro = mysqli_fetch_array($resultado);
         <form method="post">
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome:</label>
-                <input name="nome" type="text" class="form-control" value="<?= $registro['nome'] ?>" id="nome">
+                <input name="nome" type="text" class="form-control" value="<?= $registro['Nome'] ?>" id="nome">
             </div>
             <div class="mb-3">
                 <label for="descricao" class="form-label">Descrição:</label>
-                <input name="descricao" type="text" class="form-control" value="<?= $registro['descricao'] ?>"
+                <input name="descricao" type="text" class="form-control" value="<?= $registro['Descricao'] ?>"
                     id="descricao">
             </div>
             <div class="mb-3">

@@ -201,3 +201,34 @@ hr {
 }
 
 /* Alertas continuam usando as cores próprias de status */
+
+/* Alinhamento padronizado das barras de navegação */
+.labmaker-navbar {
+    min-height: 72px;
+}
+
+.labmaker-navbar > .container-fluid {
+    align-items: center !important;
+}
+
+.labmaker-navbar .navbar-brand,
+.labmaker-navbar .nav-link,
+.labmaker-navbar .navbar-toggler {
+    display: flex;
+    align-items: center;
+}
+
+.labmaker-navbar .navbar-collapse,
+.labmaker-navbar form {
+    align-items: center;
+}
+
+.labmaker-navbar .navbar-nav {
+    align-items: center;
+}
+
+@media (min-width: 992px) {
+    .labmaker-navbar .navbar-collapse {
+        display: flex !important;
+    }
+}

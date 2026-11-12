@@ -1,4 +1,23 @@
-<?php include("../../includes/headerAdmin.php");?>
+<?php
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+$connConta = mysqli_connect("localhost", "root", "", "tcc");
+$dadosConta = [];
+if ($connConta && !empty($_SESSION['id'])) {
+    mysqli_set_charset($connConta, "utf8mb4");
+    $idConta = (int) $_SESSION['id'];
+    $stmtConta = mysqli_prepare($connConta, "SELECT Nome, CPF, Email, Telefone, CEP, Logradouro, Numero, Cidade, Estado FROM tbFuncionario WHERE Codigo = ? LIMIT 1");
+    mysqli_stmt_bind_param($stmtConta, "i", $idConta);
+    mysqli_stmt_execute($stmtConta);
+    $dadosConta = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtConta)) ?: [];
+    mysqli_stmt_close($stmtConta);
+    if (!empty($dadosConta['Nome'])) { $_SESSION['nome'] = $dadosConta['Nome']; }
+}
+function valorContaAdmin($campo) {
+    global $dadosConta;
+    return htmlspecialchars((string)($dadosConta[$campo] ?? ''), ENT_QUOTES, 'UTF-8');
+}
+include("../../includes/headerAdmin.php");
+?>
 
 
     <!-- Conteúdo -->
@@ -18,7 +37,7 @@
                     <div class="card-body">
 
                         <h5 class="card-title mb-3">
-                            Olá, Ryan!
+                            Olá, <?php echo htmlspecialchars($_SESSION['nome'] ?? ($dadosConta['Nome'] ?? 'Administrador'), ENT_QUOTES, 'UTF-8'); ?>!
                         </h5>
 
                         <div class="list-group">
@@ -27,7 +46,7 @@
                                 <i class="bi bi-person me-2"></i>
                                 Meus Dados
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action text-danger">
+                            <a href="Logout.php" class="list-group-item list-group-item-action text-danger">
                                 <i class="bi bi-box-arrow-right me-2"></i>
                                 Sair
                             </a>
@@ -61,7 +80,7 @@
                                     Nome completo
                                 </label>
 
-                                <input type="text" name="nome" class="form-control" placeholder="Nome completo" maxlength="100">
+                                <input type="text" name="nome" class="form-control" placeholder="Nome completo" maxlength="100" value="<?php echo valorContaAdmin('Nome'); ?>">
                             </div>
 
                             <!-- CPF -->
@@ -70,7 +89,7 @@
                                     CPF
                                 </label>
 
-                                <input type="text" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14">
+                                <input type="text" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14" value="<?php echo valorContaAdmin('CPF'); ?>">
                             </div>
 
                             <!-- Email -->
@@ -79,7 +98,7 @@
                                     E-mail
                                 </label>
 
-                                <input type="email" name="email" class="form-control" placeholder="email@exemplo.com" maxlength="100">
+                                <input type="email" name="email" class="form-control" placeholder="email@exemplo.com" maxlength="100" value="<?php echo valorContaAdmin('Email'); ?>">
                             </div>
 
                             <!-- Telefone -->
@@ -88,7 +107,7 @@
                                     Telefone
                                 </label>
 
-                                <input type="text" name="telefone" class="form-control" placeholder="(44) 99999-9999" maxlength="15">
+                                <input type="text" name="telefone" class="form-control" placeholder="(44) 99999-9999" maxlength="15" value="<?php echo valorContaAdmin('Telefone'); ?>">
                             </div>
 
                         </div>
@@ -107,7 +126,7 @@
                                     CEP
                                 </label>
 
-                                <input type="text" name="cep" class="form-control" placeholder="00000-000" maxlength="9">
+                                <input type="text" name="cep" class="form-control" placeholder="00000-000" maxlength="9" value="<?php echo valorContaAdmin('CEP'); ?>">
                             </div>
 
                             <div class="col-md-8 mb-3">
@@ -115,7 +134,7 @@
                                     Endereço
                                 </label>
 
-                                <input type="text" name="logradouro" class="form-control" placeholder="Rua Exemplo" maxlength="45">
+                                <input type="text" name="logradouro" class="form-control" placeholder="Rua Exemplo" maxlength="45" value="<?php echo valorContaAdmin('Logradouro'); ?>">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -123,7 +142,7 @@
                                     Número
                                 </label>
 
-                                <input type="text" name="numero" class="form-control" placeholder="Número" maxlength="10">
+                                <input type="text" name="numero" class="form-control" placeholder="Número" maxlength="10" value="<?php echo valorContaAdmin('Numero'); ?>">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -131,7 +150,7 @@
                                     Cidade
                                 </label>
 
-                                <input type="text" name="cidade" class="form-control" placeholder="Cidade" maxlength="100">
+                                <input type="text" name="cidade" class="form-control" placeholder="Cidade" maxlength="100" value="<?php echo valorContaAdmin('Cidade'); ?>">
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -139,7 +158,7 @@
                                     Estado
                                 </label>
 
-                                <input type="text" name="estado" class="form-control" placeholder="PR" maxlength="2">
+                                <input type="text" name="estado" class="form-control" placeholder="PR" maxlength="2" value="<?php echo valorContaAdmin('Estado'); ?>">
                             </div>
 
                         </div>

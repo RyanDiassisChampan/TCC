@@ -384,26 +384,20 @@ $produto = mysqli_fetch_assoc($resultado);
 
 
                         <!-- Quantidade -->
-
-                        <div class="col-4">
-
-                            <label class="form-label">
-
-                                Quantidade
-
-                            </label>
-
-                            <input
-                                type="number"
-                                name="quantidade"
-                                class="form-control"
-                                value="1"
-                                min="1"
-                                max="<?php echo $produto['Qntd_Estoque']; ?>"
-                            >
-
+                        <div class="col-md-5 col-12">
+                            <label class="form-label">Quantidade</label>
+                            <div class="input-group flex-nowrap" style="max-width: 220px;">
+                                <button class="btn btn-outline-primary" type="button" id="diminuirQuantidade" aria-label="Diminuir quantidade">
+                                    <i class="bi bi-dash-lg"></i>
+                                </button>
+                                <input type="number" name="quantidade" id="quantidadeProduto"
+                                    class="form-control text-center" value="1" min="1"
+                                    max="<?php echo (int)$produto['Qntd_Estoque']; ?>" required>
+                                <button class="btn btn-outline-primary" type="button" id="aumentarQuantidade" aria-label="Aumentar quantidade">
+                                    <i class="bi bi-plus-lg"></i>
+                                </button>
+                            </div>
                         </div>
-
 
                         <!-- Comprar -->
 
@@ -674,6 +668,43 @@ $produto = mysqli_fetch_assoc($resultado);
 </div>
 
 
+<script>
+(function () {
+    const campo = document.getElementById('quantidadeProduto');
+    const menos = document.getElementById('diminuirQuantidade');
+    const mais = document.getElementById('aumentarQuantidade');
+    if (!campo || !menos || !mais) return;
+    menos.addEventListener('click', function () {
+        campo.value = Math.max(parseInt(campo.min, 10) || 1, (parseInt(campo.value, 10) || 1) - 1);
+    });
+    mais.addEventListener('click', function () {
+        const maximo = parseInt(campo.max, 10) || 999999;
+        campo.value = Math.min(maximo, (parseInt(campo.value, 10) || 1) + 1);
+    });
+    campo.addEventListener('change', function () {
+        const minimo = parseInt(campo.min, 10) || 1;
+        const maximo = parseInt(campo.max, 10) || 999999;
+        campo.value = Math.min(maximo, Math.max(minimo, parseInt(campo.value, 10) || minimo));
+    });
+})();
+</script>
+<script>
+(function () {
+    const campo = document.getElementById('quantidadeProduto');
+    const menos = document.getElementById('diminuirQuantidade');
+    const mais = document.getElementById('aumentarQuantidade');
+    if (!campo || !menos || !mais) return;
+    menos.addEventListener('click', function () {
+        campo.value = Math.max(1, (parseInt(campo.value, 10) || 1) - 1);
+    });
+    mais.addEventListener('click', function () {
+        campo.value = Math.min(parseInt(campo.max, 10) || 999999, (parseInt(campo.value, 10) || 1) + 1);
+    });
+    campo.addEventListener('change', function () {
+        campo.value = Math.min(parseInt(campo.max, 10) || 999999, Math.max(1, parseInt(campo.value, 10) || 1));
+    });
+})();
+</script>
 </body>
 
 </html>

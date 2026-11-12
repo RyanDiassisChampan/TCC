@@ -2,8 +2,8 @@
 
 //1. Conectar no banco de dados (ip, usuário, senha, nome do banco)
 $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
-if (isset($_GET['id'])) {
-    $sql = "delete from tbFuncionario where codigo = " . $_GET['codigo'];
+if (isset($_GET['Codigo'])) {
+    $sql = "delete from tbFuncionario where Codigo = " . $_GET['Codigo'];
     mysqli_query($conexao, $sql);
     $mensagem = "Registro excluído com sucesso.";
 }
@@ -56,7 +56,7 @@ $mensagem = "Registro exclído com sucesso.";
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
+                    <th scope="col">Codigo</th>
                     <th scope="col">Nome</th>
                     <th scope="col">CPF</th>
                     <th scope="col">Telefone</th>
@@ -68,16 +68,16 @@ $mensagem = "Registro exclído com sucesso.";
             <tbody>
                 <?php while ($linha = mysqli_fetch_array($resultado)) { ?>
                     <tr>
-                        <th><?= $linha['id'] ?> </th>
-                        <td><?= $linha['nome'] ?></td>
-                        <td><?= $linha['cpf'] ?></td>
-                        <td><?= $linha['telefone'] ?></td>
-                        <td><?= $linha['email'] ?></td>
-                        <td><?= $linha['status'] ?></td>
+                        <th><?= $linha['Codigo'] ?> </th>
+                        <td><?= $linha['Nome'] ?></td>
+                        <td><?= $linha['CPF'] ?></td>
+                        <td><?= $linha['Telefone'] ?></td>
+                        <td><?= $linha['Email'] ?></td>
+                        <td><?= $linha['Status'] ?></td>
                         <td>
-                            <a class="btn btn-warning" href="funcionario-alterar.php?codigo=<?= $linha['codigo'] ?>"><i
+                            <a class="btn btn-warning" href="Alterar-fncionario.php?Codigo=<?= $linha['Codigo'] ?>"><i
                                     class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-danger" href="funcionario-listar.php?codigo=<?= $linha['codigo'] ?>"
+                            <a class="btn btn-danger" href="Listar-funcionario.php?Codigo=<?= $linha['Codigo'] ?>"
                                 onclick="return confirm('Deseja excluir este registro?')"><i class="bi bi-trash"></i></a>
                         </td>
                     </tr>

@@ -4,9 +4,9 @@
 
 $conexao = mysqli_connect('localhost', 'root', '', 'tcc');
 
-if (isset($_GET['codigo'])) {
+if (isset($_GET['Codigo'])) {
 
-    $sql = "delete from tbCliente where codigo = " . $_GET['codigo'];
+    $sql = "delete from tbCliente where Codigo = " . $_GET['Codigo'];
 
     mysqli_query($conexao, $sql);
 
@@ -107,27 +107,27 @@ $mensagem = "Registro exclído com sucesso.";
 
                     <tr>
 
-                        <th><?= $linha['codigo'] ?></th>
+                        <th><?= $linha['Codigo'] ?></th>
 
-                        <td><?= $linha['nome'] ?></td>
+                        <td><?= $linha['Nome'] ?></td>
 
-                        <td><?= $linha['cpf'] ?></td>
+                        <td><?= $linha['CPF'] ?></td>
 
-                        <td><?= $linha['telefone'] ?></td>
+                        <td><?= $linha['Telefone'] ?></td>
 
-                        <td><?= $linha['email'] ?></td>
+                        <td><?= $linha['Email'] ?></td>
 
-                        <td><?= $linha['status'] ?></td>
+                        <td><?= $linha['Status'] ?></td>
 
                         <td>
 
-                            <a class="btn btn-warning" href="tbCliente-alterar.php?codigo=<?= $linha['codigo'] ?>">
+                            <a class="btn btn-warning" href="Alterar-cliente.php?Codigo=<?= $linha['Codigo'] ?>">
 
                                 <i class="bi bi-pencil-square"></i>
 
                             </a>
 
-                            <a class="btn btn-danger" href="tbCliente-listar.php?codigo=<?= $linha['codigo'] ?>"
+                            <a class="btn btn-danger" href="Listar-cliente.php?Codigo=<?= $linha['Codigo'] ?>"
                                 onclick="return confirm('Deseja excluir este registro?')">
 
                                 <i class="bi bi-trash"></i>

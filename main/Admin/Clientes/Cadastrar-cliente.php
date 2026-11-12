@@ -19,13 +19,25 @@ if (isset($_POST['salvar'])) {
         $numero = valorPost('numero');
         $bairro = valorPost('bairro');
         $cidade = valorPost('cidade');
-        $complemento = valorPost('complemento');
+        
         $cep = valorPost('cep');
         $estado = strtoupper(valorPost('estado'));
 
+        $camposObrigatorios = [
+            'nome' => $nome, 'cpf' => $cpf, 'telefone' => $telefone,
+            'email' => $email, 'senha' => $senha, 'logradouro' => $logradouro,
+            'numero' => $numero, 'bairro' => $bairro, 'cidade' => $cidade,
+            'complemento' => $complemento, 'cep' => $cep, 'estado' => $estado
+        ];
+        foreach ($camposObrigatorios as $campo => $valorCampo) {
+            if (trim((string)$valorCampo) === '') {
+                $erros[] = "O campo " . ucfirst($campo) . " é obrigatório.";
+            }
+        }
+
         if (!validarNome($nome)) $erros[] = "O nome deve conter apenas letras, espaços e ter pelo menos 3 caracteres.";
         if (!validarCPF($cpf)) $erros[] = "Digite um CPF válido.";
-        if ($telefone !== '' && !validarTelefone($telefone)) $erros[] = "Digite um telefone válido.";
+        if (!validarTelefone($telefone)) $erros[] = "Digite um telefone válido.";
         if (!validarEmail($email)) $erros[] = "Digite um e-mail válido.";
         if (!validarSenha($senha)) $erros[] = "A senha deve possuir pelo menos 6 caracteres.";
         if (!validarLogradouro($logradouro, 45)) $erros[] = "O logradouro contém caracteres inválidos ou ultrapassa 45 caracteres.";
@@ -169,7 +181,7 @@ if (isset($_POST['salvar'])) {
                             </label>
 
                             <input type="text" class="form-control" id="telefone" name="telefone" maxlength="15" inputmode="tel"
-                                placeholder="(00) 00000-0000">
+                                placeholder="(00) 00000-0000" required>
 
                         </div>
 
@@ -215,7 +227,7 @@ if (isset($_POST['salvar'])) {
                                 Logradouro
                             </label>
 
-                            <input type="text" class="form-control" id="logradouro" name="logradouro" maxlength="45">
+                            <input type="text" class="form-control" id="logradouro" name="logradouro" maxlength="45" required>
 
                         </div>
 
@@ -226,7 +238,7 @@ if (isset($_POST['salvar'])) {
                                 Número
                             </label>
 
-                            <input type="text" class="form-control" id="numero" name="numero" maxlength="10" pattern="[0-9A-Za-z\s/\-]+">
+                            <input type="text" class="form-control" id="numero" name="numero" maxlength="10" pattern="[0-9A-Za-z\s/\-]+" required>
 
                         </div>
 
@@ -238,7 +250,7 @@ if (isset($_POST['salvar'])) {
                             </label>
 
                             <input type="text" class="form-control" id="cep" name="cep" maxlength="9" minlength="9" inputmode="numeric"
-                                placeholder="00000-000">
+                                placeholder="00000-000" required>
 
                         </div>
 
@@ -249,7 +261,7 @@ if (isset($_POST['salvar'])) {
                                 Bairro
                             </label>
 
-                            <input type="text" class="form-control" id="bairro" name="bairro" maxlength="100">
+                            <input type="text" class="form-control" id="bairro" name="bairro" maxlength="100" required>
 
                         </div>
 
@@ -260,7 +272,7 @@ if (isset($_POST['salvar'])) {
                                 Cidade
                             </label>
 
-                            <input type="text" class="form-control" id="cidade" name="cidade" maxlength="100">
+                            <input type="text" class="form-control" id="cidade" name="cidade" maxlength="100" required>
 
                         </div>
 
@@ -271,7 +283,7 @@ if (isset($_POST['salvar'])) {
                                 UF
                             </label>
 
-                            <input type="text" class="form-control" id="estado" name="estado" maxlength="2" minlength="2" pattern="[A-Za-z]{2}">
+                            <input type="text" class="form-control" id="estado" name="estado" maxlength="2" minlength="2" pattern="[A-Za-z]{2}" required>
 
                         </div>
 

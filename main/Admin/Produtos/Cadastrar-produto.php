@@ -274,21 +274,18 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
                                     Selecione o tipo
                                 </option>
 
-                                <option value="Processador">
-                                    Processador
-                                </option>
-
-                                <option value="Memória RAM">
-                                    Memória RAM
-                                </option>
-
-                                <option value="Placa de vídeo">
-                                    Placa de vídeo
-                                </option>
-
-                                <option value="SSD">
-                                    SSD
-                                </option>
+                                <option value="Processador">Processador</option>
+                                <option value="Placa-mãe">Placa-mãe</option>
+                                <option value="Placa de vídeo">Placa de vídeo</option>
+                                <option value="Memória RAM">Memória RAM</option>
+                                <option value="SSD">SSD</option>
+                                <option value="HD">HD</option>
+                                <option value="Fonte">Fonte</option>
+                                <option value="Gabinete">Gabinete</option>
+                                <option value="Cooler">Cooler</option>
+                                <option value="Water Cooler">Water Cooler</option>
+                                <option value="Ventoinha">Ventoinha</option>
+                                <option value="Refrigeração">Refrigeração</option>
 
                             </select>
 
@@ -302,27 +299,7 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
                             </label>
 
                             <select class="form-select" id="marca" name="marca" required>
-
-                                <option value="">
-                                    Selecione a marca
-                                </option>
-
-                                <option value="AMD">
-                                    AMD
-                                </option>
-
-                                <option value="Intel">
-                                    Intel
-                                </option>
-
-                                <option value="Corsair">
-                                    Corsair
-                                </option>
-
-                                <option value="Kingston">
-                                    Kingston
-                                </option>
-
+                                <option value="">Selecione primeiro o tipo do produto</option>
                             </select>
 
                         </div>
@@ -360,6 +337,43 @@ if (isset($_POST['cadastrar']) && empty($erros)) {
     </form>
 
     <script src="../../../includes/validacoes.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tipo = document.getElementById('tipo');
+        const marca = document.getElementById('marca');
+        const marcasPorTipo = {
+            'Processador': ['AMD', 'Intel'],
+            'Placa-mãe': ['ASUS', 'Gigabyte', 'MSI', 'ASRock', 'Biostar', 'NZXT'],
+            'Placa de vídeo': ['ASUS', 'Gigabyte', 'MSI', 'XFX', 'Sapphire', 'PowerColor', 'Zotac', 'PNY', 'Galax', 'Inno3D', 'ASRock', 'Acer'],
+            'Memória RAM': ['Kingston', 'Corsair', 'G.Skill', 'ADATA', 'XPG', 'Crucial', 'TeamGroup', 'Patriot', 'GeIL', 'Mushkin'],
+            'SSD': ['Kingston', 'Samsung', 'Western Digital', 'Crucial', 'SanDisk', 'Lexar', 'ADATA', 'XPG', 'Corsair', 'TeamGroup', 'PNY'],
+            'HD': ['Seagate', 'Western Digital', 'Toshiba'],
+            'Fonte': ['Corsair', 'Cooler Master', 'XPG', 'MSI', 'Gigabyte', 'EVGA', 'Seasonic', 'Thermaltake', 'Super Flower', 'be quiet!', 'ASUS'],
+            'Gabinete': ['Corsair', 'Cooler Master', 'NZXT', 'Lian Li', 'Montech', 'XPG', 'Redragon', 'Thermaltake', 'Gamdias', 'Cougar', 'DeepCool', 'Pichau'],
+            'Cooler': ['DeepCool', 'Cooler Master', 'Noctua', 'Arctic', 'Thermalright', 'be quiet!', 'Corsair', 'NZXT', 'Thermaltake', 'Scythe'],
+            'Water Cooler': ['Corsair', 'NZXT', 'Cooler Master', 'DeepCool', 'Arctic', 'Thermaltake', 'ASUS', 'MSI', 'Lian Li', 'XPG', 'Rise Mode'],
+            'Ventoinha': ['Noctua', 'Arctic', 'Corsair', 'Cooler Master', 'DeepCool', 'Thermaltake', 'Lian Li', 'NZXT', 'be quiet!', 'XPG', 'Rise Mode'],
+            'Refrigeração': ['Noctua', 'Arctic', 'Corsair', 'Cooler Master', 'DeepCool', 'Thermaltake', 'NZXT', 'Lian Li', 'Thermalright', 'be quiet!', 'Scythe']
+        };
+
+        function atualizarMarcas() {
+            const selecionadas = marcasPorTipo[tipo.value] || [];
+            marca.innerHTML = '<option value="">Selecione a marca</option>';
+            selecionadas.forEach(function (nome) {
+                const opcao = document.createElement('option');
+                opcao.value = nome;
+                opcao.textContent = nome;
+                marca.appendChild(opcao);
+            });
+            marca.disabled = selecionadas.length === 0;
+        }
+
+        tipo.addEventListener('change', atualizarMarcas);
+        atualizarMarcas();
+    });
+    </script>
+
 </body>
 
 </html>

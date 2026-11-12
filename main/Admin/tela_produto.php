@@ -222,17 +222,7 @@ $produto = mysqli_fetch_assoc($resultado);
 
                     <!-- Ações administrativas -->
 
-                    <div class="d-flex flex-wrap gap-2 mt-4">
-
-                        <a
-                            href="Produtos/Alterar-produto.php?Codigo=<?php echo (int) $produto['Codigo']; ?>"
-                            class="btn btn-warning">
-
-                            <i class="bi bi-pencil-square"></i>
-                            Alterar produto
-                        </a>
-
-                    </div>
+                    
 
                 </div>
 

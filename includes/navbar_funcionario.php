@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand navbar-dark bg-primary shadow labmaker-navbar py-2" style="min-height: 72px;">
-    <div class="container-fluid d-flex align-items-center flex-wrap gap-2">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow labmaker-navbar py-2" style="min-height: 72px;">
+    <div class="container-fluid d-flex align-items-center gap-2">
         <ul class="navbar-nav me-lg-2 align-items-center flex-row">
             <li class="nav-item dropdown fs-5">
                 <a class="nav-link dropdown-toggle px-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Ações</a>
@@ -12,7 +12,12 @@
         </ul>
 
         <a class="navbar-brand fw-bold m-0 flex-shrink-0" href="/TCC/main/Admin/Main-Admin.php">LabMaker</a>
-<div class="navbar-collapse show align-items-center" id="navbarPrincipal">
+
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPrincipal" aria-controls="navbarPrincipal" aria-expanded="false" aria-label="Abrir menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse align-items-center" id="navbarPrincipal">
             <form class="d-flex mx-lg-auto my-2 my-lg-0 w-100" style="max-width: 640px;" method="GET" action="/TCC/main/Admin/Main-Admin.php" role="search">
                 <input class="form-control me-2" type="search" name="busca" placeholder="Pesquisar produtos..." aria-label="Pesquisar produtos" value="<?= htmlspecialchars($_GET['busca'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                 <button class="btn btn-light" type="submit">Buscar</button>
